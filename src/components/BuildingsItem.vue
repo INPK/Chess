@@ -9,7 +9,7 @@
           <div>
             <h3 class="uk-card-title">{{ title }}</h3>
             <div>
-              <small>{{ description }}</small>
+              <small>временно недоступно</small>
             </div>
           </div>
           <div>

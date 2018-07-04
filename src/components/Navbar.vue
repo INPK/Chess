@@ -7,7 +7,9 @@
       <div class="uk-navbar-right">
         <ul class="uk-navbar-nav">
           <li class="uk-active"><div class="">Help</div></li>
-          <li><div class="user-tools_notice">Notice</div></li>
+          <li v-if="!loggedIn"><router-link :to="{ name: 'Login' }">Login</router-link></li>
+          <li v-if="!loggedIn"><router-link :to="{ name: 'Register' }">Register</router-link></li>
+          <li v-else><router-link :to="{ name: 'Logout' }">Logout</router-link></li>
           <li>
             <a href="#">{{ userName }}</a>
             <div class="uk-navbar-dropdown">
@@ -27,6 +29,11 @@ export default {
     return {
       userName: 'TestUser',
       menuItem: ['one', 'two', 'three']
+    }
+  },
+  computed: {
+    loggedIn () {
+      return this.$store.getters.loggedIn
     }
   }
 

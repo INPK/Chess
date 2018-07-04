@@ -21,6 +21,7 @@
 <script>
 import BuildingsNew from './BuildingsNew'
 import BuildingsItem from './BuildingsItem'
+import axios from 'axios'
 
 export default {
   name: 'Buildings',
@@ -66,6 +67,15 @@ export default {
     viewDetail (title) {
       console.log(title)
     }
+  },
+  created () {
+    axios.get('http://172.100.2.15:8000/company/4ac42f36/buildings')
+      .then(response => {
+        console.log(JSON.parse(response.data))
+      })
+      .catch(error => {
+        console.info(error, error.response)
+      })
   }
 }
 </script>

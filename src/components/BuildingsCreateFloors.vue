@@ -3,9 +3,9 @@
 </template>
 
 <script>
-    export default {
-        name: "BuildingCreateProperties"
-    }
+  export default {
+    name: 'BuildingsCreateFloors'
+  }
 </script>
 
 <style scoped>

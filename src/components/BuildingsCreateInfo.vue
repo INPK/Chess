@@ -1,74 +1,96 @@
 <template>
-  <div class="uk-container uk-background-default uk-padding" uk-grid>
-    <div class="uk-width-2-3">
-      <h2>Введите информацию о комплексе:</h2>
-      <label for="building_name">Название ЖК</label>
-      <input id="building_name" />
-      <h2>Расположение:</h2>
-      <input name="country" value="Russia"/>
-      <input name="region" value="Rostovskaya"/>
-      <input name="currency" value="RUB"/>
-      <input name="city" value="Rostov"/>
-      <input name="district" value="Center"/>
+  <BuildingsCreate>
+    <div class="uk-container uk-background-default uk-padding" uk-grid>
+      <div class="uk-width-2-3">
+        <h2>Введите информацию о комплексе:</h2>
+        <label for="name">Название ЖК</label>
+        <input v-model="name" id="name" />
+        <h2>Расположение:</h2>
+        <span>Страна</span><input v-model="country" name="country"/>
+        <span>Регион</span><input v-model="region" name="region"/>
+        <span>Валюта</span><input v-model="currency" name="currency"/>
+        <span>Город</span><input v-model="city" name="city"/>
+        <span>Район</span><input v-model="district" name="district"/>
+        <span>Видео</span><input v-model="video" name="video"/>
+        <span>Картинки</span><input v-model="images" name="images"/>
+        <span>Координаты</span><input v-model="coordinates" name="coordinates"/>
+      </div>
+      <div class="uk-width-1-3">
+        <MultipleFileUploader
+          postURL="http://172.100.2.15:8000/buildings"
+          successMessagePath="СУСЕС"
+          errorMessagePath="ФЁИЛ"
+          :minItems="0"
+          :maxItems="10"
+        />
+        <ButtonDefault
+          name="Следующий шаг"
+          color="aqua"
+          :actionForClick = "storeBuildingsInfo"
+        />
+      </div>
     </div>
-    <div class="uk-width-1-3">
-      <ButtonDefault
-        name="Добавить фото и видео"
-        color="orange"
-      />
-      <MultipleFileUploader
-        postURL="http://172.100.2.15:8000/buildings"
-        successMessagePath="СУСЕС"
-        errorMessagePath="ФЁИЛ"
-        :minItems="0"
-        :maxItems="10"
-      />
-      <input name="image" required multiple @change="onFileSelected" type="file"/>
-      <button @click="onUpload">T</button>
-
-      <progress id="js-progressbar" class="uk-progress" value="0" max="100" hidden></progress>
-
-      <ButtonDefault
-        name="Следующий шаг"
-        color="aqua"
-      />
-    </div>
-  </div>
+  </BuildingsCreate>
 </template>
 
 <script>
+import BuildingsCreate from './BuildingsCreate'
 import ButtonDefault from './ButtonDefault'
-import axios from 'axios'
 import MultipleFileUploader from 'vue2-multi-uploader'
 
 export default {
   name: 'BuildingsCreateInfo',
   components: {
     ButtonDefault,
-    MultipleFileUploader
+    MultipleFileUploader,
+    BuildingsCreate
   },
   data () {
+    let currentInfoJson = this.$store.state.buildingInfo
+    const currentInfo = JSON.parse(currentInfoJson)
     return {
-      selectedFile: null
+      name: currentInfo.name || '',
+      region: currentInfo.region || '',
+      district: currentInfo.district || '',
+      city: currentInfo.city || '',
+      country: currentInfo.country || '',
+      video: currentInfo.video || '',
+      images: currentInfo.images || '',
+      coordinates: currentInfo.coordinates || '',
+      currency: currentInfo.currency || '',
+      company_id: currentInfo.company_hash_id || '',
+      options: {
+        url: 'http://172.100.2.15:8000/buildings',
+        paramName: 'items'
+      }
     }
   },
   methods: {
-    error_handler: function (error) {
-      console.info(error)
-    },
-    onFileSelected (event) {
-      this.selectedFile = event.target.files[0]
-      console.info(event)
-    },
-    onUpload () {
-      const fd = new FormData()
-      fd.append('image', this.selectedFile, this.selectedFile.name)
-      axios.post('http://172.100.2.15:8000/buildings', fd)
+    storeBuildingsInfo () {
+      const data = {
+        api_key: this.$store.state.retrieveApiKey,
+        company_id: this.$store.state.companyHashId,
+        name: this.name,
+        region: this.region,
+        district: this.district,
+        city: this.city,
+        country: this.country,
+        video: this.video,
+        images: this.images,
+        coordinates: this.coordinates,
+        currency: this.currency
+      }
+      const buildingInfo = JSON.stringify(data)
+      this.$store.dispatch('writeItem', {
+        data: buildingInfo,
+        url: 'http://172.100.2.15:8000/buildings',
+        name: 'buildingInfo'
+      })
         .then(response => {
-          console.info(response)
+          this.$router.push('/buildings/create/properties')
         })
         .catch(error => {
-          console.info(error)
+          console.info(error.message)
         })
     }
   }

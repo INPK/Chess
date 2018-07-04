@@ -30,6 +30,7 @@ export default {
   },
   methods: {
     methodFromParent () {
+      console.info()
       this.actionForClick()
     }
   }

@@ -2,7 +2,6 @@
   <div id="app" class="uk-container uk-container-large">
     <router-view/>
     <Navbar/>
-    <a href="#/buildings">Объекты</a>
   </div>
 </template>
 

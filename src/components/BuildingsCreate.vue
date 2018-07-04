@@ -16,7 +16,7 @@
         <li>5. Пронумеровать</li>
         <li>6. Цены</li>
       </ul>
-      <BuildingsCreateInfo/>
+      <slot></slot>
     </div>
   </div>
 </template>
