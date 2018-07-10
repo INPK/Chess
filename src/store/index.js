@@ -9,7 +9,8 @@ const store = new Vuex.Store({
     apiKey: localStorage.getItem('apiKey') || null,
     companyHashId: localStorage.getItem('companyHashId') || null,
     buildingInfo: localStorage.getItem('buildingInfo') || null,
-    buildingProperties: localStorage.getItem('buildingProperties') || null
+    buildingProperties: localStorage.getItem('buildingProperties') || null,
+    buildingLayouts: localStorage.getItem('buildingLayouts') || null
   },
   getters: {
     loggedIn (state) {
@@ -60,7 +61,7 @@ const store = new Vuex.Store({
           email: credentials.email,
           password: credentials.password
         })
-        axios.post('http://172.100.2.15:8000/login', loginData)
+        axios.post('http://127.0.0.1:8000/login', loginData)
           .then(response => {
             const apiKey = response.data.api_key
             const companyHashId = response.data.company_hash_id
@@ -84,7 +85,7 @@ const store = new Vuex.Store({
             api_key: this.state.apiKey,
             company_hash_id: this.state.companyHashId
           })
-          axios.post('http://172.100.2.15:8000/logout', data)
+          axios.post('http://127.0.0.1:8000/logout', data)
             .then(response => {
               localStorage.removeItem('apiKey')
               localStorage.removeItem('companyHashId')
@@ -99,17 +100,8 @@ const store = new Vuex.Store({
     },
     registerUser (context, data) {
       return new Promise((resolve, reject) => {
-        let registerData = JSON.stringify({
-          company_name: data.company_name,
-          first_name: data.first_name,
-          last_name: data.last_name,
-          middle_name: data.middle_name,
-          email: data.email,
-          phone: data.phone,
-          password: data.password,
-          personal_data: data.personal_data
-        })
-        axios.post('http://172.100.2.15:8000/register', registerData)
+        let registerData = JSON.stringify(data)
+        axios.post('http://127.0.0.1:8000/register', registerData)
           .then(response => {
             const apiKey = response.data.api_key
             const companyHashId = response.data.company_hash_id

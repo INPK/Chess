@@ -20,7 +20,7 @@
             />
           </a>
         </div>
-        <BuildingsLayout
+        <BuildingsFlatsSchemas
           v-for="layout in layouts"
           :key="layout.id"
           :img_source="layout.img_source"
@@ -37,60 +37,35 @@
         color="aqua"
       />
     </a>
-    <BuildingsCreateLayoutsAdd/>
+    <BuildingsCreateFlatsSchemasAdd/>
   </div>
 </template>
 
 <script>
 import ButtonDefault from './ButtonDefault'
-import BuildingsLayout from './BuildingsLayout'
+import BuildingsFlatsSchemas from './BuildingsFlatsSchemas'
 import BuildingsCreateInfo from './BuildingsCreateInfo'
-import BuildingsCreateLayoutsAdd from './BuildingsCreateLayoutsAdd'
+import BuildingsCreateFlatsSchemasAdd from './BuildingsCreateFlatsSchemasAdd'
 
 export default {
-  name: 'BuildingsCreateLayout',
+  name: 'BuildingsCreateFlatsSchemas',
   data () {
     return {
-      layouts: [
-        {
-          id: 1,
-          img_source: '/static/img/flat-03.svg',
-          apartment_type: '3-комнатная',
-          area: 96,
-          balcony: 2,
-          loggia: 1
-        },
-        {
-          id: 2,
-          img_source: '/static/img/flat-03.svg',
-          apartment_type: '2-комнатная',
-          area: 56,
-          balcony: 1,
-          loggia: 1
-        },
-        {
-          id: 3,
-          img_source: '/static/img/flat-03.svg',
-          apartment_type: '1-комнатная',
-          area: 42,
-          balcony: 1
-        },
-        {
-          id: 5,
-          img_source: '/static/img/flat-03.svg',
-          apartment_type: '2-комнатная',
-          area: 72,
-          balcony: 2,
-          loggia: 2
-        }
-      ]
+      layouts: []
     }
   },
   components: {
     BuildingsCreateInfo,
     ButtonDefault,
-    BuildingsLayout,
-    BuildingsCreateLayoutsAdd
+    BuildingsFlatsSchemas,
+    BuildingsCreateFlatsSchemasAdd
+  },
+  methods: {
+  },
+  created () {
+    let buildingLayoutsJson = this.$store.state.buildingLayouts
+    const buildingLayouts = JSON.parse(buildingLayoutsJson)
+    this.layouts = buildingLayouts
   }
 }
 </script>

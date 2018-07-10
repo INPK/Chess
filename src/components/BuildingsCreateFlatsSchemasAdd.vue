@@ -36,7 +36,7 @@
 import ButtonDefault from './ButtonDefault'
 
 export default {
-  name: 'BuildingsCreateLayoutsAdd',
+  name: 'BuildingsCreateFlatsSchemasAdd',
   data () {
     let buildingPropertiesJson = this.$store.state.buildingProperties
     const houseId = JSON.parse(buildingPropertiesJson).hash_id
@@ -69,9 +69,15 @@ export default {
       const layoutsProperties = JSON.stringify(data)
       this.$store.dispatch('writeItem', {
         data: layoutsProperties,
-        url: 'http://172.100.2.15:8000/planings',
-        name: 'layoutsProperties'
+        url: 'http://172.100.2.15:8000/flats-schemas',
+        name: 'buildingFlatsSchemas'
       })
+        .then(response => {
+          console.info(response)
+        })
+        .catch(error => {
+          console.info(error.message)
+        })
     }
   }
 }

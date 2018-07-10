@@ -46,23 +46,16 @@ export default {
     BuildingsCreate
   },
   data () {
-    let currentInfoJson = this.$store.state.buildingInfo
-    const currentInfo = JSON.parse(currentInfoJson)
     return {
-      name: currentInfo.name || '',
-      region: currentInfo.region || '',
-      district: currentInfo.district || '',
-      city: currentInfo.city || '',
-      country: currentInfo.country || '',
-      video: currentInfo.video || '',
-      images: currentInfo.images || '',
-      coordinates: currentInfo.coordinates || '',
-      currency: currentInfo.currency || '',
-      company_id: currentInfo.company_hash_id || '',
-      options: {
-        url: 'http://172.100.2.15:8000/buildings',
-        paramName: 'items'
-      }
+      name: '',
+      region: '',
+      district: '',
+      city: '',
+      country: '',
+      video: '',
+      images: '',
+      coordinates: '',
+      currency: ''
     }
   },
   methods: {
@@ -92,6 +85,16 @@ export default {
         .catch(error => {
           console.info(error.message)
         })
+    }
+  },
+  created () {
+    var buildingInfoJson = this.$store.state.buildingInfo
+    if (buildingInfoJson) {
+      var buildingInfo = JSON.parse(buildingInfoJson)
+    }
+    for (let key in buildingInfo) {
+      let value = buildingInfo[key]
+      this[key] = value
     }
   }
 }

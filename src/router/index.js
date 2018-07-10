@@ -6,7 +6,7 @@ import Logout from '@/components/Logout'
 import Buildings from '@/components/Buildings'
 import BuildingsCreateInfo from '@/components/BuildingsCreateInfo'
 import BuildingsCreateProperties from '@/components/BuildingsCreateProperties'
-import BuildingsCreateLayout from '@/components/BuildingsCreateLayout'
+import BuildingsCreateFlatsSchemas from '@/components/BuildingsCreateFlatsSchemas'
 import store from '../store'
 
 Vue.use(Router)
@@ -57,9 +57,9 @@ export default new Router({
       beforeEnter: ifNotAuthenticated
     },
     {
-      path: '/buildings/create/layout',
-      name: 'BuildingsCreateLayout',
-      component: BuildingsCreateLayout,
+      path: '/buildings/create/flats-schemas',
+      name: 'BuildingsCreateFlatsSchemas',
+      component: BuildingsCreateFlatsSchemas,
       beforeEnter: ifNotAuthenticated
     }
   ]
