@@ -1,8 +1,7 @@
 <template>
   <div id="app" class="uk-container uk-container-large">
     <router-view/>
-    <Navbar/>
-    <span v-if="foo">{{foo}}</span>
+    <Navbar v-if="isAuthenticated"/>
   </div>
 </template>
 
@@ -14,8 +13,10 @@ export default {
   components: {
     Navbar
   },
-  props: {
-    foo: String
+  computed: {
+    isAuthenticated: function () {
+      return this.$store.getters.loggedIn
+    }
   }
 }
 </script>
