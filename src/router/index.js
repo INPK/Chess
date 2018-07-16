@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Register from '@/components/Register'
 import Login from '@/components/Login'
+import PasswordEmail from '@/components/PasswordEmail'
+import PasswordReset from '@/components/PasswordReset'
 import Logout from '@/components/Logout'
 import Buildings from '@/components/Buildings'
 import BuildingsCreateInfo from '@/components/BuildingsCreateInfo'
@@ -32,6 +34,16 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/password/email',
+      name: 'PasswordEmail',
+      component: PasswordEmail
+    },
+    {
+      path: '/password/reset/:password_code',
+      name: 'PasswordReset',
+      component: PasswordReset
     },
     {
       path: '/logout',

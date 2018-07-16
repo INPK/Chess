@@ -2,6 +2,7 @@
   <div id="app" class="uk-container uk-container-large">
     <router-view/>
     <Navbar/>
+    <span v-if="foo">{{foo}}</span>
   </div>
 </template>
 
@@ -12,6 +13,9 @@ export default {
   name: 'App',
   components: {
     Navbar
+  },
+  props: {
+    foo: String
   }
 }
 </script>

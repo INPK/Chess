@@ -4,7 +4,7 @@
       <div>Имя компании: </div>
       <input
         :class="company_name.validationClass"
-        v-model="company_name.default"
+        v-model="company_name.value"
         @click = "clearError"
         type="text" id="company_name" required
       />
@@ -18,7 +18,7 @@
       <div>Имя: </div>
       <input
         :class="first_name.validationClass"
-        v-model="first_name.default"
+        v-model="first_name.value"
         @click = "clearError"
         class="uk-child-width" type="text" id="first_name" required
       />
@@ -32,7 +32,7 @@
       <div>Фамилия: </div>
       <input
         :class="last_name.validationClass"
-        v-model="last_name.default"
+        v-model="last_name.value"
         @click = "clearError"
         type="text" id="last_name"
       />
@@ -46,7 +46,7 @@
       <div>Отчество: </div>
       <input
         :class="middle_name.validationClass"
-        v-model="middle_name.default"
+        v-model="middle_name.value"
         @click = "clearError"
         type="text" id="middle_name"
       />
@@ -60,7 +60,7 @@
       <div>Email: </div>
       <input
         :class="email.validationClass"
-        v-model="email.default"
+        v-model="email.value"
         @click = "clearError"
         type="email" id="email" required
       />
@@ -74,7 +74,7 @@
       <div>Телефон: </div>
       <input
         :class="phone.validationClass"
-        v-model="phone.default"
+        v-model="phone.value"
         @click = "clearError"
         id="phone" required
       />
@@ -88,7 +88,7 @@
       <div>Пароль: </div>
       <input
         :class="password.validationClass"
-        v-model="password.default"
+        v-model="password.value"
         @click = "clearError"
         id="password" required
       />
@@ -99,9 +99,23 @@
         {{ password.validationText }}
       </span>
 
+      <div>Подтверждение пароля: </div>
+      <input
+        :class="password_confirmation.validationClass"
+        v-model="password_confirmation.value"
+        @click = "clearError"
+        id="password_confirmation" required
+      />
+      <span
+        v-if="password_confirmation.validationClass"
+        style="color: red;"
+      >
+        {{ password_confirmation.validationText }}
+      </span>
+
       <div>Согласен с передачей данных: </div>
       <input
-        v-model="is_agree_with_save_personal_data.default"
+        v-model="is_agree_with_save_personal_data.value"
         @click = "clearError"
         type="checkbox" id="is_agree_with_save_personal_data"
       />
@@ -116,6 +130,7 @@
 </template>
 
 <script>
+import CommonMethods from './CommonMethods'
 
 export default {
   name: 'Register',
@@ -124,69 +139,78 @@ export default {
       company_name: {
         validationClass: '',
         validationText: '',
-        default: 'Owl Company'
+        value: 'Owl Company'
       },
       first_name: {
         validationClass: '',
         validationText: '',
-        default: 'Grigoriy'
+        value: 'Grigoriy'
       },
       last_name: {
         validationClass: '',
         validationText: '',
-        default: 'Komarov'
+        value: 'Komarov'
       },
       middle_name: {
         validationClass: '',
         validationText: '',
-        default: 'Alexandrovich'
+        value: 'Alexandrovich'
       },
       email: {
         validationClass: '',
         validationText: '',
-        default: 'test@1gmail.com'
+        value: 'test@1gmail.com'
       },
       phone: {
         validationClass: '',
         validationText: '',
-        default: '89081996451'
+        value: '89081996451'
       },
       password: {
         validationClass: '',
         validationText: '',
-        default: '1234asdf'
+        value: '1234asdf'
+      },
+      password_confirmation: {
+        validationClass: '',
+        validationText: '',
+        value: '1234asdf'
       },
       is_agree_with_save_personal_data: {
         validationClass: '',
         validationText: '',
-        default: false
+        value: false
       }
     }
   },
+  mixins: [ CommonMethods ],
   methods: {
     register () {
-      this.$store.dispatch('registerUser', {
-        company_name: this.company_name.default,
-        first_name: this.first_name.default,
-        last_name: this.last_name.default,
-        middle_name: this.middle_name.default,
-        email: this.email.default,
-        is_agree_with_save_personal_data: this.is_agree_with_save_personal_data.default,
-        phone: this.phone.default,
-        password: this.password.default
-      })
-        .then(response => {
-          this.$router.push('/')
-          alert('Вы успешно зарегистрировались! Перейдите на почту.')
+      if (this.password.value === this.password_confirmation.value) {
+        const data = JSON.stringify({
+          company_name: this.company_name.value,
+          first_name: this.first_name.value,
+          last_name: this.last_name.value,
+          middle_name: this.middle_name.value,
+          email: this.email.value,
+          is_agree_with_save_personal_data: this.is_agree_with_save_personal_data.value,
+          phone: this.phone.value,
+          password: this.password.value,
+          password_confirmation: this.password_confirmation.value
         })
-        .catch((error) => {
-          const errorMessages = error.response.data
-          for (let i in errorMessages) {
-            let textError = errorMessages[i][0]
-            this[i].validationClass = 'error'
-            this[i].validationText = textError
-          }
-        })
+        this.$store.dispatch('registerUser', data)
+          .then(() => {
+            this.$router.push('/')
+            alert('Вы успешно зарегистрировались! Перейдите на почту.')
+          })
+          .catch((error) => {
+            const errorMessages = error.response.data
+            this.showError(errorMessages, this)
+          })
+      } else {
+        this.password_confirmation.validationClass = 'error'
+        this.password_confirmation.validationText = 'Пароли должны совпадать'
+      }
     },
     clearError (event) {
       let item = event.target.id

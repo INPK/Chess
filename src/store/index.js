@@ -55,21 +55,23 @@ const store = new Vuex.Store({
     retrieveItem (context, credentials) {
       console.log(context, credentials)
     },
+    storeLoginData (context, loginData) {
+      for (let i in loginData) {
+        localStorage.setItem(i, loginData[i])
+      }
+      context.commit('retrieveAuthData', loginData)
+    },
     retrieveAuthData (context, credentials) {
       return new Promise((resolve, reject) => {
         let loginData = JSON.stringify({
           email: credentials.email,
           password: credentials.password
         })
-        axios.post('http://127.0.0.1:8000/login', loginData)
+        axios.post('http://172.100.2.15:8000/login', loginData)
           .then(response => {
-            const apiKey = response.data.api_key
-            const companyHashId = response.data.company_hash_id
-            localStorage.setItem('apiKey', apiKey)
-            localStorage.setItem('companyHashId', companyHashId)
-            context.commit('retrieveAuthData', {
-              apiKey,
-              companyHashId
+            store.dispatch('storeLoginData', {
+              apiKey: response.data.api_key,
+              companyHashId: response.data.company_hash_id
             })
             resolve(response)
           })
@@ -85,11 +87,10 @@ const store = new Vuex.Store({
             api_key: this.state.apiKey,
             company_hash_id: this.state.companyHashId
           })
-          axios.post('http://127.0.0.1:8000/logout', data)
+          axios.post('http://172.100.2.15:8000/logout', data)
             .then(response => {
-              localStorage.removeItem('apiKey')
-              localStorage.removeItem('companyHashId')
               context.commit('destroyAuthData')
+              localStorage.clear()
               resolve(response)
             })
             .catch(error => {
@@ -100,17 +101,8 @@ const store = new Vuex.Store({
     },
     registerUser (context, data) {
       return new Promise((resolve, reject) => {
-        let registerData = JSON.stringify(data)
-        axios.post('http://127.0.0.1:8000/register', registerData)
+        axios.post('http://172.100.2.15:8000/register', data)
           .then(response => {
-            const apiKey = response.data.api_key
-            const companyHashId = response.data.company_hash_id
-            localStorage.setItem('apiKey', apiKey)
-            localStorage.setItem('companyHashId', companyHashId)
-            context.commit('retrieveAuthData', {
-              apiKey,
-              companyHashId
-            })
             resolve(response)
           })
           .catch(error => {

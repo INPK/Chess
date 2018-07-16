@@ -5,16 +5,19 @@
       :message="alert.message"
       :alertType="alert.alertType"
     />
-    <form @submit.prevent="login()">
+    <form @submit.prevent="login()" class="first">
+      <div class="two">TWO</div>
       <input v-model="email" type="email" name="email" value="test3@gmail.com"/>
       <input v-model="password" name="password" value="1234asdf"/>
       <button type="submit">Отправить</button>
     </form>
+    <router-link to="/password/email/">Забыли пароль</router-link>
   </div>
 </template>
 
 <script>
 import AlertDefault from './AlertDefault'
+import CommonMethods from './CommonMethods'
 
 export default {
   name: 'Login',
@@ -32,6 +35,7 @@ export default {
   components: {
     AlertDefault
   },
+  mixins: [ CommonMethods ],
   methods: {
     login () {
       this.$store.dispatch('retrieveAuthData', {
@@ -42,6 +46,7 @@ export default {
           this.$router.push('/')
         })
         .catch((error) => {
+          console.info(error.data)
           const errorStatus = error.response.status
           const alert = this.alert
           if (errorStatus !== 'undefined' && errorStatus === 400) {
@@ -63,6 +68,11 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="less" scoped>
+  .first{
+    background-color: #00c5b7;
+    & .two{
+      background-color: #080808;
+    }
+  }
 </style>
