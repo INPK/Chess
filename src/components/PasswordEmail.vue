@@ -7,7 +7,8 @@
       <div v-if="!send">
         <div
           v-if="sendingOut"
-          uk-spinner></div>
+          uk-spinner
+        ></div>
         <form @submit.prevent="sentEmailForResetPassword">
           <input id="email" v-model="email" />
           <button>Восстановить пароль</button>
@@ -45,12 +46,13 @@ export default {
           alert.alive = true
           this.send = true
         })
-        .catch(() => {
-          alert.message = 'Произошла ошибка'
+        .catch((error) => {
+          this.sendingOut = false
+          const errorMessage = error.response.data.message
+          alert.message = errorMessage
           alert.alive = true
         })
       setTimeout(function () {
-        this.sendingOut = false
         alert.alive = false
       }, 3000)
     }

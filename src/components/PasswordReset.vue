@@ -92,6 +92,7 @@ export default {
             this.$store.dispatch('storeLoginData', loginData)
           })
           .catch(error => {
+            console.info(error.response)
             const errorMessages = error.response.data
             this.showError(errorMessages, this)
           })

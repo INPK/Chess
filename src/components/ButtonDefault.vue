@@ -1,6 +1,6 @@
 <template>
    <button
-     class="uk-button uk-width-1-1 uk-margin-bottom"
+     class="cstm-button uk-margin-bottom"
      :button-color="color"
      @click = "methodFromParent"
    >
@@ -38,6 +38,11 @@ export default {
 </script>
 
 <style scoped>
+  .cstm-button {
+    border-radius: 3px;
+    border: none;
+    width: 100%;
+  }
   [button-color=grey] {
     background-color: #8792aa;
     color: white;
