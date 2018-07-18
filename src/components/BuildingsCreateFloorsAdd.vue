@@ -69,7 +69,7 @@ export default {
       const floorProperties = JSON.stringify(data)
       this.$store.dispatch('writeItem', {
         data: floorProperties,
-        url: 'http://172.100.2.15:8000/flats-schemas',
+        url: '/flats-schemas',
         name: 'floorProperties'
       })
     }

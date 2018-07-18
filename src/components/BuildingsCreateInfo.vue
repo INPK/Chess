@@ -76,7 +76,7 @@ export default {
       const buildingInfo = JSON.stringify(data)
       this.$store.dispatch('writeItem', {
         data: buildingInfo,
-        url: 'http://172.100.2.15:8000/buildings',
+        url: '/buildings',
         name: 'buildingInfo'
       })
         .then(response => {

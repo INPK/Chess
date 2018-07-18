@@ -69,7 +69,7 @@ export default {
     }
   },
   created () {
-    axios.get('http://172.100.2.15:8000/company/4ac42f36/buildings')
+    axios.get(this.$rootUrl + '/company/4ac42f36/buildings')
       .then(response => {
         console.log(JSON.parse(response.data))
       })

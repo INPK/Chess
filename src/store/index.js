@@ -3,6 +3,8 @@ import Vuex from 'vuex'
 import * as axios from 'axios'
 
 Vue.use(Vuex)
+Vue.prototype.$rootUrl = 'http://172.100.2.15:8000'
+const ROOT_URL = Vue.prototype.$rootUrl
 
 const store = new Vuex.Store({
   state: {
@@ -37,7 +39,7 @@ const store = new Vuex.Store({
   actions: {
     writeItem (context, data) {
       return new Promise((resolve, reject) => {
-        axios.post(data['url'], data['data'])
+        axios.post(ROOT_URL + data['url'], data['data'])
           .then(response => {
             const responseData = JSON.stringify(response.data)
             localStorage.setItem(data['name'], responseData)
@@ -67,7 +69,7 @@ const store = new Vuex.Store({
           email: credentials.email,
           password: credentials.password
         })
-        axios.post('http://172.100.2.15:8000/login', loginData)
+        axios.post(ROOT_URL + '/login', loginData)
           .then(response => {
             store.dispatch('storeLoginData', {
               apiKey: response.data.api_key,
@@ -87,7 +89,7 @@ const store = new Vuex.Store({
             api_key: this.state.apiKey,
             company_hash_id: this.state.companyHashId
           })
-          axios.post('http://172.100.2.15:8000/logout', data)
+          axios.post(ROOT_URL + '/logout', data)
             .then(response => {
               context.commit('destroyAuthData')
               localStorage.clear()
@@ -101,7 +103,7 @@ const store = new Vuex.Store({
     },
     registerUser (context, data) {
       return new Promise((resolve, reject) => {
-        axios.post('http://172.100.2.15:8000/register', data)
+        axios.post(ROOT_URL + '/register', data)
           .then(response => {
             resolve(response)
           })

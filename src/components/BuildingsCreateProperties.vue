@@ -1,5 +1,4 @@
 <template>
-
   <div>
     <router-link to="/buildings/create/info">
       <ButtonDefault
@@ -51,22 +50,6 @@
 import BuildingsCreate from './BuildingsCreate'
 import ButtonDefault from './ButtonDefault'
 
-/**
- *
- *       materials: [],
- building_id: buildingId,
- number_of_floors: buildingProperties.number_of_floors || null,
- living_floors: buildingProperties.living_floors || null,
- number_of_entrance: buildingProperties.number_of_entrance || null,
- number_of_flat: buildingProperties.number_of_flat || null,
- street_name: buildingProperties.street_name || null,
- number: buildingProperties.number || null,
- finishing: buildingProperties.finishing || null,
- stage_development: buildingProperties.stage_development || null,
- start_development: buildingProperties.start_development || null,
- end_development: buildingProperties.end_development || null
- * */
-
 export default {
   name: 'BuildingsCreateProperties',
   components: {
@@ -110,7 +93,7 @@ export default {
       const buildingProperties = JSON.stringify(data)
       this.$store.dispatch('writeItem', {
         data: buildingProperties,
-        url: 'http://172.100.2.15:8000/houses',
+        url: '/houses',
         name: 'buildingProperties'
       })
         .then(response => {

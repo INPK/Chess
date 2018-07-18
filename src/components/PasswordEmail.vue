@@ -40,7 +40,7 @@ export default {
       this.sendingOut = true
       var data = JSON.stringify({ email: this.email })
       const alert = this.alert
-      axios.post('http://172.100.2.15:8000/password/email', data)
+      axios.post(this.$rootUrl + '/password/email', data)
         .then(response => {
           alert.message = response.data.message
           alert.alive = true

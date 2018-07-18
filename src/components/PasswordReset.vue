@@ -82,7 +82,7 @@ export default {
           /** Параметр password_code берётся из url */
           password_code: this.$route.params.password_code
         })
-        axios.post('http://172.100.2.15:8000/password/reset', data)
+        axios.post(this.$rootUrl + '/password/reset', data)
           .then(response => {
             const loginData = {
               apiKey: response.data.api_key,
@@ -97,7 +97,7 @@ export default {
             this.showError(errorMessages, this)
           })
       } else {
-        alert.message = 'Пароли не совпадаюь'
+        alert.message = 'Пароли не совпадают'
         alert.alive = true
       }
       setTimeout(function () {

@@ -17,28 +17,39 @@
         uk-grid
       >
           <div class="uk-text-lead uk-align-left">Личный кабинет</div>
-          <form class="uk-form-horizontal">
+          <form @submit.prevent class="uk-form-horizontal">
             <div>
               <label class="uk-form-label" for="email">Email</label>
               <div class="uk-form-controls">
-                  <input
-                    class="uk-input cstm-input_default"
-                    v-model="email"
-                    type="email"
-                    name="email"
-                    id="email"
-                  />
+                <input
+                  :class="email.validationClass"
+                  v-model="email.value"
+                  @click = "clearError"
+                  type="email" id="email"
+                />
+                <span
+                  v-if="email.validationClass"
+                  style="color: red;"
+                >
+                  {{ email.validationText }}
+                </span>
               </div>
             </div>
             <div>
               <label class="uk-form-label" for="password">Пароль</label>
               <div class="uk-form-controls">
-                  <input
-                    class="uk-input cstm-input_default"
-                    v-model="password"
-                    name="password"
-                    id="password"
-                  />
+                <input
+                  :class="password.validationClass"
+                  v-model="password.value"
+                  @click = "clearError"
+                  id="password"
+                />
+                <span
+                  v-if="password.validationClass"
+                  style="color: red;"
+                >
+                  {{ password.validationText }}
+                </span>
               </div>
             </div>
             <div class="uk-flex uk-child-width-1-2 uk-align-left">
@@ -69,8 +80,16 @@ export default {
   name: 'Login',
   data () {
     return {
-      email: '',
-      password: '',
+      email: {
+        validationClass: '',
+        validationText: '',
+        value: ''
+      },
+      password: {
+        validationClass: '',
+        validationText: '',
+        value: ''
+      },
       alert: {
         alive: false,
         alertType: 'danger',
@@ -86,31 +105,21 @@ export default {
   methods: {
     login () {
       this.$store.dispatch('retrieveAuthData', {
-        email: this.email,
-        password: this.password
+        email: this.email.value,
+        password: this.password.value
       })
-        .then(response => {
+        .then(() => {
           this.$router.push('/')
         })
         .catch((error) => {
-          console.info(error.data)
-          const errorStatus = error.response.status
-          const alert = this.alert
-          if (errorStatus !== 'undefined' && errorStatus === 400) {
-            const errorMessages = error.response.data
-            for (let i in errorMessages) {
-              let message = errorMessages[i]
-              this.alert.message = message
-            }
-          } else {
-            this.alert.message = 'Что-то пошло не так.'
-          }
-          alert.alive = true
-          setTimeout(function () {
-            alert.alive = false
-          }, 3000)
+          // this.showAlert(error, 'danger', this.alert)
+          const errorMessages = error.response.data
+          this.showError(errorMessages, this)
         })
     }
+  },
+  created () {
+    console.info(this.$rootUrl)
   }
 }
 </script>
