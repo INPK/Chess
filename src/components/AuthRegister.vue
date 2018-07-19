@@ -1,133 +1,142 @@
 <template>
   <AuthContainer>
-    <div>Имя компании: </div>
-    <input
-      :class="company_name.validationClass"
-      v-model="company_name.value"
-      @click = "clearError"
-      type="text" id="company_name"
-    />
-    <span
-      v-if="company_name.validationClass"
-      style="color: red;"
-    >
-      {{ company_name.validationText }}
-    </span>
+    <div v-if="!send">
+      <div>Имя компании: </div>
+      <input
+        :class="company_name.validationClass"
+        v-model="company_name.value"
+        @click = "clearError"
+        type="text" id="company_name"
+      />
+      <span
+        v-if="company_name.validationClass"
+        style="color: red;"
+      >
+        {{ company_name.validationText }}
+      </span>
 
-    <div>Имя: </div>
-    <input
-      :class="first_name.validationClass"
-      v-model="first_name.value"
-      @click = "clearError"
-      class="uk-child-width" type="text" id="first_name"
-    />
-    <span
-      v-if="first_name.validationClass"
-      style="color: red;"
-    >
-      {{ first_name.validationText }}
-    </span>
+      <div>Имя: </div>
+      <input
+        :class="first_name.validationClass"
+        v-model="first_name.value"
+        @click = "clearError"
+        class="uk-child-width" type="text" id="first_name"
+      />
+      <span
+        v-if="first_name.validationClass"
+        style="color: red;"
+      >
+        {{ first_name.validationText }}
+      </span>
 
-    <div>Фамилия: </div>
-    <input
-      :class="last_name.validationClass"
-      v-model="last_name.value"
-      @click = "clearError"
-      type="text" id="last_name"
-    />
-    <span
-      v-if="last_name.validationClass"
-      style="color: red;"
-    >
-      {{ last_name.validationText }}
-    </span>
+      <div>Фамилия: </div>
+      <input
+        :class="last_name.validationClass"
+        v-model="last_name.value"
+        @click = "clearError"
+        type="text" id="last_name"
+      />
+      <span
+        v-if="last_name.validationClass"
+        style="color: red;"
+      >
+        {{ last_name.validationText }}
+      </span>
 
-    <div>Отчество: </div>
-    <input
-      :class="middle_name.validationClass"
-      v-model="middle_name.value"
-      @click = "clearError"
-      type="text" id="middle_name"
-    />
-    <span
-      v-if="middle_name.validationClass"
-      style="color: red;"
-    >
-      {{ middle_name.validationText }}
-    </span>
+      <div>Отчество: </div>
+      <input
+        :class="middle_name.validationClass"
+        v-model="middle_name.value"
+        @click = "clearError"
+        type="text" id="middle_name"
+      />
+      <span
+        v-if="middle_name.validationClass"
+        style="color: red;"
+      >
+        {{ middle_name.validationText }}
+      </span>
 
-    <div>Email: </div>
-    <input
-      :class="email.validationClass"
-      v-model="email.value"
-      @click = "clearError"
-      type="email" id="email" required
-    />
-    <span
-      v-if="email.validationClass"
-      style="color: red;"
-    >
-      {{ email.validationText }}
-    </span>
+      <div>Email: </div>
+      <input
+        :class="email.validationClass"
+        v-model="email.value"
+        @click = "clearError"
+        type="email" id="email" required
+      />
+      <span
+        v-if="email.validationClass"
+        style="color: red;"
+      >
+        {{ email.validationText }}
+      </span>
 
-    <div>Телефон: </div>
-    <input
-      :class="phone.validationClass"
-      v-model="phone.value"
-      @click = "clearError"
-      id="phone" required
-    />
-    <span
-      v-if="phone.validationClass"
-      style="color: red;"
-    >
-      {{ phone.validationText }}
-    </span>
+      <div>Телефон: </div>
+      <input
+        :class="phone.validationClass"
+        v-model="phone.value"
+        @click = "clearError"
+        id="phone" required
+      />
+      <span
+        v-if="phone.validationClass"
+        style="color: red;"
+      >
+        {{ phone.validationText }}
+      </span>
 
-    <div>Пароль: </div>
-    <input
-      :class="password.validationClass"
-      v-model="password.value"
-      @click = "clearError"
-      id="password" required
-    />
-    <span
-      v-if="password.validationClass"
-      style="color: red;"
-    >
-      {{ password.validationText }}
-    </span>
+      <div>Пароль: </div>
+      <input
+        :class="password.validationClass"
+        v-model="password.value"
+        @click = "clearError"
+        id="password" required
+      />
+      <span
+        v-if="password.validationClass"
+        style="color: red;"
+      >
+        {{ password.validationText }}
+      </span>
 
-    <div>Подтверждение пароля: </div>
-    <input
-      :class="password_confirmation.validationClass"
-      v-model="password_confirmation.value"
-      @click = "clearError"
-      id="password_confirmation" required
-    />
-    <span
-      v-if="password_confirmation.validationClass"
-      style="color: red;"
-    >
-      {{ password_confirmation.validationText }}
-    </span>
+      <div>Подтверждение пароля: </div>
+      <input
+        :class="password_confirmation.validationClass"
+        v-model="password_confirmation.value"
+        @click = "clearError"
+        id="password_confirmation" required
+      />
+      <span
+        v-if="password_confirmation.validationClass"
+        style="color: red;"
+      >
+        {{ password_confirmation.validationText }}
+      </span>
 
-    <div>Согласен с передачей данных: </div>
-    <input
-      v-model="is_agree_with_save_personal_data.value"
-      @click = "clearError"
-      type="checkbox" id="is_agree_with_save_personal_data"
-    />
-    <span
-      v-if="is_agree_with_save_personal_data.validationClass"
-      style="color: red;"
-    >
-      {{ is_agree_with_save_personal_data.validationText }}
-    </span>
-    <div v-if="singleErrorMessage" class="static-error">
-      {{ singleErrorMessage }}
+      <div>Согласен с передачей данных: </div>
+      <input
+        v-model="is_agree_with_save_personal_data.value"
+        @click = "clearError"
+        type="checkbox" id="is_agree_with_save_personal_data"
+      />
+      <span
+        v-if="is_agree_with_save_personal_data.validationClass"
+        style="color: red;"
+      >
+        {{ is_agree_with_save_personal_data.validationText }}
+      </span>
+      <div v-if="singleErrorMessage" class="static-error">
+        {{ singleErrorMessage }}
+      </div>
+      <button @click="register">Отправить</button>
     </div>
-    <button @click="register">Отправить</button>
+    <div v-else>
+      <h2>
+        <div>
+          Отлично! Осталось подтвердить ваш email. На вашу почту отправлено письмо с подтверждением.
+        </div>
+      </h2>
+    </div>
   </AuthContainer>
 </template>
 
@@ -184,7 +193,8 @@ export default {
         validationText: '',
         value: false
       },
-      singleErrorMessage: ''
+      singleErrorMessage: '',
+      send: false
     }
   },
   components: {
@@ -207,12 +217,10 @@ export default {
         })
         this.$store.dispatch('registerUser', data)
           .then(() => {
-            this.$router.push('/')
-            alert('Вы успешно зарегистрировались! Перейдите на почту.')
+            this.send = true
           })
           .catch((error) => {
-            const errorMessages = error.response.data
-            this.showError(errorMessages, this)
+            this.showError(error, this)
           })
       } else {
         this.password_confirmation.validationClass = 'error'

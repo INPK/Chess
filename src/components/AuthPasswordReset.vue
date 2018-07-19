@@ -1,9 +1,5 @@
 <template>
   <AuthContainer>
-    <AlertDefault
-      v-if="alert.alive"
-      :message="alert.message"
-    />
     <div>Пароль: </div>
     <input
       :class="password.validationClass"
@@ -32,7 +28,7 @@
       {{ password_confirmation.validationText }}
     </span>
 
-    <button @clicl="resetPassword">Восстановить пароль</button>
+    <button @click="resetPassword">Восстановить пароль</button>
     <div v-if="singleErrorMessage" class="static-error">
       {{ singleErrorMessage }}
     </div>
@@ -41,7 +37,6 @@
 
 <script>
 import axios from 'axios'
-import AlertDefault from './AlertDefault'
 import AuthContainer from './AuthContainer'
 import CommonMethods from './CommonMethods'
 
@@ -64,13 +59,11 @@ export default {
     }
   },
   components: {
-    AlertDefault,
     AuthContainer
   },
   mixins: [ CommonMethods ],
   methods: {
     resetPassword () {
-      const alert = this.alert
       if (this.password.value === this.password_confirmation.value) {
         var data = JSON.stringify({
           password: this.password.value,
@@ -88,15 +81,11 @@ export default {
             this.$store.dispatch('storeLoginData', loginData)
           })
           .catch(error => {
-            const errorMessages = error.response.data
-            this.showError(errorMessages, this)
+            this.showError(error, this)
           })
       } else {
         this.singleErrorMessage = 'Пароли не совпадают'
       }
-      setTimeout(function () {
-        alert.alive = false
-      }, 3000)
     }
   }
 }

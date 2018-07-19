@@ -7,7 +7,7 @@
           uk-spinner
         ></div>
         <div class="login-title">Сброс пароля</div>
-        <form @submit.prevent="sentEmailForResetPassword">
+        <form @submit.prevent>
 
           <div class="form-group">
             <label class="form-group__label" for="email">Email</label>
@@ -21,7 +21,8 @@
                 </span>
               </transition>
               <input
-                v-model="email"
+                v-model="email.value"
+                @click="clearError"
                 type="email"
                 id="email"
               />
@@ -31,11 +32,20 @@
           <div v-if="singleErrorMessage" class="static-error">
             {{ singleErrorMessage }}
           </div>
-          <button
+          <ButtonDefault
             @click="sentEmailForResetPassword"
+            name="Восстановить пароль"
+            color="green"
+            :actionForClick="sentEmailForResetPassword"
             class="button-expand"
-          >Восстановить пароль</button>
+          />
         </form>
+      </div>
+      <div v-else>
+        <h1>
+          Письмо с информацией для смены пароля отправлено на адрес:
+        </h1>
+        <span>{{ this.email.value }}</span>
       </div>
     </div>
   </AuthContainer>
@@ -43,7 +53,7 @@
 
 <script>
 import axios from 'axios'
-import AlertDefault from './AlertDefault'
+import ButtonDefault from './ButtonDefault'
 import AuthContainer from './AuthContainer'
 import CommonMethods from './CommonMethods'
 
@@ -51,36 +61,34 @@ export default {
   name: 'AuthPasswordEmail',
   data () {
     return {
-      email: '',
+      email: {
+        validationClass: '',
+        validationText: '',
+        value: ''
+      },
       send: false,
       sendingOut: false,
       singleErrorMessage: ''
     }
   },
   components: {
-    AlertDefault,
+    ButtonDefault,
     AuthContainer
   },
   mixins: [ CommonMethods ],
   methods: {
     sentEmailForResetPassword () {
       this.sendingOut = true
-      const alert = this.alert
-      var data = JSON.stringify({ email: this.email })
+      var data = JSON.stringify({ email: this.email.value })
       axios.post(this.$rootUrl + '/password/email', data)
-        .then(response => {
-          alert.message = response.data.message
-          alert.alive = true
+        .then(() => {
           this.send = true
+          this.sendingOut = false
         })
         .catch((error) => {
-          console.info(this.singleErrorMessage)
-          const errorMessages = error.response.data
-          this.showError(errorMessages, this)
+          this.showError(error, this)
+          this.sendingOut = false
         })
-      setTimeout(function () {
-        alert.alive = false
-      }, 3000)
     }
   }
 }

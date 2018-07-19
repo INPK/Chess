@@ -104,8 +104,7 @@ export default {
           this.$router.push('/')
         })
         .catch((error) => {
-          const errorMessages = error.response.data
-          this.showError(errorMessages, this)
+          this.showError(error, this)
         })
     }
   }
