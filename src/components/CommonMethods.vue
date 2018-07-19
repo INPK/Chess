@@ -6,20 +6,26 @@
 export default {
   name: 'CommonMethods',
   methods: {
-    showError (errorMessages, pointer) {
-      if (errorMessages.single_error) {
-        pointer.singleErrorMessage = errorMessages.message
-      } else {
-        for (let i in errorMessages) {
-          let textError = errorMessages[i][0]
-          pointer[i].validationClass = 'error'
-          pointer[i].validationText = textError
+    showError (error, pointer) {
+      if (error.response !== undefined) {
+        const errorMessages = error.response.data
+        if (errorMessages.single_error) {
+          pointer.singleErrorMessage = errorMessages.message
+        } else {
+          for (let i in errorMessages) {
+            let textError = errorMessages[i][0]
+            pointer[i].validationClass = 'error'
+            pointer[i].validationText = textError
+          }
         }
+      } else {
+        pointer.singleErrorMessage = 'Что-то пошло не так.'
       }
     },
     clearError (event) {
       let item = event.target.id
       this[item].validationClass = ''
+      this.singleErrorMessage = ''
     },
     showAlert (errorObject, type, alert) {
       const errorStatus = errorObject.response.status

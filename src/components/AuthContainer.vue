@@ -81,6 +81,15 @@ export default {
       font-size: 1.5rem;
     }
   }
+  &-alert {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: @color-red;
+    border: 3px solid @color-red;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 40px;
+  }
   &-button {
     display: grid;
     align-items: center;
@@ -88,8 +97,26 @@ export default {
     grid-column-gap: 40px;
     grid-row-gap: 20px;
     font-size: 0.75rem;
+    &__register {
+      &_title {
+        margin-bottom: 1rem / 3;
+      }
+    }
     &__reset {
       text-align: center;
+    }
+  }
+  &-reset {
+    text-align: center;
+    &__title {
+      font-size: 1.5rem;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    &__email {
+      font-size: 1.5rem;
+      color: @color-base;
+      margin-bottom: 2rem;
     }
   }
 }

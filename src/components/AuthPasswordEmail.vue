@@ -7,36 +7,62 @@
           uk-spinner
         ></div>
         <div class="login-title">Сброс пароля</div>
-        <form @submit.prevent="sentEmailForResetPassword">
-
+        <form @submit.prevent >
           <div class="form-group">
             <label class="form-group__label" for="email">Email</label>
             <div class="form-group__input">
               <transition name="slide-fade">
-                <span
-                  v-if="email.validationClass"
-                  class="form-group__alert"
-                >
-                  {{ email.validationText }}
-                </span>
+              <span
+                v-if="email.validationClass"
+                class="form-group__alert"
+              >
+                {{ email.validationText }}
+              </span>
               </transition>
               <input
-                v-model="email"
+                :class="email.validationClass"
+                v-model="email.value"
+                @click = "clearError"
                 type="email"
                 id="email"
               />
               <span class="form-group__input_bar"></span>
             </div>
           </div>
-          <div v-if="singleErrorMessage" class="static-error">
+
+          <div v-if="singleErrorMessage" class="login-alert">
             {{ singleErrorMessage }}
           </div>
-          <button
-            @click="sentEmailForResetPassword"
+
+      <div class="login-button">
+        <div>
+          <ButtonDefault
             class="button-expand"
-          >Восстановить пароль</button>
+            name="Восстановить"
+            color="green"
+            :actionForClick="sentEmailForResetPassword"
+          />
+        </div>
+        <div class="login-button__register">
+          <div class="login-button__register_title">Вспомнили пароль?</div>
+          <router-link to="/login" class="link">Авторизуйтесь здесь</router-link>
+        </div>
+      </div>
         </form>
       </div>
+      <div class="login-reset" v-else>
+        <div class="login-reset__title">Письмо с информацией для смены пароля отправлено на адрес:</div>
+        <div class="login-reset__email">{{ this.email.value }}</div>
+
+        <div class="login-button">
+          <div class="login-button__register">
+            <div class="login-button__register_title">Вспомнили пароль?</div>
+          </div>
+          <div class="login-button__register">
+            <router-link to="/login" class="link">Авторизуйтесь здесь</router-link>
+          </div>
+        </div>
+     </div>
     </div>
   </AuthContainer>
 </template>
@@ -46,12 +72,17 @@ import axios from 'axios'
 import AlertDefault from './AlertDefault'
 import AuthContainer from './AuthContainer'
 import CommonMethods from './CommonMethods'
+import ButtonDefault from './ButtonDefault'
 
 export default {
   name: 'AuthPasswordEmail',
   data () {
     return {
-      email: '',
+      email: {
+        validationClass: '',
+        validationText: '',
+        value: ''
+      },
       send: false,
       sendingOut: false,
       singleErrorMessage: ''
@@ -59,28 +90,23 @@ export default {
   },
   components: {
     AlertDefault,
-    AuthContainer
+    AuthContainer,
+    ButtonDefault
   },
   mixins: [ CommonMethods ],
   methods: {
     sentEmailForResetPassword () {
       this.sendingOut = true
-      const alert = this.alert
-      var data = JSON.stringify({ email: this.email })
+      var data = JSON.stringify({ email: this.email.value })
       axios.post(this.$rootUrl + '/password/email', data)
         .then(response => {
-          alert.message = response.data.message
-          alert.alive = true
           this.send = true
+          this.sendingOut = false
         })
-        .catch((error) => {
-          console.info(this.singleErrorMessage)
-          const errorMessages = error.response.data
-          this.showError(errorMessages, this)
+        .catch(error => {
+          this.showError(error, this),
+          this.sendingOut = false
         })
-      setTimeout(function () {
-        alert.alive = false
-      }, 3000)
     }
   }
 }

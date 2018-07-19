@@ -41,7 +41,6 @@
 
 <script>
 import axios from 'axios'
-import AlertDefault from './AlertDefault'
 import AuthContainer from './AuthContainer'
 import CommonMethods from './CommonMethods'
 
@@ -64,13 +63,11 @@ export default {
     }
   },
   components: {
-    AlertDefault,
     AuthContainer
   },
   mixins: [ CommonMethods ],
   methods: {
     resetPassword () {
-      const alert = this.alert
       if (this.password.value === this.password_confirmation.value) {
         var data = JSON.stringify({
           password: this.password.value,
@@ -88,15 +85,11 @@ export default {
             this.$store.dispatch('storeLoginData', loginData)
           })
           .catch(error => {
-            const errorMessages = error.response.data
-            this.showError(errorMessages, this)
+            this.showError(error, this)
           })
       } else {
         this.singleErrorMessage = 'Пароли не совпадают'
       }
-      setTimeout(function () {
-        alert.alive = false
-      }, 3000)
     }
   }
 }
