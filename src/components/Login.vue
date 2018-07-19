@@ -1,80 +1,70 @@
 <template>
-  <div class="uk-child-width-1-2@m uk-grid-collapse uk-height-viewport uk-grid">
-    <div
-      class="uk-background-cover uk-background-center-center uk-height-viewport uk-visible@m uk-first-column"
-      style="background-image: url(/static/img/city.png)"
-    >
-
-    </div>
-    <div class="uk-background-default uk-flex uk-flex-middle uk-flex-center">
-      <AlertDefault
-        v-if="alert.alive"
-        :message="alert.message"
-        :alertType="alert.alertType"
-      />
-      <div
-        class="border-container uk-align-left uk-width-large@s uk-width-xlarge@l uk-padding"
-        uk-grid
-      >
-          <div class="uk-text-lead uk-align-left">Личный кабинет</div>
-          <form @submit.prevent class="uk-form-horizontal">
-            <div>
-              <label class="uk-form-label" for="email">Email</label>
-              <div class="uk-form-controls">
-                <input
-                  :class="email.validationClass"
-                  v-model="email.value"
-                  @click = "clearError"
-                  type="email" id="email"
-                />
-                <span
-                  v-if="email.validationClass"
-                  style="color: red;"
-                >
-                  {{ email.validationText }}
-                </span>
-              </div>
-            </div>
-            <div>
-              <label class="uk-form-label" for="password">Пароль</label>
-              <div class="uk-form-controls">
-                <input
-                  :class="password.validationClass"
-                  v-model="password.value"
-                  @click = "clearError"
-                  id="password"
-                />
-                <span
-                  v-if="password.validationClass"
-                  style="color: red;"
-                >
-                  {{ password.validationText }}
-                </span>
-              </div>
-            </div>
-            <div class="uk-flex uk-child-width-1-2 uk-align-left">
-              <ButtonDefault
-                :actionForClick="login"
-                name="Войти"
-                color="aqua"
-                class="uk-width-1-3"
-              />
-              <div class="uk-margin-left uk-flex uk-flex-column uk-width-2-3  uk-align-left">
-                <span>Ещё нет аккаунта?</span>
-                <router-link to="/register/">Пройти простую регистрацию</router-link>
-              </div>
-            </div>
-          </form>
-          <router-link to="/password/email/">Восстановить пароль</router-link>
+  <AuthContainer>
+    <div class="login-input">
+      <label for="email">Email</label>
+      <div class="login-input__group">
+        <transition name="slide-fade">
+          <span
+            v-if="email.validationClass"
+            class="login-input__alert"
+          >
+            {{ email.validationText }}
+          </span>
+        </transition>
+        <input
+          :class="email.validationClass"
+          v-model="email.value"
+          @click = "clearError"
+          type="email"
+          id="email"
+        />
+        <span class="login-input__group_bar"></span>
       </div>
     </div>
-  </div>
+    <div class="login-input">
+      <label for="password">Пароль</label>
+      <div class="login-input__group">
+        <transition duration="1000" name="slide-fade">
+          <span
+            v-if="password.validationClass"
+            class="login-input__alert"
+          >
+            {{ password.validationText }}
+          </span>
+        </transition>
+        <input
+          :class="password.validationClass"
+          v-model="password.value"
+          @click = "clearError"
+          id="password"
+        />
+        <span class="login-input__group_bar"></span>
+      </div>
+    </div>
+    <div class="login-button">
+      <div>
+        <ButtonDefault
+          :actionForClick="login"
+          name="Войти"
+          color="green"
+          class="button-expand"
+        />
+      </div>
+      <div class="login-button__register">
+        <div>Ещё нет аккаунта?</div>
+        <router-link to="/register/" class="link">Пройти простую регистрацию</router-link>
+      </div>
+      <div class="login-button__reset">
+        <router-link to="/password/email/" class="link">Восстановить пароль</router-link>
+      </div>
+    </div>
+  </AuthContainer>
 </template>
 
 <script>
-import AlertDefault from './AlertDefault'
 import CommonMethods from './CommonMethods'
 import ButtonDefault from './ButtonDefault'
+import AuthContainer from './AuthContainer'
 
 export default {
   name: 'Login',
@@ -89,16 +79,11 @@ export default {
         validationClass: '',
         validationText: '',
         value: ''
-      },
-      alert: {
-        alive: false,
-        alertType: 'danger',
-        message: ''
       }
     }
   },
   components: {
-    AlertDefault,
+    AuthContainer,
     ButtonDefault
   },
   mixins: [ CommonMethods ],
@@ -108,26 +93,17 @@ export default {
         email: this.email.value,
         password: this.password.value
       })
-        .then(() => {
+        .then(response => {
           this.$router.push('/')
         })
         .catch((error) => {
-          // this.showAlert(error, 'danger', this.alert)
           const errorMessages = error.response.data
           this.showError(errorMessages, this)
         })
     }
-  },
-  created () {
-    console.info(this.$rootUrl)
   }
 }
 </script>
 
 <style lang="less" scoped>
-.border-container {
-  border: 6px solid whitesmoke;
-  padding: 30px;
-  width: 500px;
-}
 </style>

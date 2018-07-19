@@ -18,7 +18,7 @@ const ifNotAuthenticated = (to, from, next) => {
     next()
     return
   }
-  next('Login')
+  next('login')
 }
 
 export default new Router({

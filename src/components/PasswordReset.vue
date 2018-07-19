@@ -1,50 +1,45 @@
 <template>
-  <div>
+  <AuthContainer>
     <AlertDefault
       v-if="alert.alive"
       :message="alert.message"
     />
-    <form
-      v-if="!send"
-      @submit.prevent="resetPassword"
+    <div>Пароль: </div>
+    <input
+      :class="password.validationClass"
+      v-model="password.value"
+      @click = "clearError"
+      id="password"
+    />
+    <span
+      v-if="password.validationClass"
+      style="color: red;"
     >
-      <div>Пароль: </div>
-      <input
-        :class="password.validationClass"
-        v-model="password.value"
-        @click = "clearError"
-        id="password"
-      />
-      <span
-        v-if="password.validationClass"
-        style="color: red;"
-      >
-        {{ password.validationText }}
-      </span>
+      {{ password.validationText }}
+    </span>
 
-      <div>Подтверждение пароля: </div>
-      <input
-        :class="password_confirmation.validationClass"
-        v-model="password_confirmation.value"
-        @click = "clearError"
-        id="password_confirmation"
-      />
-      <span
-        v-if="password_confirmation.validationClass"
-        style="color: red;"
-      >
-        {{ password_confirmation.validationText }}
-      </span>
+    <div>Подтверждение пароля: </div>
+    <input
+      :class="password_confirmation.validationClass"
+      v-model="password_confirmation.value"
+      @click = "clearError"
+      id="password_confirmation"
+    />
+    <span
+      v-if="password_confirmation.validationClass"
+      style="color: red;"
+    >
+      {{ password_confirmation.validationText }}
+    </span>
 
-      <button>Восстановить пароль</button>
-    </form>
-
-  </div>
+    <button>Восстановить пароль</button>
+  </AuthContainer>
 </template>
 
 <script>
 import axios from 'axios'
 import AlertDefault from './AlertDefault'
+import AuthContainer from './AuthContainer'
 import CommonMethods from './CommonMethods'
 
 export default {
@@ -69,7 +64,8 @@ export default {
     }
   },
   components: {
-    AlertDefault
+    AlertDefault,
+    AuthContainer
   },
   mixins: [ CommonMethods ],
   methods: {

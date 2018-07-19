@@ -1,0 +1,29 @@
+@color-green: #2ec1b3;
+
+
+
+/* Media Query */
+@xdesktop: ~"(max-width: 1440px)";
+@desktop: ~"(max-width: 1200px)";
+@tablet: ~"(max-width: 960px)";
+@stablet: ~"(max-width: 768px)";
+@mobile: ~"(max-width: 640px)";
+
+
+
+
+
+
+
+
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .3s ease;
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}

@@ -1,11 +1,11 @@
 <template>
-   <button
-     class="cstm-button uk-margin-bottom"
-     :button-color="color"
-     @click = "methodFromParent"
-   >
-     {{ name }}
-   </button>
+  <button
+    class="button"
+    :button-color="color"
+    @click = "methodFromParent"
+  >
+    {{ name }}
+  </button>
 </template>
 
 <script>
@@ -30,37 +30,39 @@ export default {
   },
   methods: {
     methodFromParent () {
-      console.info()
       this.actionForClick()
     }
   }
 }
 </script>
 
-<style scoped>
-  .cstm-button {
-    border-radius: 3px;
-    border: none;
+<style lang="less">
+@white: #FFF;
+@green: #2ec1b3;
+
+.button {
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  background-color: transparent;
+  color: @white;
+  padding: 15px 20px;
+  cursor: pointer;
+  outline: none;
+  &-expand {
     width: 100%;
   }
-  [button-color=grey] {
-    background-color: #8792aa;
-    color: white;
+  &[button-color=green] {
+    background-color: @green;
+    &:hover {
+      background-color: darken(@green, 5%)
+    }
+    &:active {
+      background-color: darken(@green, 10%)
+    }
   }
-
-  [button-color=aqua] {
-    background-color: #00c5b7;
-    color: white;
-  }
-
-  [button-color=red] {
-    background-color: #ff1632;
-    color: white;
-  }
-
-  [button-color=orange] {
-    background-color: #ffa000;
-    color: white;
-  }
-
+}
+.link {
+  color: @green;
+}
 </style>

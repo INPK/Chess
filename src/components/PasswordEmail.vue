@@ -1,4 +1,5 @@
 <template>
+  <AuthContainer>
     <div>
       <AlertDefault
         v-if="alert.alive"
@@ -15,15 +16,20 @@
         </form>
       </div>
     </div>
+  </AuthContainer>
 </template>
 
 <script>
 import axios from 'axios'
 import AlertDefault from './AlertDefault'
+import AuthContainer from './AuthContainer'
 
 export default {
   name: 'PasswordEmail',
-  components: { AlertDefault },
+  components: {
+    AlertDefault,
+    AuthContainer
+  },
   data () {
     return {
       email: '',

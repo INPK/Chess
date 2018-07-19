@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div>
     <router-view/>
     <Navbar v-if="isAuthenticated"/>
   </div>
@@ -22,36 +22,16 @@ export default {
 </script>
 
 <style lang="less">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+@import (reference) "global.less";
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-
-.cstm-input_default {
-  padding: 10px 0px;
-  background: none;
-  border-width: 2px;
-  width: 100%;
-  border-color: transparent;
-  border-bottom-width: 2px;
-  border-style: solid;
-  outline: none;
-  transition: border-bottom-color 0.3s ease-out;
-  &:enabled{
-    border-bottom-color: #aaaaaa;
-  }
-  &.required {
-    &::placeholder {
-      color: #f44336;
-    }
-    color: #f44336;
-    border-bottom-color: #f44336;
-  }
-  &.fit{
-    padding: 0;
-  }
+html {
+  background: #FFFFFF;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  overflow-y: scroll;
 }
 </style>
