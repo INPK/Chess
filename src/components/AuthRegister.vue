@@ -1,141 +1,222 @@
 <template>
   <AuthContainer>
-    <div v-if="!send">
-      <div>Имя компании: </div>
-      <input
-        :class="company_name.validationClass"
-        v-model="company_name.value"
-        @click = "clearError"
-        type="text" id="company_name"
-      />
-      <span
-        v-if="company_name.validationClass"
-        style="color: red;"
-      >
-        {{ company_name.validationText }}
-      </span>
+    <div class="login-form" v-if="!send">
+      <div class="login-title">Регистрация пользователя</div>
+      <div class="form-group">
+        <label class="form-group__label" for="company_name">Компания:</label>
+        <div class="form-group__input">
+          <transition name="slide-fade">
+        <span
+          v-if="company_name.validationClass"
+          class="form-group__alert"
+        >
+          {{ company_name.validationText }}
+        </span>
+          </transition>
+          <input
+            :class="company_name.validationClass"
+            v-model="company_name.value"
+            @click="clearError"
+            type="text"
+            id="company_name"
+          />
+          <span class="form-group__input_bar"></span>
+        </div>
+      </div>
 
-      <div>Имя: </div>
-      <input
-        :class="first_name.validationClass"
-        v-model="first_name.value"
-        @click = "clearError"
-        class="uk-child-width" type="text" id="first_name"
-      />
-      <span
-        v-if="first_name.validationClass"
-        style="color: red;"
-      >
-        {{ first_name.validationText }}
-      </span>
+      <div class="form-group">
+        <label class="form-group__label" for="last_name">Фамилия:</label>
+        <div class="form-group__input">
+          <transition name="slide-fade">
+        <span
+          v-if="last_name.validationClass"
+          class="form-group__alert"
+        >
+          {{ last_name.validationText }}
+        </span>
+          </transition>
+          <input
+            :class="last_name.validationClass"
+            v-model="last_name.value"
+            @click="clearError"
+            type="text"
+            id="last_name"
+          />
+          <span class="form-group__input_bar"></span>
+        </div>
+      </div>
 
-      <div>Фамилия: </div>
-      <input
-        :class="last_name.validationClass"
-        v-model="last_name.value"
-        @click = "clearError"
-        type="text" id="last_name"
-      />
-      <span
-        v-if="last_name.validationClass"
-        style="color: red;"
-      >
-        {{ last_name.validationText }}
-      </span>
+      <div class="form-group">
+        <label class="form-group__label" for="first_name">Имя:</label>
+        <div class="form-group__input">
+          <transition name="slide-fade">
+        <span
+          v-if="first_name.validationClass"
+          class="form-group__alert"
+        >
+          {{ first_name.validationText }}
+        </span>
+          </transition>
+          <input
+            :class="first_name.validationClass"
+            v-model="first_name.value"
+            @click="clearError"
+            type="text"
+            id="first_name"
+          />
+          <span class="form-group__input_bar"></span>
+        </div>
+      </div>
 
-      <div>Отчество: </div>
-      <input
-        :class="middle_name.validationClass"
-        v-model="middle_name.value"
-        @click = "clearError"
-        type="text" id="middle_name"
-      />
-      <span
-        v-if="middle_name.validationClass"
-        style="color: red;"
-      >
-        {{ middle_name.validationText }}
-      </span>
+      <div class="form-group">
+        <label class="form-group__label" for="middle_name">Отчество:</label>
+        <div class="form-group__input">
+          <transition name="slide-fade">
+        <span
+          v-if="middle_name.validationClass"
+          class="form-group__alert"
+        >
+          {{ middle_name.validationText }}
+        </span>
+          </transition>
+          <input
+            :class="middle_name.validationClass"
+            v-model="middle_name.value"
+            @click="clearError"
+            type="text"
+            id="middle_name"
+          />
+          <span class="form-group__input_bar"></span>
+        </div>
+      </div>
 
-      <div>Email: </div>
-      <input
-        :class="email.validationClass"
-        v-model="email.value"
-        @click = "clearError"
-        type="email" id="email" required
-      />
-      <span
-        v-if="email.validationClass"
-        style="color: red;"
-      >
-        {{ email.validationText }}
-      </span>
+      <div class="form-group">
+        <label class="form-group__label" for="email">Email:</label>
+        <div class="form-group__input">
+          <transition name="slide-fade">
+        <span
+          v-if="email.validationClass"
+          class="form-group__alert"
+        >
+          {{ email.validationText }}
+        </span>
+          </transition>
+          <input
+            :class="email.validationClass"
+            v-model="email.value"
+            @click="clearError"
+            type="email"
+            id="email"
+            required
+          />
+          <span class="form-group__input_bar"></span>
+        </div>
+      </div>
 
-      <div>Телефон: </div>
-      <input
-        :class="phone.validationClass"
-        v-model="phone.value"
-        @click = "clearError"
-        id="phone" required
-      />
-      <span
-        v-if="phone.validationClass"
-        style="color: red;"
-      >
-        {{ phone.validationText }}
-      </span>
+      <div class="form-group">
+        <label class="form-group__label" for="phone">Телефон:</label>
+        <div class="form-group__input">
+          <transition name="slide-fade">
+        <span
+          v-if="phone.validationClass"
+          class="form-group__alert"
+        >
+          {{ phone.validationText }}
+        </span>
+          </transition>
+          <input
+            :class="phone.validationClass"
+            v-model="phone.value"
+            @click="clearError"
+            id="phone"
+            required
+          />
+          <span class="form-group__input_bar"></span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-group__label" for="password">Пароль:</label>
+        <div class="form-group__input">
+          <transition name="slide-fade">
+        <span
+          v-if="password.validationClass"
+          class="form-group__alert"
+        >
+          {{ password.validationText }}
+        </span>
+          </transition>
+          <input
+            :class="password.validationClass"
+            v-model="password.value"
+            @click="clearError"
+            id="password"
+            required
+          />
+          <span class="form-group__input_bar"></span>
+        </div>
+      </div>
 
-      <div>Пароль: </div>
-      <input
-        :class="password.validationClass"
-        v-model="password.value"
-        @click = "clearError"
-        id="password" required
-      />
-      <span
-        v-if="password.validationClass"
-        style="color: red;"
-      >
-        {{ password.validationText }}
-      </span>
+      <div class="form-group">
+        <label class="form-group__label" for="password_confirmation">Повторить пароль:</label>
+        <div class="form-group__input">
+          <transition name="slide-fade">
+        <span
+          v-if="password_confirmation.validationClass"
+          class="form-group__alert"
+        >
+          {{ password_confirmation.validationText }}
+        </span>
+          </transition>
+          <input
+            :class="password_confirmation.validationClass"
+            v-model="password_confirmation.value"
+            @click="clearError"
+            id="password_confirmation"
+            required
+          />
+          <span class="form-group__input_bar"></span>
+        </div>
+      </div>
 
-      <div>Подтверждение пароля: </div>
-      <input
-        :class="password_confirmation.validationClass"
-        v-model="password_confirmation.value"
-        @click = "clearError"
-        id="password_confirmation" required
-      />
-      <span
-        v-if="password_confirmation.validationClass"
-        style="color: red;"
-      >
-        {{ password_confirmation.validationText }}
-      </span>
+      <div class="form-group">
+        <div></div>
+        <div class="form-group__input">
 
-      <div>Согласен с передачей данных: </div>
-      <input
-        v-model="is_agree_with_save_personal_data.value"
-        @click = "clearError"
-        type="checkbox" id="is_agree_with_save_personal_data"
-      />
-      <span
-        v-if="is_agree_with_save_personal_data.validationClass"
-        style="color: red;"
-      >
-        {{ is_agree_with_save_personal_data.validationText }}
-      </span>
+          <input
+            :class="is_agree_with_save_personal_data.validationClass"
+            v-model="is_agree_with_save_personal_data.value"
+            @click="clearError"
+            type="checkbox"
+            id="is_agree_with_save_personal_data"
+          />
+          <label for="is_agree_with_save_personal_data">Я принимаю договор-оферту и даю согласие на обработку
+            персональных данных</label>
+        </div>
+      </div>
       <div v-if="singleErrorMessage" class="static-error">
         {{ singleErrorMessage }}
       </div>
-      <button @click="register">Отправить</button>
+
+      <ButtonDefault
+        class="button-expand"
+        name="Отправить"
+        color="green"
+        :actionForClick="register"/>
+
     </div>
-    <div v-else>
-      <h2>
-        <div>
-          Отлично! Осталось подтвердить ваш email. На вашу почту отправлено письмо с подтверждением.
+    <div class="login-reset" v-else>
+      <div class="login-reset__title">Отлично! Осталось подтвердить ваш email. На вашу почту отправлено письмо с
+        подтверждением.
+      </div>
+      <div class="login-reset__email">{{ this.email.value }}</div>
+      <div class="login-button">
+        <div class="login-button__register">
+          <div class="login-button__register_title">Есть учетная запись?</div>
         </div>
-      </h2>
+        <div class="login-button__register">
+          <router-link to="/login" class="link">Авторизуйтесь здесь</router-link>
+        </div>
+      </div>
     </div>
   </AuthContainer>
 </template>
@@ -143,6 +224,7 @@
 <script>
 import CommonMethods from './CommonMethods'
 import AuthContainer from './AuthContainer'
+import ButtonDefault from './ButtonDefault'
 
 export default {
   name: 'AuthRegister',
@@ -198,7 +280,8 @@ export default {
     }
   },
   components: {
-    AuthContainer
+    AuthContainer,
+    ButtonDefault
   },
   mixins: [ CommonMethods ],
   methods: {
@@ -226,14 +309,13 @@ export default {
         this.password_confirmation.validationClass = 'error'
         this.password_confirmation.validationText = 'Пароли должны совпадать'
       }
-    },
-    clearError (event) {
-      let item = event.target.id
-      this[item].validationClass = ''
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+@import (less) "../global.less";
+@import (less) "../form.less";
+@import (less) "../button.less";
 </style>

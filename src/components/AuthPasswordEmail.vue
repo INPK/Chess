@@ -8,45 +8,60 @@
         ></div>
         <div class="login-title">Сброс пароля</div>
         <form @submit.prevent>
-
           <div class="form-group">
             <label class="form-group__label" for="email">Email</label>
             <div class="form-group__input">
               <transition name="slide-fade">
-                <span
-                  v-if="email.validationClass"
-                  class="form-group__alert"
-                >
-                  {{ email.validationText }}
-                </span>
+              <span
+                v-if="email.validationClass"
+                class="form-group__alert"
+              >
+                {{ email.validationText }}
+              </span>
               </transition>
               <input
+                :class="email.validationClass"
                 v-model="email.value"
-                @click="clearError"
+                @click = "clearError"
                 type="email"
                 id="email"
               />
               <span class="form-group__input_bar"></span>
             </div>
           </div>
-          <div v-if="singleErrorMessage" class="static-error">
+
+          <div v-if="singleErrorMessage" class="login-alert">
             {{ singleErrorMessage }}
           </div>
+      <div class="login-button">
+        <div>
           <ButtonDefault
-            @click="sentEmailForResetPassword"
-            name="Восстановить пароль"
+            class="button-expand"
+            name="Восстановить"
             color="green"
             :actionForClick="sentEmailForResetPassword"
-            class="button-expand"
           />
+        </div>
+        <div class="login-button__register">
+          <div class="login-button__register_title">Вспомнили пароль?</div>
+          <router-link to="/login" class="link">Авторизуйтесь здесь</router-link>
+        </div>
+      </div>
         </form>
       </div>
-      <div v-else>
-        <h1>
-          Письмо с информацией для смены пароля отправлено на адрес:
-        </h1>
-        <span>{{ this.email.value }}</span>
-      </div>
+      <div class="login-reset" v-else>
+        <div class="login-reset__title">Письмо с информацией для смены пароля отправлено на адрес:</div>
+        <div class="login-reset__email">{{ this.email.value }}</div>
+
+        <div class="login-button">
+          <div class="login-button__register">
+            <div class="login-button__register_title">Вспомнили пароль?</div>
+          </div>
+          <div class="login-button__register">
+            <router-link to="/login" class="link">Авторизуйтесь здесь</router-link>
+          </div>
+        </div>
+     </div>
     </div>
   </AuthContainer>
 </template>
@@ -56,6 +71,7 @@ import axios from 'axios'
 import ButtonDefault from './ButtonDefault'
 import AuthContainer from './AuthContainer'
 import CommonMethods from './CommonMethods'
+import ButtonDefault from './ButtonDefault'
 
 export default {
   name: 'AuthPasswordEmail',
@@ -72,8 +88,8 @@ export default {
     }
   },
   components: {
-    ButtonDefault,
-    AuthContainer
+    AuthContainer,
+    ButtonDefault
   },
   mixins: [ CommonMethods ],
   methods: {

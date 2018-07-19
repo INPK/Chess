@@ -43,7 +43,7 @@
           <span class="form-group__input_bar"></span>
         </div>
       </div>
-      <div v-if="singleErrorMessage" class="static-error">
+      <div v-if="singleErrorMessage" class="login-alert">
         {{ singleErrorMessage }}
       </div>
       <div class="login-button">
@@ -56,7 +56,7 @@
           />
         </div>
         <div class="login-button__register">
-          <div>Ещё нет аккаунта?</div>
+          <div class="login-button__register_title">Ещё нет аккаунта?</div>
           <router-link to="/register/" class="link">Пройти простую регистрацию</router-link>
         </div>
         <div class="login-button__reset">
@@ -103,7 +103,7 @@ export default {
         .then(() => {
           this.$router.push('/')
         })
-        .catch((error) => {
+        .catch(error => {
           this.showError(error, this)
         })
     }
