@@ -2,58 +2,58 @@
   <AuthContainer>
     <div>Имя компании: </div>
     <input
-      :class="companyName.validationClass"
-      v-model="companyName.value"
+      :class="company_name.validationClass"
+      v-model="company_name.value"
       @click = "clearError"
       type="text" id="company_name"
     />
     <span
-      v-if="companyName.validationClass"
+      v-if="company_name.validationClass"
       style="color: red;"
     >
-      {{ companyName.validationText }}
+      {{ company_name.validationText }}
     </span>
 
     <div>Имя: </div>
     <input
-      :class="firstName.validationClass"
-      v-model="firstName.value"
+      :class="first_name.validationClass"
+      v-model="first_name.value"
       @click = "clearError"
       class="uk-child-width" type="text" id="first_name"
     />
     <span
-      v-if="firstName.validationClass"
+      v-if="first_name.validationClass"
       style="color: red;"
     >
-      {{ firstName.validationText }}
+      {{ first_name.validationText }}
     </span>
 
     <div>Фамилия: </div>
     <input
-      :class="lastName.validationClass"
-      v-model="lastName.value"
+      :class="last_name.validationClass"
+      v-model="last_name.value"
       @click = "clearError"
       type="text" id="last_name"
     />
     <span
-      v-if="lastName.validationClass"
+      v-if="last_name.validationClass"
       style="color: red;"
     >
-      {{ lastName.validationText }}
+      {{ last_name.validationText }}
     </span>
 
     <div>Отчество: </div>
     <input
-      :class="middleName.validationClass"
-      v-model="middleName.value"
+      :class="middle_name.validationClass"
+      v-model="middle_name.value"
       @click = "clearError"
       type="text" id="middle_name"
     />
     <span
-      v-if="middleName.validationClass"
+      v-if="middle_name.validationClass"
       style="color: red;"
     >
-      {{ middleName.validationText }}
+      {{ middle_name.validationText }}
     </span>
 
     <div>Email: </div>
@@ -100,30 +100,33 @@
 
     <div>Подтверждение пароля: </div>
     <input
-      :class="passwordConfirmation.validationClass"
-      v-model="passwordConfirmation.value"
+      :class="password_confirmation.validationClass"
+      v-model="password_confirmation.value"
       @click = "clearError"
       id="password_confirmation" required
     />
     <span
-      v-if="passwordConfirmation.validationClass"
+      v-if="password_confirmation.validationClass"
       style="color: red;"
     >
-      {{ passwordConfirmation.validationText }}
+      {{ password_confirmation.validationText }}
     </span>
 
     <div>Согласен с передачей данных: </div>
     <input
-      v-model="isAgreeWithSavePersonalData.value"
+      v-model="is_agree_with_save_personal_data.value"
       @click = "clearError"
       type="checkbox" id="is_agree_with_save_personal_data"
     />
     <span
-      v-if="isAgreeWithSavePersonalData.validationClass"
+      v-if="is_agree_with_save_personal_data.validationClass"
       style="color: red;"
     >
-      {{ isAgreeWithSavePersonalData.validationText }}
+      {{ is_agree_with_save_personal_data.validationText }}
     </span>
+    <div v-if="singleErrorMessage" class="static-error">
+      {{ singleErrorMessage }}
+    </div>
     <button @click="register">Отправить</button>
   </AuthContainer>
 </template>
@@ -133,25 +136,25 @@ import CommonMethods from './CommonMethods'
 import AuthContainer from './AuthContainer'
 
 export default {
-  name: 'Register',
+  name: 'AuthRegister',
   data () {
     return {
-      companyName: {
+      company_name: {
         validationClass: '',
         validationText: '',
         value: 'Owl Company'
       },
-      firstName: {
+      first_name: {
         validationClass: '',
         validationText: '',
         value: 'Grigoriy'
       },
-      lastName: {
+      last_name: {
         validationClass: '',
         validationText: '',
         value: 'Komarov'
       },
-      middleName: {
+      middle_name: {
         validationClass: '',
         validationText: '',
         value: 'Alexandrovich'
@@ -171,16 +174,17 @@ export default {
         validationText: '',
         value: '1234asdf'
       },
-      passwordConfirmation: {
+      password_confirmation: {
         validationClass: '',
         validationText: '',
         value: '1234asdf'
       },
-      isAgreeWithSavePersonalData: {
+      is_agree_with_save_personal_data: {
         validationClass: '',
         validationText: '',
         value: false
-      }
+      },
+      singleErrorMessage: ''
     }
   },
   components: {
@@ -189,17 +193,17 @@ export default {
   mixins: [ CommonMethods ],
   methods: {
     register () {
-      if (this.password.value === this.passwordConfirmation.value) {
+      if (this.password.value === this.password_confirmation.value) {
         const data = JSON.stringify({
-          company_name: this.companyName.value,
-          first_name: this.firstName.value,
-          last_name: this.lastName.value,
-          middle_name: this.middleName.value,
+          company_name: this.company_name.value,
+          first_name: this.first_name.value,
+          last_name: this.last_name.value,
+          middle_name: this.middle_name.value,
           email: this.email.value,
-          is_agree_with_save_personal_data: this.isAgreeWithSavePersonalData.value,
+          is_agree_with_save_personal_data: this.is_agree_with_save_personal_data.value,
           phone: this.phone.value,
           password: this.password.value,
-          password_confirmation: this.passwordConfirmation.value
+          password_confirmation: this.password_confirmation.value
         })
         this.$store.dispatch('registerUser', data)
           .then(() => {
@@ -211,8 +215,8 @@ export default {
             this.showError(errorMessages, this)
           })
       } else {
-        this.passwordConfirmation.validationClass = 'error'
-        this.passwordConfirmation.validationText = 'Пароли должны совпадать'
+        this.password_confirmation.validationClass = 'error'
+        this.password_confirmation.validationText = 'Пароли должны совпадать'
       }
     },
     clearError (event) {

@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Register from '@/components/Register'
-import Login from '@/components/Login'
-import PasswordEmail from '@/components/PasswordEmail'
-import PasswordReset from '@/components/PasswordReset'
-import Logout from '@/components/Logout'
+import AuthRegister from '@/components/AuthRegister'
+import AuthLogin from '@/components/AuthLogin'
+import AuthPasswordEmail from '@/components/AuthPasswordEmail'
+import AuthPasswordReset from '@/components/AuthPasswordReset'
+import AuthLogout from '@/components/AuthLogout'
 import Buildings from '@/components/Buildings'
 import BuildingsCreateInfo from '@/components/BuildingsCreateInfo'
 import BuildingsCreateProperties from '@/components/BuildingsCreateProperties'
@@ -27,27 +27,27 @@ export default new Router({
     {
       path: '/register',
       name: 'Register',
-      component: Register
+      component: AuthRegister
     },
     {
       path: '/login',
       name: 'Login',
-      component: Login
+      component: AuthLogin
     },
     {
       path: '/password/email',
       name: 'PasswordEmail',
-      component: PasswordEmail
+      component: AuthPasswordEmail
     },
     {
       path: '/password/reset/:password_code',
       name: 'PasswordReset',
-      component: PasswordReset
+      component: AuthPasswordReset
     },
     {
       path: '/logout',
       name: 'Logout',
-      component: Logout
+      component: AuthLogout
     },
     {
       path: '/',

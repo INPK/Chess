@@ -10,7 +10,7 @@ import AlertDefault from './AlertDefault'
 import CommonMethods from './CommonMethods'
 
 export default {
-  name: 'Logout',
+  name: 'AuthLogout',
   components: { AlertDefault },
   data () {
     return {

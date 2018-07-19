@@ -32,7 +32,10 @@
       {{ password_confirmation.validationText }}
     </span>
 
-    <button>Восстановить пароль</button>
+    <button @clicl="resetPassword">Восстановить пароль</button>
+    <div v-if="singleErrorMessage" class="static-error">
+      {{ singleErrorMessage }}
+    </div>
   </AuthContainer>
 </template>
 
@@ -43,7 +46,7 @@ import AuthContainer from './AuthContainer'
 import CommonMethods from './CommonMethods'
 
 export default {
-  name: 'PasswordReset',
+  name: 'AuthPasswordReset',
   data () {
     return {
       password: {
@@ -57,10 +60,7 @@ export default {
         value: ''
       },
       send: false,
-      alert: {
-        alive: false,
-        message: ''
-      }
+      singleErrorMessage: ''
     }
   },
   components: {
@@ -88,13 +88,11 @@ export default {
             this.$store.dispatch('storeLoginData', loginData)
           })
           .catch(error => {
-            console.info(error.response)
             const errorMessages = error.response.data
             this.showError(errorMessages, this)
           })
       } else {
-        alert.message = 'Пароли не совпадают'
-        alert.alive = true
+        this.singleErrorMessage = 'Пароли не совпадают'
       }
       setTimeout(function () {
         alert.alive = false
