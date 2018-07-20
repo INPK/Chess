@@ -1,33 +1,50 @@
 <template>
   <AuthContainer>
-    <div>Пароль: </div>
-    <input
-      :class="password.validationClass"
-      v-model="password.value"
-      @click = "clearError"
-      id="password"
-    />
-    <span
-      v-if="password.validationClass"
-      style="color: red;"
-    >
-      {{ password.validationText }}
-    </span>
-
-    <div>Подтверждение пароля: </div>
-    <input
-      :class="password_confirmation.validationClass"
-      v-model="password_confirmation.value"
-      @click = "clearError"
-      id="password_confirmation"
-    />
-    <span
-      v-if="password_confirmation.validationClass"
-      style="color: red;"
-    >
-      {{ password_confirmation.validationText }}
-    </span>
-
+    <div class="form-group">
+      <label class="form-group__label" for="password">Пароль</label>
+      <div class="form-group__input">
+        <transition name="slide-fade">
+              <span
+                v-if="password.validationClass"
+                class="form-group__alert"
+              >
+                {{ password.validationText }}
+              </span>
+        </transition>
+        <input
+          :class="password.validationClass"
+          v-model="password.value"
+          @click = "clearError"
+          type="password"
+          id="password"
+        />
+        <span class="form-group__input_bar"></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-group__label" for="password_confirmation">Повторить пароль</label>
+      <div class="form-group__input">
+        <transition name="slide-fade">
+              <span
+                v-if="password_confirmation.validationClass"
+                class="form-group__alert"
+              >
+                {{ password_confirmation.validationText }}
+              </span>
+        </transition>
+        <input
+          :class="password_confirmation.validationClass"
+          v-model="password_confirmation.value"
+          @click = "clearError"
+          type="password_confirmation"
+          id="password_confirmation"
+        />
+        <span class="form-group__input_bar"></span>
+      </div>
+    </div>
+    <div v-if="singleErrorMessage" class="login-alert">
+      {{ singleErrorMessage }}
+    </div>
     <ButtonDefault
       v-if="!sendingOut"
       :actionForClick="resetPassword"
@@ -35,9 +52,6 @@
       color="green"
     />
     <BeatLoader v-else/>
-    <div v-if="singleErrorMessage" class="static-error">
-      {{ singleErrorMessage }}
-    </div>
   </AuthContainer>
 </template>
 
