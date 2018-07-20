@@ -58,9 +58,7 @@
 	}
 }
 
-@var1: #dadada;
-@var2: #dddddd;
-@var3: #ffffff;
+
 
 input[type="checkbox"] {
 	display: none;
@@ -69,6 +67,13 @@ input[type="checkbox"] {
 			&::before {
 				background: @color-red;
 				border: 1px solid @color-red;
+			}
+		}
+	}
+	&.reverse {
+		+ label {
+			&::before {
+				background-image: url(data:image/svg+xml;base64,PHN2ZyBpZD0i0KHQu9C+0LlfMSIgZGF0YS1uYW1lPSLQodC70L7QuSAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MiAyNCI+PGRlZnM+PHN0eWxlPi5jbHMtMXtmaWxsOiNmZmY7fTwvc3R5bGU+PC9kZWZzPjx0aXRsZT5pbmRleDwvdGl0bGU+PHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjM0LjE2IDkuNTUgMjkuNDMgMTQuMjcgMjYuOTYgMTEuODEgMjYuNTUgMTIuMjIgMjkuNDMgMTUuMTEgMzQuNTggOS45NyAzNC4xNiA5LjU1Ii8+PGcgaWQ9ImNyb3NzIj48cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iNy45OSA4LjcyIDguNDEgOC4zIDExLjYxIDExLjUgMTQuODEgOC4zIDE1LjIzIDguNzIgMTIuMDMgMTEuOTIgMTUuMjMgMTUuMTEgMTQuODEgMTUuNTMgMTEuNjEgMTIuMzQgOC40MSAxNS41MyA3Ljk5IDE1LjExIDExLjE5IDExLjkyIDcuOTkgOC43MiIvPjwvZz48L3N2Zz4=);
 			}
 		}
 	}
@@ -82,16 +87,18 @@ input[type="checkbox"] {
 			content: "";
 			display: inline-block;
 			position: absolute;
+			background-image: url(data:image/svg+xml;base64,PHN2ZyBpZD0i0KHQu9C+0LlfMSIgZGF0YS1uYW1lPSLQodC70L7QuSAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MiAyNCI+PGRlZnM+PHN0eWxlPi5jbHMtMXtmaWxsOiNmZmY7fTwvc3R5bGU+PC9kZWZzPjx0aXRsZT5pbmRleDwvdGl0bGU+PHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjE1LjYgOS41NSAxMC44OCAxNC4yNyA4LjQxIDExLjgxIDcuOTkgMTIuMjIgMTAuODggMTUuMTEgMTYuMDIgOS45NyAxNS42IDkuNTUiLz48ZyBpZD0iY3Jvc3MiPjxwb2x5Z29uIGNsYXNzPSJjbHMtMSIgcG9pbnRzPSIzNC41OCA4LjcyIDM0LjE2IDguMyAzMC45NSAxMS41IDI3Ljc1IDguMyAyNy4zMyA4LjcyIDMwLjU0IDExLjkyIDI3LjMzIDE1LjExIDI3Ljc1IDE1LjUzIDMwLjk1IDEyLjM0IDM0LjE2IDE1LjUzIDM0LjU4IDE1LjExIDMxLjM3IDExLjkyIDM0LjU4IDguNzIiLz48L2c+PC9zdmc+);
+			background-size: cover;
 			top: 0;
 			left: 0;
 			vertical-align: middle;
 			padding: 0;
 			height: 24px;
-			width: 42px;
+			width: 44px;
 			margin: 0 5px 0 0;
-			border: 1px solid @var1;
+			border: 1px solid @color-grey;
 			border-radius: 24px;
-			background: @var2;
+			background-color: @color-grey;
 		}
 		&::before, &::after {
 			-webkit-transition: all .5s cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -106,14 +113,14 @@ input[type="checkbox"] {
 			width: 20px;
 			height: 20px;
 			border-radius: 20px;
-			background: @var3;
+			background: @color-white;
 		}
 	}
 	&:checked + label::before {
-		background: @color-green;
-		border-color: @color-green;
+		background-color: @color-base;
+		border-color: @color-base;
 	}
 	&:checked + label::after {
-		left: 20px;
+		left: 22px;
 	}
 }
