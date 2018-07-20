@@ -28,7 +28,13 @@
       {{ password_confirmation.validationText }}
     </span>
 
-    <button @click="resetPassword">Восстановить пароль</button>
+    <ButtonDefault
+      v-if="!sendingOut"
+      :actionForClick="resetPassword"
+      name="Восстановить пароль"
+      color="green"
+    />
+    <BeatLoader v-else/>
     <div v-if="singleErrorMessage" class="static-error">
       {{ singleErrorMessage }}
     </div>
@@ -39,6 +45,8 @@
 import axios from 'axios'
 import AuthContainer from './AuthContainer'
 import CommonMethods from './CommonMethods'
+import ButtonDefault from './ButtonDefault'
+import BeatLoader from './BeatLoader'
 
 export default {
   name: 'AuthPasswordReset',
@@ -55,11 +63,14 @@ export default {
         value: ''
       },
       send: false,
+      sendingOut: false,
       singleErrorMessage: ''
     }
   },
   components: {
-    AuthContainer
+    AuthContainer,
+    ButtonDefault,
+    BeatLoader
   },
   mixins: [ CommonMethods ],
   methods: {
@@ -79,6 +90,12 @@ export default {
             }
             this.send = true
             this.$store.dispatch('storeLoginData', loginData)
+              .then(() => {
+                this.$router.push('/')
+              })
+              .catch((error) => {
+                this.showError(error, this)
+              })
           })
           .catch(error => {
             this.showError(error, this)

@@ -2,10 +2,6 @@
   <AuthContainer>
     <div>
       <div v-if="!send">
-        <div
-          v-if="sendingOut"
-          uk-spinner
-        ></div>
         <div class="login-title">Сброс пароля</div>
         <form @submit.prevent>
           <div class="form-group">
@@ -36,11 +32,13 @@
       <div class="login-button">
         <div>
           <ButtonDefault
+            v-if="!sendingOut"
             class="button-expand"
             name="Восстановить"
             color="green"
             :actionForClick="sentEmailForResetPassword"
           />
+          <BeatLoader v-else/>
         </div>
         <div class="login-button__register">
           <div class="login-button__register_title">Вспомнили пароль?</div>
@@ -68,10 +66,10 @@
 
 <script>
 import axios from 'axios'
-import ButtonDefault from './ButtonDefault'
 import AuthContainer from './AuthContainer'
 import CommonMethods from './CommonMethods'
 import ButtonDefault from './ButtonDefault'
+import BeatLoader from './BeatLoader'
 
 export default {
   name: 'AuthPasswordEmail',
@@ -89,7 +87,8 @@ export default {
   },
   components: {
     AuthContainer,
-    ButtonDefault
+    ButtonDefault,
+    BeatLoader
   },
   mixins: [ CommonMethods ],
   methods: {
@@ -111,5 +110,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
