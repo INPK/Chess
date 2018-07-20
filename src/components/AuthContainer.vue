@@ -68,8 +68,9 @@ export default {
       box-shadow: 0 28px 50px rgba(0,0,0,0.25);
     }
     @media @mobile {
+      background-color: rgba(254, 254, 254, 0.8);
       width: inherit;
-      margin: 2rem;
+      margin: 0rem;
       padding: 2rem;
     }
   }

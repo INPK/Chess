@@ -36,7 +36,7 @@
           :class="password_confirmation.validationClass"
           v-model="password_confirmation.value"
           @click = "clearError"
-          type="password_confirmation"
+          type="password"
           id="password_confirmation"
         />
         <span class="form-group__input_bar"></span>

@@ -2,8 +2,7 @@ input {
 	outline: none;
 	&:invalid,
 	&:valid,
-	&:focus
-	 {
+	&:focus {
     	box-shadow: none;
     	outline: none;
 	}
@@ -15,6 +14,14 @@ input {
 		align-items: center;
 		grid-template-columns: 100px 1fr;
 		margin-bottom: 2rem;
+		@media @mobile {
+			grid-template-columns: 1fr;
+		}
+		&__label {
+			@media @mobile {
+				font-size: 0.875rem;
+			}
+		}
 	    &__input {
 	    	position: relative;
 	    	input {
@@ -24,6 +31,9 @@ input {
 			    padding: 10px;
 			    position: relative;
 			    width: 100%;
+			    @media @mobile {
+					padding: 10px 0;
+				}
 	    		&:focus {
 	    			~ .form-group__input_bar {
 	    				&:before {
@@ -52,11 +62,6 @@ input {
 					left: 0%;
 		    	}
 			}
-		    &:focus {
-		    	&:before {
-		    		width: 100%;
-		    	}
-		    }
 	    }
 	    &__alert {
 	    	color: @color-red;
@@ -93,6 +98,10 @@ input[type="checkbox"] {
 		position: relative;
 		display: flex;
 		font-size: 0.875rem;
+		@media @mobile {
+			font-size: 0.75rem;
+			line-height: 1.4;
+		}
 		&::before {
 			content: "";
 			display: inline-block;
@@ -111,7 +120,8 @@ input[type="checkbox"] {
 			border-radius: 24px;
 			background-color: @color-grey;
 		}
-		&::before, &::after {
+		&::before,
+		&::after {
 			-webkit-transition: all .5s cubic-bezier(0.165, 0.84, 0.44, 1);
 			transition: all .5s cubic-bezier(0.165, 0.84, 0.44, 1);
 		}
