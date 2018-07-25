@@ -1,19 +1,19 @@
 <template>
   <div class="uk-offcanvas-content" >
-    <div id="make-floors_container" uk-offcanvas="flip: true; overlay: true">
+    <div id="make-flats-schemas_container" uk-offcanvas="flip: true; overlay: true">
       <div class="uk-offcanvas-bar">
         <img src="/static/img/flat-03.svg">
         <div>
-          Тип квартиры: <input v-model="type" name="type"/>
+          Тип квартиры: <input v-model="type_apartment" name="type_apartment"/>
         </div>
         <div>
-          Типовая площадь: <input v-model="area" name="area"/>
+          Типовая площадь: <input v-model="typical_area" name="typical_area"/>
         </div>
         <div>
-          Балконы: <input v-model.number="number_of_balcony" name="number_of_balcony"/>
+          Балконы: <input v-model.number="quantity_balcony" name="quantity_balcony"/>
         </div>
         <div>
-          Лоджии: <input v-model.number="number_of_loggia" name="number_of_loggia"/>
+          Лоджии: <input v-model.number="quantity_loggia" name="quantity_loggia"/>
         </div>
         <div>
           Цена: <input v-model="price" name="price"/>
@@ -36,17 +36,17 @@
 import ButtonDefault from './ButtonDefault'
 
 export default {
-  name: 'BuildingsCreateFloorsAdd',
+  name: 'BuildingsFlatsSchemasAdd',
   data () {
     let buildingPropertiesJson = this.$store.state.buildingProperties
-    const buildingId = JSON.parse(buildingPropertiesJson).hash_id
+    const houseId = JSON.parse(buildingPropertiesJson).hash_id
     return {
-      house_id: buildingId,
+      house_id: houseId,
       image: '/static/img/flat-03.svg',
-      type: 'Однушка',
-      area: '96',
-      number_of_balcony: 2,
-      number_of_loggia: 1,
+      type_apartment: 'Однушка',
+      typical_area: '96',
+      quantity_balcony: 2,
+      quantity_loggia: 1,
       price: '123000'
     }
   },
@@ -59,19 +59,25 @@ export default {
         house_id: this.house_id,
         api_key: this.$store.state.apiKey,
         company_id: this.$store.state.companyHashId,
-        type: this.type,
-        area: this.area,
-        number_of_balcony: this.number_of_balcony,
-        number_of_loggia: this.number_of_loggia,
+        type_apartment: this.type_apartment,
+        typical_area: this.typical_area,
+        quantity_balcony: this.quantity_balcony,
+        quantity_loggia: this.quantity_loggia,
         price: this.price,
         image: this.image
       }
-      const floorProperties = JSON.stringify(data)
+      const layoutsProperties = JSON.stringify(data)
       this.$store.dispatch('writeItem', {
-        data: floorProperties,
+        data: layoutsProperties,
         url: '/flats-schemas',
-        name: 'floorProperties'
+        name: 'buildingFlatsSchemas'
       })
+        .then(response => {
+          console.info(response)
+        })
+        .catch(error => {
+          console.info(error.message)
+        })
     }
   }
 }

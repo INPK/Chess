@@ -6,7 +6,7 @@
         color="grey"
       />
     </router-link>
-    <BuildingsCreate>
+    <BuildingsStepsContainer>
       <div class="uk-container uk-background-default uk-padding" uk-grid>
         <div class="uk-width-2-3">
           <h2>Введите информацию о комплексе:</h2>
@@ -37,7 +37,7 @@
           </div>
         </div>
       </div>
-    </BuildingsCreate>
+    </BuildingsStepsContainer>
     <ButtonDefault
       name="Следующий шаг"
       color="aqua"
@@ -47,14 +47,14 @@
 </template>
 
 <script>
-import BuildingsCreate from './BuildingsCreate'
+import BuildingsStepsContainer from './BuildingsStepsContainer'
 import ButtonDefault from './ButtonDefault'
 
 export default {
-  name: 'BuildingsCreateProperties',
+  name: 'BuildingsProperties',
   components: {
     ButtonDefault,
-    BuildingsCreate
+    BuildingsStepsContainer
   },
   data () {
     return {
@@ -91,13 +91,14 @@ export default {
         end_development: this.end_development
       }
       const buildingProperties = JSON.stringify(data)
+      console.info(data, buildingProperties)
       this.$store.dispatch('writeItem', {
         data: buildingProperties,
         url: '/houses',
         name: 'buildingProperties'
       })
         .then(response => {
-          this.$router.push('/buildings/create/flats-schemas')
+          this.$router.push('/buildings/flats-schemas')
         })
         .catch(error => {
           console.info(error.message)

@@ -22,11 +22,11 @@
 </template>
 
 <script>
-import BuildingsCreateInfo from './BuildingsCreateInfo'
+import BuildingsCreateInfo from './BuildingsInfo'
 import ButtonDefault from './ButtonDefault'
 
 export default {
-  name: 'BuildingsCreate',
+  name: 'BuildingsStepsContainer',
   components: {
     BuildingsCreateInfo,
     ButtonDefault

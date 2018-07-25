@@ -4,7 +4,7 @@
     <div class="object-types">
 
       <router-link
-        :to="{ name: 'BuildingsCreateInfo' }"
+        :to="{ name: 'BuildingsInfo' }"
         class="object-types_item uk-flex uk-flex-middle uk-margin"
         id="buildings"
         name="type"
@@ -17,7 +17,7 @@
       </router-link>
 
       <router-link
-        :to="{ name: 'BuildingsCreateInfo' }"
+        :to="{ name: 'BuildingsInfo' }"
         class="object-types_item uk-flex uk-flex-middle uk-margin"
         id="district"
         name="type"

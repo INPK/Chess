@@ -6,9 +6,11 @@ import AuthPasswordEmail from '@/components/AuthPasswordEmail'
 import AuthPasswordReset from '@/components/AuthPasswordReset'
 import AuthLogout from '@/components/AuthLogout'
 import Buildings from '@/components/Buildings'
-import BuildingsCreateInfo from '@/components/BuildingsCreateInfo'
-import BuildingsCreateProperties from '@/components/BuildingsCreateProperties'
-import BuildingsCreateFlatsSchemas from '@/components/BuildingsCreateFlatsSchemas'
+import BuildingsInfo from '@/components/BuildingsInfo'
+import BuildingsFloors from '@/components/BuildingsFloors'
+import BuildingsFloorsMarkup from '@/components/BuildingsFloorsMarkup'
+import BuildingsProperties from '@/components/BuildingsProperties'
+import BuildingsFlatsSchemas from '@/components/BuildingsFlatsSchemas'
 import store from '../store'
 
 Vue.use(Router)
@@ -56,21 +58,33 @@ export default new Router({
       beforeEnter: ifNotAuthenticated
     },
     {
-      path: '/buildings/create/info',
-      name: 'BuildingsCreateInfo',
-      component: BuildingsCreateInfo,
+      path: '/buildings/info',
+      name: 'BuildingsInfo',
+      component: BuildingsInfo,
       beforeEnter: ifNotAuthenticated
     },
     {
-      path: '/buildings/create/properties',
-      name: 'BuildingsCreateProperties',
-      component: BuildingsCreateProperties,
+      path: '/buildings/properties',
+      name: 'BuildingsProperties',
+      component: BuildingsProperties,
       beforeEnter: ifNotAuthenticated
     },
     {
-      path: '/buildings/create/flats-schemas',
-      name: 'BuildingsCreateFlatsSchemas',
-      component: BuildingsCreateFlatsSchemas,
+      path: '/buildings/flats-schemas',
+      name: 'BuildingsFlatsSchemas',
+      component: BuildingsFlatsSchemas,
+      beforeEnter: ifNotAuthenticated
+    },
+    {
+      path: '/buildings/floors',
+      name: 'BuildingsFloors',
+      component: BuildingsFloors,
+      beforeEnter: ifNotAuthenticated
+    },
+    {
+      path: '/buildings/floors/markup',
+      name: 'BuildingsFloorsMarkup',
+      component: BuildingsFloorsMarkup,
       beforeEnter: ifNotAuthenticated
     }
   ]

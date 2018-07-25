@@ -1,5 +1,5 @@
 <template>
-  <BuildingsCreate>
+  <BuildingsStepsContainer>
     <div class="uk-container uk-background-default uk-padding" uk-grid>
       <div class="uk-width-2-3">
         <h2>Введите информацию о комплексе:</h2>
@@ -13,16 +13,30 @@
         <span>Район</span><input v-model="district" name="district"/>
         <span>Видео</span><input v-model="video" name="video"/>
         <span>Картинки</span><input v-model="images" name="images"/>
-        <span>Координаты</span><input v-model="coordinates" name="coordinates"/>
+        <span>Координаты</span><input v-model="coords" name="coordinates"/>
       </div>
       <div class="uk-width-1-3">
-        <MultipleFileUploader
+        <!-- <MultipleFileUploader
           postURL="http://172.100.2.15:8000/buildings"
           successMessagePath="СУСЕС"
           errorMessagePath="ФЁИЛ"
           :minItems="0"
           :maxItems="10"
-        />
+        /> -->
+        <YandexMap
+          :coords="coords"
+          style="width: 600px; height: 600px;"
+          :zoom="10"
+          :cluser-callbacks="mapTest"
+          :cluster-options="{
+            1: {clusterDisableClickZoom: true}
+          }"
+          :controls="['geolocationControl']"
+          :placemarks="placemarks"
+          map-type="map"
+          :behaviors="['scrollZoom', 'default']"
+        >
+        </YandexMap>
         <ButtonDefault
           name="Следующий шаг"
           color="aqua"
@@ -30,20 +44,23 @@
         />
       </div>
     </div>
-  </BuildingsCreate>
+  </BuildingsStepsContainer>
 </template>
 
 <script>
-import BuildingsCreate from './BuildingsCreate'
+import BuildingsStepsContainer from './BuildingsStepsContainer'
 import ButtonDefault from './ButtonDefault'
 import MultipleFileUploader from 'vue2-multi-uploader'
+import { yandexMap, ymapMarker } from 'vue-yandex-maps'
 
 export default {
-  name: 'BuildingsCreateInfo',
+  name: 'BuildingsInfo',
   components: {
     ButtonDefault,
     MultipleFileUploader,
-    BuildingsCreate
+    BuildingsStepsContainer,
+    YandexMap: yandexMap,
+    YmapMarker: ymapMarker
   },
   data () {
     return {
@@ -54,8 +71,20 @@ export default {
       country: '',
       video: '',
       images: '',
-      coordinates: '',
-      currency: ''
+      coords: [54.8, 39.8],
+      currency: '',
+      placemarks: [
+        {
+          coords: [54.8, 39.8],
+          properties: {}, // define properties here
+          options: {}, // define options here
+          clusterName: '1',
+          balloonTemplate: '<div>"Your custom template"</div>',
+          callbacks: { click: function (obj) {
+            console.info(obj)
+          } }
+        }
+      ]
     }
   },
   methods: {
@@ -80,11 +109,14 @@ export default {
         name: 'buildingInfo'
       })
         .then(response => {
-          this.$router.push('/buildings/create/properties')
+          this.$router.push('/buildings/properties')
         })
         .catch(error => {
           console.info(error.message)
         })
+    },
+    mapTest (e) {
+      console.info(e)
     }
   },
   created () {

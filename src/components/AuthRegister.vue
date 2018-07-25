@@ -233,42 +233,42 @@ export default {
       company_name: {
         validationClass: '',
         validationText: '',
-        value: 'Owl Company'
+        value: ''
       },
       first_name: {
         validationClass: '',
         validationText: '',
-        value: 'Grigoriy'
+        value: ''
       },
       last_name: {
         validationClass: '',
         validationText: '',
-        value: 'Komarov'
+        value: ''
       },
       middle_name: {
         validationClass: '',
         validationText: '',
-        value: 'Alexandrovich'
+        value: ''
       },
       email: {
         validationClass: '',
         validationText: '',
-        value: 'test@1gmail.com'
+        value: ''
       },
       phone: {
         validationClass: '',
         validationText: '',
-        value: '89081996451'
+        value: ''
       },
       password: {
         validationClass: '',
         validationText: '',
-        value: '1234asdf'
+        value: ''
       },
       password_confirmation: {
         validationClass: '',
         validationText: '',
-        value: '1234asdf'
+        value: ''
       },
       is_agree_with_save_personal_data: {
         validationClass: '',
