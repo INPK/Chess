@@ -9,7 +9,7 @@ yarn-error.log*
 /node_modules
 /test/e2e/reports/
 selenium-debug.log
-
+ 
 # Editor directories and files
 .idea
 .babelrc
@@ -17,6 +17,8 @@ selenium-debug.log
 .eslintignore
 .eslintrc.js
 .vscode
+package-lock.json
+package.json
 *.suo
 *.ntvs*
 *.njsproj
