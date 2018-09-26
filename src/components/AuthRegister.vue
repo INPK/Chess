@@ -290,7 +290,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import (less) "../global.less";
-@import (less) "../form.less";
-@import (less) "../button.less";
+@import (less) "../../static/less/color.less";
+@import (less) "../../static/less/global.less";
+@import (less) "../../static/less/form.less";
+@import (less) "../../static/less/button.less";
 </style>

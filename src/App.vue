@@ -1,7 +1,7 @@
 <template>
   <div>
-    <router-view/>
     <Navbar v-if="isAuthenticated"/>
+    <router-view/>
   </div>
 </template>
 
@@ -22,16 +22,6 @@ export default {
 </script>
 
 <style lang="less">
-@import (reference) "global.less";
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-html {
-  background: #FFFFFF;
-  font-family: 'Roboto', sans-serif;
-  font-size: 16px;
-  overflow-y: scroll;
-}
+@import (reference) "../static/less/global.less";
+
 </style>
