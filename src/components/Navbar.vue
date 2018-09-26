@@ -1,32 +1,27 @@
 <template>
-    <nav class="uk-navbar-container" uk-navbar>
-      <img
-        src="/static/img/footer_logo.svg"
-        class="uk-navbar-left"
-      >
-      <div class="uk-navbar-right">
-        <ul class="uk-navbar-nav">
-          <li class="uk-active"><div class="">Help</div></li>
-          <li v-if="!loggedIn"><router-link :to="{ name: 'Login' }">Login</router-link></li>
-          <li v-if="!loggedIn"><router-link :to="{ name: 'Register' }">Register</router-link></li>
-          <li v-else><router-link :to="{ name: 'Logout' }">Logout</router-link></li>
-          <li>
-            <div
-              @click="toggleDropdown"
-              @mouseleave="isEnableDropdown = false"
-            >{{ userName }}
-            <transition
-              name="fade"
-            >
-              <ul
-                v-if="isEnableDropdown"
-                @mouseleave="toggleDropdown">
-                <li v-for="(value, key) of menuItem" :key="key">{{ value }}</li>
-              </ul>
-            </transition>
-            </div>
-          </li>
-        </ul>
+    <nav class="navbar">
+      <a class="navbar-logo" href="#">
+        <img src="/static/img/footer_logo.svg" >
+      </a>
+      <div class="navbar-notice">1</div>
+      <div class="navbar-menu">
+        <div v-if="!loggedIn"><router-link :to="{ name: 'Login' }">Login</router-link></div>
+        <div v-if="!loggedIn"><router-link :to="{ name: 'Register' }">Register</router-link></div>
+        <div class="menu-dropdown"
+          @click="toggleDropdown"
+          @mouseleave="isEnableDropdown = false"
+        >{{ userName }}
+          <transition
+            name="fade"
+          >
+          <ul
+            v-if="isEnableDropdown"
+            @mouseleave="toggleDropdown">
+            <li v-for="(value, key) of menuItem" :key="key">{{ value }}</li>
+            <li><router-link :to="{ name: 'Logout' }">Logout</router-link></li>
+          </ul>
+        </transition>
+        </div>
       </div>
     </nav>
 </template>
@@ -54,11 +49,29 @@ export default {
 }
 </script>
 
-<style scoped>
-  img {
-    width: 300px;
-    height: 100px;
+<style lang="less" scoped>
+  @import (less) "../../static/less/color.less";
+  @import (less) "../../static/less/grid.less";
+  @import (less) "../../static/less/padding.less";
+
+  .navbar {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-column-gap: 2rem;
+    grid-template-rows: 4rem;
+    align-items: center;
+    background-color: @color-white;
+    padding: 0 4rem;
+    &-logo {
+      img {
+        height: 2rem;
+      }
+    }
+    &-notice {
+      margin-left: auto;
+    }
   }
+
   .fade-enter-active, .fade-leave-active {
     transition: opacity .5s;
   }
