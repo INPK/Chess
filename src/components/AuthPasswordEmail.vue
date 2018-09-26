@@ -9,15 +9,15 @@
             <div class="form-group__input">
               <transition name="slide-fade">
               <span
-                v-if="email.validationClass"
+                v-if="errorsStack.email"
                 class="form-group__alert"
               >
-                {{ email.validationText }}
+                {{ errorsStack.email[0] }}
               </span>
               </transition>
               <input
-                :class="email.validationClass"
-                v-model="email.value"
+                :class="validationClass.email"
+                v-model="email"
                 @click = "clearError"
                 type="email"
                 id="email"
@@ -49,7 +49,7 @@
       </div>
       <div class="login-reset" v-else>
         <div class="login-reset__title">Письмо с информацией для смены пароля отправлено на адрес:</div>
-        <div class="login-reset__email">{{ this.email.value }}</div>
+        <div class="login-reset__email">{{ this.email }}</div>
 
         <div class="login-button">
           <div class="login-button__register">
@@ -75,13 +75,10 @@ export default {
   name: 'AuthPasswordEmail',
   data () {
     return {
-      email: {
-        validationClass: '',
-        validationText: '',
-        value: ''
-      },
+      email: '',
       send: false,
       sendingOut: false,
+      errorsStack: [],
       singleErrorMessage: ''
     }
   },
@@ -94,7 +91,7 @@ export default {
   methods: {
     sentEmailForResetPassword () {
       this.sendingOut = true
-      var data = JSON.stringify({ email: this.email.value })
+      var data = JSON.stringify({ email: this.email })
       axios.post(this.$rootUrl + '/password/email', data)
         .then(() => {
           this.send = true
@@ -104,6 +101,15 @@ export default {
           this.showError(error, this)
           this.sendingOut = false
         })
+    }
+  },
+  computed: {
+    validationClass () {
+      let errors = {}
+      for (let item in this.errorsStack) {
+        errors[item] = 'error'
+      }
+      return errors
     }
   }
 }

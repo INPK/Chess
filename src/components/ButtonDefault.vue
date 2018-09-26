@@ -1,5 +1,6 @@
 <template>
   <button
+    type="button"
     class="button"
     :button-color="color"
     @click = "methodFromParent"
@@ -37,5 +38,7 @@ export default {
 </script>
 
 <style lang="less">
-
+@import (less) "../global.less";
+@import (less) "../form.less";
+@import (less) "../button.less";
 </style>

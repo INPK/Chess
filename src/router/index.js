@@ -6,11 +6,18 @@ import AuthPasswordEmail from '@/components/AuthPasswordEmail'
 import AuthPasswordReset from '@/components/AuthPasswordReset'
 import AuthLogout from '@/components/AuthLogout'
 import Buildings from '@/components/Buildings'
-import BuildingsInfo from '@/components/BuildingsInfo'
-import BuildingsFloors from '@/components/BuildingsFloors'
-import BuildingsFloorsMarkup from '@/components/BuildingsFloorsMarkup'
-import BuildingsProperties from '@/components/BuildingsProperties'
-import BuildingsFlatsSchemas from '@/components/BuildingsFlatsSchemas'
+import BuildingMain from '@/components/BuildingMain'
+import BuildingProperties from '@/components/BuildingProperties'
+import HouseFloors from '@/components/HouseFloors'
+import HouseFlatsSchemas from '@/components/HouseFlatsSchemas'
+import HouseFloorsMarking from '@/components/HouseFloorsMarking'
+import HouseProperties from '@/components/HouseProperties'
+import HouseChess from '@/components/HouseChess'
+import HouseMain from '@/components/HouseMain'
+import HouseMainProperties from '@/components/HouseMainProperties'
+import HouseMainFlatsSchemas from '@/components/HouseMainFlatsSchemas'
+import HouseMainFloors from '@/components/HouseMainFloors'
+import HouseMainChess from '@/components/HouseMainChess'
 import store from '../store'
 
 Vue.use(Router)
@@ -58,33 +65,75 @@ export default new Router({
       beforeEnter: ifNotAuthenticated
     },
     {
-      path: '/buildings/info',
-      name: 'BuildingsInfo',
-      component: BuildingsInfo,
+      path: '/building',
+      name: 'BuildingMain',
+      component: BuildingMain,
       beforeEnter: ifNotAuthenticated
     },
     {
-      path: '/buildings/properties',
-      name: 'BuildingsProperties',
-      component: BuildingsProperties,
+      path: '/building/properties',
+      name: 'BuildingProperties',
+      component: BuildingProperties,
       beforeEnter: ifNotAuthenticated
     },
     {
-      path: '/buildings/flats-schemas',
-      name: 'BuildingsFlatsSchemas',
-      component: BuildingsFlatsSchemas,
+      path: '/house/properties',
+      name: 'HouseProperties',
+      component: HouseProperties,
       beforeEnter: ifNotAuthenticated
     },
     {
-      path: '/buildings/floors',
-      name: 'BuildingsFloors',
-      component: BuildingsFloors,
+      path: '/house/main',
+      name: 'HouseMain',
+      component: HouseMain,
       beforeEnter: ifNotAuthenticated
     },
     {
-      path: '/buildings/floors/markup',
-      name: 'BuildingsFloorsMarkup',
-      component: BuildingsFloorsMarkup,
+      path: '/house/main/properties',
+      name: 'HouseMainProperties',
+      component: HouseMainProperties,
+      beforeEnter: ifNotAuthenticated
+    },
+    {
+      path: '/house/main/flats-schemas',
+      name: 'HouseMainFlatsSchemas',
+      component: HouseMainFlatsSchemas,
+      beforeEnter: ifNotAuthenticated
+    },
+    {
+      path: '/house/main/chess',
+      name: 'HouseMainChess',
+      component: HouseMainChess,
+      beforeEnter: ifNotAuthenticated
+    },
+    {
+      path: '/house/main/floors',
+      name: 'HouseMainFloors',
+      component: HouseMainFloors,
+      beforeEnter: ifNotAuthenticated
+    },
+    {
+      path: '/house/flats-schemas',
+      name: 'HouseFlatsSchemas',
+      component: HouseFlatsSchemas,
+      beforeEnter: ifNotAuthenticated
+    },
+    {
+      path: '/house/floors',
+      name: 'HouseFloors',
+      component: HouseFloors,
+      beforeEnter: ifNotAuthenticated
+    },
+    {
+      path: '/house/floors/marking',
+      name: 'HouseFloorsMarking',
+      component: HouseFloorsMarking,
+      beforeEnter: ifNotAuthenticated
+    },
+    {
+      path: '/house/chess',
+      name: 'HouseChess',
+      component: HouseChess,
       beforeEnter: ifNotAuthenticated
     }
   ]

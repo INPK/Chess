@@ -4,16 +4,16 @@
       <label class="form-group__label" for="password">Пароль</label>
       <div class="form-group__input">
         <transition name="slide-fade">
-              <span
-                v-if="password.validationClass"
-                class="form-group__alert"
-              >
-                {{ password.validationText }}
-              </span>
+          <span
+            v-if="errorsStack.password"
+            class="form-group__alert"
+          >
+            {{ errorsStack.password[0] }}
+          </span>
         </transition>
         <input
-          :class="password.validationClass"
-          v-model="password.value"
+          :class="validationClass.password"
+          v-model="password"
           @click = "clearError"
           type="password"
           id="password"
@@ -25,16 +25,16 @@
       <label class="form-group__label" for="password_confirmation">Повторить пароль</label>
       <div class="form-group__input">
         <transition name="slide-fade">
-              <span
-                v-if="password_confirmation.validationClass"
-                class="form-group__alert"
-              >
-                {{ password_confirmation.validationText }}
-              </span>
+          <span
+            v-if="errorsStack.password_confirmation"
+            class="form-group__alert"
+          >
+            {{ errorsStack.password_confirmation[0] }}
+          </span>
         </transition>
         <input
-          :class="password_confirmation.validationClass"
-          v-model="password_confirmation.value"
+          :class="validationClass.password_confirmation"
+          v-model="passwordConfirmation"
           @click = "clearError"
           type="password"
           id="password_confirmation"
@@ -66,18 +66,11 @@ export default {
   name: 'AuthPasswordReset',
   data () {
     return {
-      password: {
-        validationClass: '',
-        validationText: '',
-        value: ''
-      },
-      password_confirmation: {
-        validationClass: '',
-        validationText: '',
-        value: ''
-      },
+      password: '',
+      passwordConfirmation: '',
       send: false,
       sendingOut: false,
+      errorsStack: [],
       singleErrorMessage: ''
     }
   },
@@ -89,10 +82,10 @@ export default {
   mixins: [ CommonMethods ],
   methods: {
     resetPassword () {
-      if (this.password.value === this.password_confirmation.value) {
+      if (this.password === this.passwordConfirmation) {
         var data = JSON.stringify({
-          password: this.password.value,
-          password_confirmation: this.password_confirmation.value,
+          password: this.password,
+          password_confirmation: this.passwordConfirmation,
           /** Параметр password_code берётся из url */
           password_code: this.$route.params.password_code
         })
@@ -117,6 +110,15 @@ export default {
       } else {
         this.singleErrorMessage = 'Пароли не совпадают'
       }
+    }
+  },
+  computed: {
+    validationClass () {
+      let errors = {}
+      for (let item in this.errorsStack) {
+        errors[item] = 'error'
+      }
+      return errors
     }
   }
 }

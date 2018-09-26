@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import BuildingsCreateInfo from './BuildingsInfo'
+import BuildingsCreateInfo from './BuildingProperties'
 import ButtonDefault from './ButtonDefault'
 
 export default {

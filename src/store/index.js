@@ -4,15 +4,20 @@ import * as axios from 'axios'
 
 Vue.use(Vuex)
 Vue.prototype.$rootUrl = 'http://172.100.2.15:8000'
+// Vue.prototype.$rootUrl = 'http://127.0.0.1:8000'
 const ROOT_URL = Vue.prototype.$rootUrl
 
 const store = new Vuex.Store({
   state: {
     apiKey: localStorage.getItem('apiKey') || null,
     companyHashId: localStorage.getItem('companyHashId') || null,
-    buildingInfo: localStorage.getItem('buildingInfo') || null,
-    buildingProperties: localStorage.getItem('buildingProperties') || null,
-    buildingLayouts: localStorage.getItem('buildingLayouts') || null
+    buildings: localStorage.getItem('buildings') || null,
+    currentHouseId: localStorage.getItem('currentHouseId') || null,
+    houseFloors: localStorage.getItem('houseFloors') || null,
+    properties: localStorage.getItem('properties') || null,
+    flatsSchemas: localStorage.getItem('flatsSchemas') || null,
+    currentBuildingStoreIndex: localStorage.getItem('currentBuildingStoreIndex') || null,
+    currentHouseStoreIndex: localStorage.getItem('currentHouseStoreIndex') || null
   },
   getters: {
     loggedIn (state) {
@@ -24,8 +29,11 @@ const store = new Vuex.Store({
       state[type] = items
     },
     storeItem (state, data) {
-      let name = data['name']
-      state[name] = data
+      let name = data.name
+      state[name] = data.fields
+    },
+    destroyItem (state, name) {
+      state[name] = null
     },
     retrieveAuthData (state, data) {
       state.apiKey = data['apiKey']
@@ -37,16 +45,34 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    writeItem (context, data) {
+    setItemToStore (context, data) {
+      // const responseJson = JSON.stringify(data.response)
+      localStorage.setItem(data.storageName, data.fields)
+      context.commit('storeItem', {
+        name: data.storageName,
+        fields: data.fields
+      })
+    },
+    destroyItemFromStore (context, name) {
+      localStorage.removeItem(name)
+      context.commit('destroyItem', name)
+    },
+    sendToServer (context, data) {
       return new Promise((resolve, reject) => {
-        axios.post(ROOT_URL + data['url'], data['data'])
+        // console.info('URL', ROOT_URL + data.url, 'METHODS', data.method, 'DATA', data.fields)
+        axios({
+          url: ROOT_URL + data.url,
+          method: data.method,
+          data: data.fields,
+          headers: {
+            'Content-type': 'multipart/form-data'
+          }
+        })
           .then(response => {
-            const responseData = JSON.stringify(response.data)
-            localStorage.setItem(data['name'], responseData)
-            context.commit('storeItem', {
-              data: responseData,
-              name: data['name']
-            })
+            /* context.dispatch('setItemToStore', {
+              storageName: data.storageName,
+              fields: response.data
+            }) */
             resolve(response)
           })
           .catch(error => {
@@ -54,8 +80,21 @@ const store = new Vuex.Store({
           })
       })
     },
-    retrieveItem (context, credentials) {
-      console.log(context, credentials)
+    writeItem (context, data) {
+      data.method = 'POST'
+      return context.dispatch('sendToServer', data)
+    },
+    updateItem (context, data) {
+      data.method = 'PUT'
+      return context.dispatch('sendToServer', data)
+    },
+    removeItem (context, data) {
+      data.method = 'DELETE'
+      return context.dispatch('sendToServer', data)
+    },
+    retrieveItem (context, data) {
+      data.method = 'GET'
+      return context.dispatch('sendToServer', data)
     },
     storeLoginData (context, loginData) {
       for (let i in loginData) {

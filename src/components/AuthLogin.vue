@@ -7,15 +7,15 @@
         <div class="form-group__input">
           <transition name="slide-fade">
           <span
-            v-if="email.validationClass"
+            v-if="errorsStack.email"
             class="form-group__alert"
           >
-            {{ email.validationText }}
+            {{ errorsStack.email[0] }}
           </span>
           </transition>
           <input
-            :class="email.validationClass"
-            v-model="email.value"
+            :class="validationClass.email"
+            v-model="email"
             @click = "clearError"
             type="email"
             id="email"
@@ -28,15 +28,15 @@
         <div class="form-group__input">
           <transition name="slide-fade">
           <span
-            v-if="password.validationClass"
+            v-if="errorsStack.password"
             class="form-group__alert"
           >
-            {{ password.validationText }}
+            {{ errorsStack.password[0] }}
           </span>
           </transition>
           <input
-            :class="password.validationClass"
-            v-model="password.value"
+            :class="validationClass.password"
+            v-model="password"
             @click = "clearError"
             id="password"
           />
@@ -44,7 +44,7 @@
         </div>
       </div>
       <div v-if="singleErrorMessage" class="login-alert">
-        {{ singleErrorMessage }}
+        {{ singleErrorMessage[0] }}
       </div>
       <div class="login-button">
         <div>
@@ -76,17 +76,10 @@ export default {
   name: 'AuthLogin',
   data () {
     return {
-      email: {
-        validationClass: '',
-        validationText: '',
-        value: ''
-      },
-      password: {
-        validationClass: '',
-        validationText: '',
-        value: ''
-      },
-      singleErrorMessage: ''
+      email: '',
+      password: '',
+      singleErrorMessage: '',
+      errorsStack: []
     }
   },
   components: {
@@ -97,15 +90,30 @@ export default {
   methods: {
     login () {
       this.$store.dispatch('retrieveAuthData', {
-        email: this.email.value,
-        password: this.password.value
+        email: this.email,
+        password: this.password
       })
         .then(() => {
           this.$router.push('/')
         })
         .catch(error => {
-          this.showError(error, this)
+          this.errorsStack = error.response.data
         })
+    },
+    clearError (event) {
+      let item = event.target.id
+      this.$delete(this.errorsStack, item)
+      this.singleErrorMessage = ''
+    }
+  },
+  computed: {
+    validationClass () {
+      let errors = {}
+      for (let item in this.errorsStack) {
+        errors[item] = 'error'
+      }
+      console.info(errors)
+      return errors
     }
   }
 }

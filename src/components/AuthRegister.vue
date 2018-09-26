@@ -6,16 +6,16 @@
         <label class="form-group__label" for="company_name">Компания:</label>
         <div class="form-group__input">
           <transition name="slide-fade">
-        <span
-          v-if="company_name.validationClass"
-          class="form-group__alert"
-        >
-          {{ company_name.validationText }}
-        </span>
+            <span
+              v-if="errorsStack.company_name"
+              class="form-group__alert"
+            >
+              {{ errorsStack.company_name[0]}}
+            </span>
           </transition>
           <input
-            :class="company_name.validationClass"
-            v-model="company_name.value"
+            :class="validationClass.company_name"
+            v-model="companyName"
             @click="clearError"
             type="text"
             id="company_name"
@@ -29,15 +29,15 @@
         <div class="form-group__input">
           <transition name="slide-fade">
         <span
-          v-if="last_name.validationClass"
+          v-if="errorsStack.last_name"
           class="form-group__alert"
         >
-          {{ last_name.validationText }}
+          {{ errorsStack.last_name[0] }}
         </span>
           </transition>
           <input
-            :class="last_name.validationClass"
-            v-model="last_name.value"
+            :class="validationClass.last_name"
+            v-model="lastName"
             @click="clearError"
             type="text"
             id="last_name"
@@ -51,15 +51,15 @@
         <div class="form-group__input">
           <transition name="slide-fade">
         <span
-          v-if="first_name.validationClass"
+          v-if="errorsStack.first_name"
           class="form-group__alert"
         >
-          {{ first_name.validationText }}
+          {{ errorsStack.first_name[0] }}
         </span>
           </transition>
           <input
-            :class="first_name.validationClass"
-            v-model="first_name.value"
+            :class="validationClass.first_name"
+            v-model="firstName"
             @click="clearError"
             type="text"
             id="first_name"
@@ -72,16 +72,16 @@
         <label class="form-group__label" for="middle_name">Отчество:</label>
         <div class="form-group__input">
           <transition name="slide-fade">
-        <span
-          v-if="middle_name.validationClass"
-          class="form-group__alert"
-        >
-          {{ middle_name.validationText }}
-        </span>
+            <span
+              v-if="errorsStack.middle_name"
+              class="form-group__alert"
+            >
+              {{ errorsStack.middle_name[0] }}
+            </span>
           </transition>
           <input
-            :class="middle_name.validationClass"
-            v-model="middle_name.value"
+            :class="validationClass.middle_name"
+            v-model="middleName"
             @click="clearError"
             type="text"
             id="middle_name"
@@ -95,15 +95,15 @@
         <div class="form-group__input">
           <transition name="slide-fade">
         <span
-          v-if="email.validationClass"
+          v-if="errorsStack.email"
           class="form-group__alert"
         >
-          {{ email.validationText }}
+          {{ errorsStack.email[0] }}
         </span>
           </transition>
           <input
-            :class="email.validationClass"
-            v-model="email.value"
+            :class="validationClass.email"
+            v-model="email"
             @click="clearError"
             type="email"
             id="email"
@@ -118,15 +118,15 @@
         <div class="form-group__input">
           <transition name="slide-fade">
         <span
-          v-if="phone.validationClass"
+          v-if="errorsStack.phone"
           class="form-group__alert"
         >
-          {{ phone.validationText }}
+          {{ errorsStack.phone[0] }}
         </span>
           </transition>
           <input
-            :class="phone.validationClass"
-            v-model="phone.value"
+            :class="validationClass.phone"
+            v-model="phone"
             @click="clearError"
             id="phone"
             required
@@ -139,15 +139,15 @@
         <div class="form-group__input">
           <transition name="slide-fade">
         <span
-          v-if="password.validationClass"
+          v-if="errorsStack.password"
           class="form-group__alert"
         >
-          {{ password.validationText }}
+          {{ errorsStack.password[0] }}
         </span>
           </transition>
           <input
-            :class="password.validationClass"
-            v-model="password.value"
+            :class="validationClass.password"
+            v-model="password"
             @click="clearError"
             id="password"
             required
@@ -161,15 +161,15 @@
         <div class="form-group__input">
           <transition name="slide-fade">
         <span
-          v-if="password_confirmation.validationClass"
+          v-if="errorsStack.password_confirmation"
           class="form-group__alert"
         >
-          {{ password_confirmation.validationText }}
+          {{ errorsStack.password_confirmation[0] }}
         </span>
           </transition>
           <input
-            :class="password_confirmation.validationClass"
-            v-model="password_confirmation.value"
+            :class="validationClass.password_confirmation"
+            v-model="passwordConfirmation"
             @click="clearError"
             id="password_confirmation"
             required
@@ -183,8 +183,8 @@
         <div class="form-group__input">
 
           <input
-            :class="is_agree_with_save_personal_data.validationClass"
-            v-model="is_agree_with_save_personal_data.value"
+            :class="validationClass.is_agree_with_save_personal_data"
+            v-model="isAgreeWithSavePersonalData"
             @click="clearError"
             type="checkbox"
             id="is_agree_with_save_personal_data"
@@ -208,7 +208,7 @@
       <div class="login-reset__title">Отлично! Осталось подтвердить ваш email. На вашу почту отправлено письмо с
         подтверждением.
       </div>
-      <div class="login-reset__email">{{ this.email.value }}</div>
+      <div class="login-reset__email">{{ this.email }}</div>
       <div class="login-button">
         <div class="login-button__register">
           <div class="login-button__register_title">Есть учетная запись?</div>
@@ -230,51 +230,16 @@ export default {
   name: 'AuthRegister',
   data () {
     return {
-      company_name: {
-        validationClass: '',
-        validationText: '',
-        value: ''
-      },
-      first_name: {
-        validationClass: '',
-        validationText: '',
-        value: ''
-      },
-      last_name: {
-        validationClass: '',
-        validationText: '',
-        value: ''
-      },
-      middle_name: {
-        validationClass: '',
-        validationText: '',
-        value: ''
-      },
-      email: {
-        validationClass: '',
-        validationText: '',
-        value: ''
-      },
-      phone: {
-        validationClass: '',
-        validationText: '',
-        value: ''
-      },
-      password: {
-        validationClass: '',
-        validationText: '',
-        value: ''
-      },
-      password_confirmation: {
-        validationClass: '',
-        validationText: '',
-        value: ''
-      },
-      is_agree_with_save_personal_data: {
-        validationClass: '',
-        validationText: '',
-        value: false
-      },
+      companyName: '',
+      firstName: '',
+      lastName: '',
+      middleName: '',
+      email: '',
+      phone: '',
+      password: '',
+      passwordConfirmation: '',
+      errorsStack: [],
+      isAgreeWithSavePersonalData: false,
       singleErrorMessage: '',
       send: false
     }
@@ -286,29 +251,39 @@ export default {
   mixins: [ CommonMethods ],
   methods: {
     register () {
-      if (this.password.value === this.password_confirmation.value) {
+      if (this.password === this.passwordConfirmation) {
         const data = JSON.stringify({
-          company_name: this.company_name.value,
-          first_name: this.first_name.value,
-          last_name: this.last_name.value,
-          middle_name: this.middle_name.value,
-          email: this.email.value,
-          is_agree_with_save_personal_data: this.is_agree_with_save_personal_data.value,
-          phone: this.phone.value,
-          password: this.password.value,
-          password_confirmation: this.password_confirmation.value
+          company_name: this.companyName,
+          first_name: this.firstName,
+          last_name: this.lastName,
+          middle_name: this.middleName,
+          email: this.email,
+          is_agree_with_save_personal_data: this.isAgreeWithSavePersonalData,
+          phone: this.phone,
+          password: this.password,
+          password_confirmation: this.passwordConfirmation
         })
         this.$store.dispatch('registerUser', data)
           .then(() => {
             this.send = true
           })
           .catch((error) => {
-            this.showError(error, this)
+            // this.showError(error, this)
+            this.errorsStack = error.response.data
           })
       } else {
-        this.password_confirmation.validationClass = 'error'
-        this.password_confirmation.validationText = 'Пароли должны совпадать'
+        this.errorsStack['password_confirmation'] = 'Пароли должны совпадать'
       }
+    }
+  },
+  computed: {
+    validationClass () {
+      let errors = {}
+      for (let item in this.errorsStack) {
+        errors[item] = 'error'
+      }
+      console.info(errors)
+      return errors
     }
   }
 }

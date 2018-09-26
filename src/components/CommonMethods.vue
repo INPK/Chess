@@ -3,6 +3,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'CommonMethods',
   methods: {
@@ -24,7 +25,7 @@ export default {
     },
     clearError (event) {
       let item = event.target.id
-      this[item].validationClass = ''
+      this.$delete(this.errorsStack, item)
       this.singleErrorMessage = ''
     },
     showAlert (errorObject, type, alert) {
@@ -42,6 +43,9 @@ export default {
       setTimeout(function () {
         alert.alive = false
       }, 3000)
+    },
+    resetData () {
+      Object.assign(this.$data, this.$options.data())
     }
   }
 }

@@ -1,8 +1,16 @@
 <template>
   <svg width="1200" height="1000" class="floor-schema" @click="updatePoints">
-    <polygon :points="points.total"></polygon>
-    <template v-for="circle in circlePoints">
-      <circle :cx="circle.x" :cy="circle.y" r="5" :key="circle.x + circle.y"></circle>
+    <polygon :points="totalPoints" @contextmenu="removeMarkup"></polygon>
+    <template v-for="(circle, i) in points">
+      <circle
+        :cx="circle.x"
+        :cy="circle.y"
+        r="6"
+        :key="circle.x + '' + i"
+        @contextmenu="rightClick"
+        @mouseup="handleMouseUp"
+        @mousedown="handleMouseDown"
+      ></circle>
     </template>
   </svg>
 </template>
@@ -12,47 +20,66 @@ export default {
   name: 'FlatSVG',
   data () {
     return {
-      points: {
-        total: '',
-        startX: '',
-        startY: ''
-      },
-      circlePoints: []
+      selectedPointIndex: '',
+      points: []
     }
   },
   methods: {
     updatePoints (event) {
-      console.info(123)
-      let clientX = event.clientX
-      let clientY = event.clientY
-
-      const differentStartClientX = Math.abs(this.points.startX - clientX)
-      const differentStartClientY = Math.abs(this.points.startY - clientY)
-      if (!this.points.startX && !this.points.startY) {
-        this.setStartPoints(clientX, clientY)
-      } else if (differentStartClientX <= 10 && differentStartClientY <= 10) {
-        clientX = this.points.startX
-        clientY = this.points.startY
-        this.clearAllPoints()
-      }
-      this.points.total += ' ' + clientX + ',' + clientY
-      this.setPoint(clientX, clientY)
+      this.setPoint(event.clientX, event.clientY)
     },
-    setStartPoints (x, y) {
-      if (!this.points.startX && !this.points.startY) {
-        this.points.startX = x
-        this.points.startY = y
-        this.points.total = ''
-      }
-    },
-    clearAllPoints () {
-      if (this.points.startX) {
-        this.points.startX = ''
-        this.points.startY = ''
-      }
+    checkSamePosition (nativeX, nativeY, clientX, clientY) {
+      const differentStartClientX = Math.abs(nativeX - clientX)
+      const differentStartClientY = Math.abs(nativeY - clientY)
+      return (differentStartClientX <= 10 && differentStartClientY <= 10)
     },
     setPoint (x, y) {
-      this.circlePoints.push({ x: x, 'y': y })
+      this.points.push({ x: x, y: y })
+    },
+    rightClick (event) {
+      event.preventDefault()
+      let clientX = event.clientX
+      let clientY = event.clientY
+      for (let i in this.points) {
+        let item = this.points[i]
+        let isSamePosition = this.checkSamePosition(item.x, item.y, clientX, clientY)
+        if (isSamePosition) {
+          this.points.splice(i, 1)
+        }
+      }
+    },
+    removeMarkup (event) {
+      event.preventDefault()
+      this.points = []
+    },
+    handleMouseDown (event) {
+      if (event.button === 0) {
+        this.selectedPointIndex = this.points.findIndex((item) => {
+          let isSamePosition = this.checkSamePosition(item.x, item.y, event.clientX, event.clientY)
+          return isSamePosition
+        })
+        document.addEventListener('mousemove', this.handleMouseMove)
+      }
+    },
+    handleMouseUp (event) {
+      if (event.button === 0) {
+        document.removeEventListener('mousemove', this.handleMouseMove)
+        this.selectedPointIndex = ''
+      }
+    },
+    handleMouseMove (event) {
+      let i = this.selectedPointIndex
+      this.points[i].x = event.clientX
+      this.points[i].y = event.clientY
+    }
+  },
+  computed: {
+    totalPoints: function () {
+      let total = ''
+      this.points.map(function (item) {
+        total += ' ' + item.x + ',' + item.y
+      })
+      return total
     }
   }
 }
@@ -60,7 +87,9 @@ export default {
 
 <style scoped>
   circle {
-    fill: #3fbdb0;
+    fill: #36a295;
+    stroke: #3fbdb0;
+    stroke-width: 2px;
   }
 
   polygon {
