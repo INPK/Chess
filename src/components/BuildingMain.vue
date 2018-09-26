@@ -108,10 +108,15 @@ export default {
       })
         .then(houses => {
           this.houses = houses.data
+          this.$store.dispatch('setItemToStore', {
+            storageName: 'houses',
+            fields: JSON.stringify(this.houses)
+          })
         })
     },
     fillBuildingsByData (storeIndex) {
       let buildingsJson = this.$store.state.buildings
+      console.info(buildingsJson)
       let building = JSON.parse(buildingsJson)[storeIndex].building
 
       this.hashId = building.hash_id

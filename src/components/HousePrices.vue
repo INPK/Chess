@@ -26,6 +26,17 @@ export default {
       expandFloors: false
     }
   },
+  created () {
+    let houseId = this.$store.state.currentHouseId
+    let houseFloors = this.$store.state.houseFloors
+    console.info(houseId, houseFloors, houseFloors === null)
+    if (houseFloors === null) {
+      this.$store.dispatch('retrieveItem', {
+        url: '/houses/' + this.houseId + '/floor-types',
+        storageName: 'houseFloors'
+      })
+    }
+  },
   components: {
     ButtonDefault,
     HouseContainer

@@ -117,7 +117,7 @@ const store = new Vuex.Store({
       return new Promise((resolve, reject) => {
         axios({
           url: ROOT_URL + data.url,
-          method: 'POST',
+          method: 'GET',
           params: {
             api_key: context.state.apiKey
           },

@@ -89,8 +89,7 @@ export default {
     },
     fillLinesByData (storeIndex) {
       let buildingsJson = this.$store.state.buildings
-      console.info(storeIndex)
-      let building = JSON.parse(buildingsJson)[storeIndex].fields
+      let building = JSON.parse(buildingsJson)[storeIndex].building
 
       this.hashId = building.hash_id
       this.name = building.name
