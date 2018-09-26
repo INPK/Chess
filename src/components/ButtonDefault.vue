@@ -41,5 +41,6 @@ export default {
 @import (less) "../../static/less/color.less";
 @import (less) "../../static/less/global.less";
 @import (less) "../../static/less/form.less";
+@import (less) "../../static/less/media.less";
 @import (less) "../../static/less/button.less";
 </style>
