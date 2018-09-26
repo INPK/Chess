@@ -12,6 +12,7 @@ import HouseFloors from '@/components/HouseFloors'
 import HouseFlatsSchemas from '@/components/HouseFlatsSchemas'
 import HouseFloorsMarking from '@/components/HouseFloorsMarking'
 import HouseProperties from '@/components/HouseProperties'
+import HousePrices from '@/components/HousePrices'
 import HouseChess from '@/components/HouseChess'
 import HouseMain from '@/components/HouseMain'
 import HouseMainProperties from '@/components/HouseMainProperties'
@@ -134,6 +135,12 @@ export default new Router({
       path: '/house/chess',
       name: 'HouseChess',
       component: HouseChess,
+      beforeEnter: ifNotAuthenticated
+    },
+    {
+      path: '/house/prices',
+      name: 'HousePrices',
+      component: HousePrices,
       beforeEnter: ifNotAuthenticated
     }
   ]

@@ -36,7 +36,7 @@
           :key="key"
           class="uk-flex uk-flex-between"
         >
-          <div>{{ key }}</div>
+          <div>{{ staticFlatsSchemasTypes[key] }}</div>
           <div>{{ flatType }}</div>
         </div>
       </div>
@@ -69,6 +69,16 @@ export default {
   },
   data () {
     return {
+      staticFlatsSchemasTypes: {
+        'studio_flat': 'Студия',
+        'one_room_flat': 'Однокомнатная',
+        'two_room_flat': '2х-комнатная',
+        'three_room_flat': '3х-комнатная',
+        'four_room_flat': '4х-комнатная',
+        'five_room_flat': '5и-комнатная',
+        'euro_two_room_flat': 'Евро 2х-комнатная',
+        'euro_three_room_flat': 'Евро 3х-комнатная'
+      },
       isVisibleButtons: false
     }
   },

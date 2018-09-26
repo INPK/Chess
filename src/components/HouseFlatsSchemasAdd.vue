@@ -24,7 +24,21 @@
               {{ errorsStack.type }}
             </span>
           </transition>
-          Тип квартиры: <input v-model="type" name="type_apartment"/>
+          <!-- Тип квартиры: <input v-model="type" name="type_apartment"/> -->
+          Тип квартиры:
+          <select
+            v-model="type"
+            type="flatSchema"
+            name="flatSchema"
+          >
+            <option
+              v-for="(flatSchema, index) in staticFlatsSchemasTypes"
+              :key="index"
+              :value="index"
+            >
+              {{ flatSchema }}
+            </option>
+          </select>
         </div>
       </div>
       <div class="form-group">
@@ -138,6 +152,16 @@ export default {
       numberOfRooms: this.selectedFlatSchema.number_of_rooms,
       price: this.selectedFlatSchema.price,
       flatSchemaImage: '',
+      staticFlatsSchemasTypes: {
+        'studio_flat': 'Студия',
+        'one_room_flat': 'Однокомнатная',
+        'two_room_flat': '2х-комнатная',
+        'three_room_flat': '3х-комнатная',
+        'four_room_flat': '4х-комнатная',
+        'five_room_flat': '5и-комнатная',
+        'euro_two_room_flat': 'Евро 2х-комнатная',
+        'euro_three_room_flat': 'Евро 3х-комнатная'
+      },
       errorsShow: false,
       errorsStack: []
     }
