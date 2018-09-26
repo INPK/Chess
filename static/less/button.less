@@ -19,6 +19,15 @@
       background-color: darken(@color-base, 10%)
     }
   }
+  &[button-color=grey] {
+    background-color: @color-grey;
+    &:hover {
+      background-color: darken(@color-grey, 5%)
+    }
+    &:active {
+      background-color: darken(@color-grey, 10%)
+    }
+  }
 }
 .link {
   color: @color-base;

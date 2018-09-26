@@ -1,9 +1,9 @@
 <template>
-  <div uk-grid>
-    <div class="uk-width-1-1 uk-width-1-3@m">
-      <div class="uk-card uk-card-default">
-        <div class="uk-card-body">
-          <h2 class="uk-text-left">Новый объект</h2>
+  <div class="buildings">
+    <div class="buildings-create">
+      <div class="create">
+        <div class="create-title">Новый объект</div>
+        <div class="create-button">
           <ButtonDefault
             name="Добавить объект вручную"
             color="grey"
@@ -11,27 +11,27 @@
           ></ButtonDefault>
           <ButtonDefault
             name="Создадим за вас (бесплатно)"
-            color="aqua"
+            color="green"
           ></ButtonDefault>
         </div>
-        <img src="/static/img/PersonalManager.jpg" alt="">
       </div>
+      <img class="create-image" src="/static/img/PersonalManager.jpg" alt="">
     </div>
-      <BuildingsItem
-        v-for="(item, index) of buildings"
-        :key="item.building.id"
-        :storeIndex="index"
-        :id="item.building.id"
-        :title="item.building.name"
-        :imageSource="item.building.images"
-        :city="item.building.city"
-        :address="item.building.address"
-        :country="item.building.country"
-        :district="item.building.district"
-        :region="item.building.region"
-        :flats="item.flats_by_type"
-        @viewDetail="viewDetail"
-      />
+    <BuildingsItem
+      v-for="(item, index) of buildings"
+      :key="item.building.id"
+      :storeIndex="index"
+      :id="item.building.id"
+      :title="item.building.name"
+      :imageSource="item.building.images"
+      :city="item.building.city"
+      :address="item.building.address"
+      :country="item.building.country"
+      :district="item.building.district"
+      :region="item.building.region"
+      :flats="item.flats_by_type"
+      @viewDetail="viewDetail"
+    />
   </div>
 </template>
 
@@ -79,6 +79,38 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+  @import (less) "../../static/less/color.less";
+  @import (less) "../../static/less/grid.less";
+  @import (less) "../../static/less/media.less";
+  @import (less) "../../static/less/padding.less";
 
+  .buildings {
+    .grid();
+    .padding();
+    @media @desktop {
+      .grid(@c: 2);
+    }
+    @media @tablet{
+      .grid(@c: 1);
+    }
+    &-create {
+      background-color: @color-white;
+      .create {
+        .padding(@v: 2rem);
+        &-title {
+          font-size: 2rem;
+          font-weight: 100;
+        }
+        &-button {
+          .padding-v(@v: 2rem);
+        }
+        &-image {
+          display: block;
+          width: 100%;
+          object-fit: cover;
+        }
+      }
+    }
+  }
 </style>

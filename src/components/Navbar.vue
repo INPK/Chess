@@ -86,11 +86,11 @@ export default {
             background-image: linear-gradient( 135deg, #E9F6FF 11.2%, #F8F5FF 91.2% );
           }
           &:active {
-            background-image: linear-gradient( 135deg, darken(#E9F6FF, 5%) 11.2%, darken(#F8F5FF, 5%) 91.2% );
+            background-image: linear-gradient( 135deg, darken(#E9F6FF, 3%) 11.2%, darken(#F8F5FF, 3%) 91.2% );
           }
         }
         &-menu {
-          box-shadow: 0 28px 50px rgba(0,0,0,0.16);
+          box-shadow: 0 28px 50px rgba(22, 0, 27, 0.14);
           font-size: 0.875rem;
           position: absolute;
           background: #fff;

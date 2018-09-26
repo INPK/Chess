@@ -1,5 +1,5 @@
 <template>
-  <div class="uk-width-1-1 uk-width-1-3@m"
+  <div class="buildings-item"
        @mouseover="toggleEditButton"
        @mouseout="toggleEditButton"
   >
@@ -11,16 +11,16 @@
       :actionForClick="editBuilding"
     />
     <div
-      class="uk-card uk-card-default"
+      class=""
       @click="redirectToCurrentBuildingMain"
     >
-      <div class="uk-card-media-top">
+      <div class="item-image">
         <img :src="imageSource" alt="">
       </div>
-      <div class="uk-card-body">
-        <div class="uk uk-flex uk-flex-between">
+      <div class="item-desc">
+        <div class="">
           <div>
-            <h3 class="uk-card-title">{{ title }}</h3>
+            <h3 class="">{{ title }}</h3>
             <div>
               <small>{{ country }}, {{ region }}, {{ city }}, {{ district }}</small>
             </div>
@@ -30,11 +30,12 @@
             <div>{{ numberOfFlats }}</div>
           </div>
         </div>
-        <div class="uk-divider"></div>
+      </div>
+      <div class="item-flats">
         <div
           v-for="(flatType, key) in flats"
           :key="key"
-          class="uk-flex uk-flex-between"
+          class=""
         >
           <div>{{ staticFlatsSchemasTypes[key] }}</div>
           <div>{{ flatType }}</div>
@@ -120,6 +121,24 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+  @import (less) "../../static/less/color.less";
+  @import (less) "../../static/less/grid.less";
+  @import (less) "../../static/less/media.less";
+  @import (less) "../../static/less/padding.less";
 
+  .buildings {
+    &-item {
+      background-color: @color-white;
+      .item {
+        &-desc {
+          .padding(@v: 2rem);
+        }
+        &-flats {
+          border-top: 1px solid #f2f4f6;
+          .padding(@v: 2rem);
+        }
+      }
+    }
+  }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <Navbar v-if="isAuthenticated"/>
-    <router-view/>
+    <main><router-view/></main>
   </div>
 </template>
 
