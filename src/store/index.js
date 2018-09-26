@@ -46,7 +46,6 @@ const store = new Vuex.Store({
   },
   actions: {
     setItemToStore (context, data) {
-      // const responseJson = JSON.stringify(data.response)
       localStorage.setItem(data.storageName, data.fields)
       context.commit('storeItem', {
         name: data.storageName,
@@ -57,22 +56,18 @@ const store = new Vuex.Store({
       localStorage.removeItem(name)
       context.commit('destroyItem', name)
     },
-    sendToServer (context, data) {
+    writeItem (context, data) {
       return new Promise((resolve, reject) => {
-        // console.info('URL', ROOT_URL + data.url, 'METHODS', data.method, 'DATA', data.fields)
+        data.fields['api_key'] = context.state.apiKey
         axios({
           url: ROOT_URL + data.url,
-          method: data.method,
+          method: 'POST',
           data: data.fields,
           headers: {
             'Content-type': 'multipart/form-data'
           }
         })
           .then(response => {
-            /* context.dispatch('setItemToStore', {
-              storageName: data.storageName,
-              fields: response.data
-            }) */
             resolve(response)
           })
           .catch(error => {
@@ -80,21 +75,63 @@ const store = new Vuex.Store({
           })
       })
     },
-    writeItem (context, data) {
-      data.method = 'POST'
-      return context.dispatch('sendToServer', data)
-    },
     updateItem (context, data) {
-      data.method = 'PUT'
-      return context.dispatch('sendToServer', data)
+      return new Promise((resolve, reject) => {
+        data.fields['api_key'] = context.state.apiKey
+        axios({
+          url: ROOT_URL + data.url,
+          method: 'PUT',
+          data: data.fields,
+          headers: {
+            'Content-type': 'multipart/form-data'
+          }
+        })
+          .then(response => {
+            resolve(response)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
     },
     removeItem (context, data) {
-      data.method = 'DELETE'
-      return context.dispatch('sendToServer', data)
+      return new Promise((resolve, reject) => {
+        data.fields['api_key'] = context.state.apiKey
+        axios({
+          url: ROOT_URL + data.url,
+          method: 'DELETE',
+          data: data.fields,
+          headers: {
+            'Content-type': 'multipart/form-data'
+          }
+        })
+          .then(response => {
+            resolve(response)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
     },
     retrieveItem (context, data) {
-      data.method = 'GET'
-      return context.dispatch('sendToServer', data)
+      return new Promise((resolve, reject) => {
+        axios({
+          url: ROOT_URL + data.url,
+          method: 'POST',
+          params: {
+            api_key: context.state.apiKey
+          },
+          headers: {
+            'Content-type': 'multipart/form-data'
+          }
+        })
+          .then(response => {
+            resolve(response)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
     },
     storeLoginData (context, loginData) {
       for (let i in loginData) {
