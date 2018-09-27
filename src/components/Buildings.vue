@@ -90,9 +90,13 @@ export default {
     .padding();
     @media @desktop {
       .grid(@c: 2);
+      .padding(@v: 2rem;);
     }
     @media @tablet{
       .grid(@c: 1);
+    }
+    @media @mobile {
+      .padding(@v: 1rem;);
     }
     &-create {
       background-color: @color-white;
