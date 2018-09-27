@@ -5,13 +5,15 @@
         <div class="create-title">Новый объект</div>
         <div class="create-button">
           <ButtonDefault
-            name="Добавить объект вручную"
+            name="Добавить объект"
             color="grey"
+            class="create-button__add button-expand"
             :actionForClick = "redirectToCreate"
           ></ButtonDefault>
           <ButtonDefault
-            name="Создадим за вас (бесплатно)"
+            name="Создадим за вас"
             color="green"
+            class="button-expand"
           ></ButtonDefault>
         </div>
       </div>
@@ -90,12 +92,23 @@ export default {
     .padding();
     @media @desktop {
       .grid(@c: 2);
+      .padding(@v: 2rem;);
     }
     @media @tablet{
       .grid(@c: 1);
     }
+    @media @mobile {
+      .padding(@v: 1rem;);
+      grid-row-gap: 1rem;
+    }
     &-create {
       background-color: @color-white;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      &:hover {
+        box-shadow: 0 28px 50px rgba(22, 0, 27, 0.14);
+      }
       .create {
         .padding(@v: 2rem);
         &-title {
@@ -104,6 +117,16 @@ export default {
         }
         &-button {
           .padding-v(@v: 2rem);
+          .grid(@c: 2);
+          @media @xdesktop {
+            .grid(@c: 1;@rg: 1rem);
+          }
+          @media @desktop {
+            .grid(@c: 2;@rg: 1rem);
+          }
+          @media @mobile {
+            .grid(@c: 1;@rg: 1rem);
+          }
         }
         &-image {
           display: block;
