@@ -1,20 +1,79 @@
 <template>
-  <div class="uk-container uk-background-default uk-padding" uk-grid>
-    <div class="uk-width-2-3">
-      <h2>Введите информацию о комплексе:</h2>
-      <label for="name">Название ЖК</label>
-      <input v-model="name" id="name" />
-      <h2>Расположение:</h2>
-      <span>Страна</span><input v-model="country" name="country"/>
-      <span>Регион</span><input v-model="region" name="region"/>
-      <span>Валюта</span><input v-model="currency" name="currency"/>
-      <span>Город</span><input v-model="city" name="city"/>
-      <span>Район</span><input v-model="district" name="district"/>
-      <span>Видео</span><input v-model="video" name="video"/>
-      <span>Картинки</span><input v-model="images" name="images"/>
-      <span>Координаты</span><input v-model="coords" name="coordinates"/>
+  <div class="buildings-properties">
+    <div class="properties-form">
+      <div class="form-title">Введите информацию о комплексе:</div>
+      <div class="form-group properties-title">
+        <label class="form-group__label" for="name">Название ЖК</label>
+        <div class="form-group__input">
+          <input
+            v-model="name"
+            id="name"
+            type="text"
+          />
+          <span class="form-group__input_bar"></span>
+        </div>
+      </div>
+      <div class="form-subtitle">Расположение:</div>
+      <div class="form-grid">
+        <div class="form-group properties-group">
+          <label class="form-group__label label" for="country">Страна</label>
+          <div class="form-group__input">
+            <input v-model="country" name="country" />
+            <span class="form-group__input_bar"></span>
+          </div>
+        </div>
+        <div class="form-group properties-group">
+          <label class="form-group__label label" for="region">Регион</label>
+          <div class="form-group__input">
+            <input v-model="region" name="region" />
+            <span class="form-group__input_bar"></span>
+          </div>
+        </div>
+        <div class="form-group properties-group">
+          <label class="form-group__label label" for="currency">Валюта</label>
+          <div class="form-group__input">
+            <input v-model="currency" name="currency" />
+            <span class="form-group__input_bar"></span>
+          </div>
+        </div>
+        <div class="form-group properties-group">
+          <label class="form-group__label label" for="city">Город</label>
+          <div class="form-group__input">
+            <input v-model="city" name="city" />
+            <span class="form-group__input_bar"></span>
+          </div>
+        </div>
+        <div class="form-group properties-group">
+          <label class="form-group__label label" for="district">Район</label>
+          <div class="form-group__input">
+            <input v-model="district" name="district" />
+            <span class="form-group__input_bar"></span>
+          </div>
+        </div>
+        <div class="form-group properties-group">
+          <label class="form-group__label label" for="video">Видео</label>
+          <div class="form-group__input">
+            <input v-model="video" name="video" />
+            <span class="form-group__input_bar"></span>
+          </div>
+        </div>
+        <div class="form-group properties-group">
+          <label class="form-group__label label" for="images">Картинки</label>
+          <div class="form-group__input">
+            <input v-model="images" name="images" />
+            <span class="form-group__input_bar"></span>
+          </div>
+        </div>
+        <div class="form-group properties-group">
+          <label class="form-group__label label" for="coordinates">Координаты</label>
+          <div class="form-group__input">
+            <input v-model="coords" name="coordinates" />
+            <span class="form-group__input_bar"></span>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="uk-width-1-3">
+    <div>
       <ButtonDefault
         v-if="!editMode"
         name="Сохранить"
@@ -120,6 +179,77 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="less" scoped>
+  @import (less) "../../static/less/color.less";
+  @import (less) "../../static/less/font.less";
+  @import (less) "../../static/less/grid.less";
+  @import (less) "../../static/less/media.less";
+  @import (less) "../../static/less/padding.less";
+  .buildings-properties {
+    background-color: @color-white;
+    .padding();
+    @media @xdesktop {
+      .padding(@v: 3rem);
+    }
+    @media @desktop {
+      .padding(@v: 2rem);
+    }
+    .properties {
+      &-form {
+        .form {
+          &-title {
+            .font(@s: 1.75rem;@w: 100;);
+            margin-bottom: 2rem;
+          }
+          &-subtitle {
+            color: @color-light-black;
+            .font(@s: 1.25rem;@w: 100;);
+            margin-top: 4rem;
+            margin-bottom: 2rem;
+          }
+          &-grid {
+            .grid(@c: 2;@cg: 6rem; @rg: 1rem);
+            @media @desktop {
+              .grid(@c: 2;@cg: 3rem; @rg: 1rem);
+            }
+            @media @mobile {
+              .grid(@c: 1;@cg: 0rem; @rg: 1rem);
+            }
+          }
+        }
+      }
+      &-title {
+        grid-template-columns: 125px 1fr;
+        @media @mobile {
+          .grid(@c: 1;@cg: 6rem; @rg: 0rem);
+        }
+        label {
+          color: @color-dark-grey ;
+        }
+        input {
+          .font(@s: 1.75rem; @w: 100);
+          text-align: center;
+          @media @mobile {
+            .font(@s: 1.25rem; @w: 400);
+            text-align: left;
+          }
+        }
+      }
+      &-group {
+        grid-template-columns: 120px 1fr;
+        @media @tablet {
+          .grid(@c: 1; @cg: 6rem; @rg: 0rem);
+        }
+        label {
+          color: @color-dark-grey ;
+          .font(@s: 0.875rem;);
+        }
+        input {
+          @media @tablet {
+            padding: 10px 0;
+          }
+        }
+      }
+    }
+  }
 </style>
