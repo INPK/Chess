@@ -22,6 +22,16 @@ export default {
 </script>
 
 <style lang="less">
-@import (reference) "../static/less/global.less";
-
+  @import (reference) "../static/less/global.less";
+  @import (less) "../static/less/media.less";
+  @import (less) "../static/less/padding.less";
+  main {
+    .padding();
+    @media @desktop {
+      .padding(@v: 2rem;);
+    }
+    @media @mobile {
+      .padding(@v: 1rem;);
+    }
+  }
 </style>

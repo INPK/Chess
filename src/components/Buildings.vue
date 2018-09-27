@@ -89,16 +89,13 @@ export default {
 
   .buildings {
     .grid();
-    .padding();
     @media @desktop {
       .grid(@c: 2);
-      .padding(@v: 2rem;);
     }
     @media @tablet{
       .grid(@c: 1);
     }
     @media @mobile {
-      .padding(@v: 1rem;);
       grid-row-gap: 1rem;
     }
     &-create {

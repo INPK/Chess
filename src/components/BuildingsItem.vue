@@ -165,13 +165,16 @@ export default {
           display: grid;
           grid-template-columns: 1fr auto;
           grid-column-gap: 1rem;
+          align-items: flex-start;
           .padding(@v: 2rem);
           .desc {
             &-title {
               .font(@s: 2rem; @l: -1px; @w: 100);
+              word-wrap: break-word;
+              word-break: break-all;
             }
             &-type {
-              margin: 0.5rem 0rem 1rem;
+              margin: 0.25rem 0rem 1rem;
               &__badge {
                 color:@color-white;
                 background-color: @color-light-green;
@@ -218,9 +221,6 @@ export default {
               align-items: center;
               margin-bottom: 0rem;
               .padding-c(@t: 0.75rem; @b: 0.75rem; @l: 2rem; @r: 2rem);
-              &:hover {
-                background-image: linear-gradient( 135deg, #E9F6FF 11.2%, #F8F5FF 91.2% );
-              }
               &:last-child {
                 margin-bottom: 0;
               }
