@@ -37,7 +37,7 @@
           :key="key"
           class=""
         >
-          <div>{{ staticFlatsSchemasTypes[key] }}</div>
+          <div>{{ staticFlatsSchemasTypes[key].title }}</div>
           <div>{{ flatType }}</div>
         </div>
       </div>
@@ -71,14 +71,38 @@ export default {
   data () {
     return {
       staticFlatsSchemasTypes: {
-        'studio_flat': 'Студия',
-        'one_room_flat': 'Однокомнатная',
-        'two_room_flat': '2х-комнатная',
-        'three_room_flat': '3х-комнатная',
-        'four_room_flat': '4х-комнатная',
-        'five_room_flat': '5и-комнатная',
-        'euro_two_room_flat': 'Евро 2х-комнатная',
-        'euro_three_room_flat': 'Евро 3х-комнатная'
+        'studio_flat': {
+          title: 'Студия',
+          alias: 'S'
+        },
+        'one_room_flat': {
+          title: 'Однокомнатная',
+          alias: '1к'
+        },
+        'two_room_flat': {
+          title: '2х-комнатная',
+          alias: '2х'
+        },
+        'three_room_flat': {
+          title: '3х-комнатная',
+          alias: '3х'
+        },
+        'four_room_flat': {
+          title: '4х-комнатная',
+          alias: '4х'
+        },
+        'five_room_flat': {
+          title: '5и-комнатная',
+          alias: '5к'
+        },
+        'euro_two_room_flat': {
+          title: 'Евро 2х-комнатная',
+          alias: 'Е2'
+        },
+        'euro_three_room_flat': {
+          title: 'Евро 3х-комнатная',
+          alias: 'Е3'
+        }
       },
       isVisibleButtons: false
     }

@@ -11,6 +11,13 @@
           :actionForClick="dataImport"
         />
       </div>
+      <div class="flats_list">
+        <div
+          v-for="(item, index) in flats"
+          :key="index"
+        >
+        </div>
+      </div>
     </HouseContainer>
   </div>
 </template>
@@ -23,18 +30,26 @@ export default {
   name: 'HousePrices',
   data () {
     return {
+      flats: [],
       expandFloors: false
     }
   },
   created () {
     let houseId = this.$store.state.currentHouseId
     let houseFloors = this.$store.state.houseFloors
-    console.info(houseId, houseFloors, houseFloors === null)
+    console.info(houseId, JSON.parse(houseFloors), houseFloors === null)
     if (houseFloors === null) {
       this.$store.dispatch('retrieveItem', {
-        url: '/houses/' + this.houseId + '/floor-types',
+        url: '/houses/' + houseId + '/flats',
         storageName: 'houseFloors'
       })
+        .then(response => {
+          console.info(response.data.flats)
+          this.flats = response.data.flats
+        })
+        .catch(errors => {
+          console.info(errors)
+        })
     }
   },
   components: {
