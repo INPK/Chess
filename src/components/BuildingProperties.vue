@@ -59,7 +59,6 @@ export default {
   methods: {
     storeBuildingsProperties (buildingIdPath = '', action = 'writeItem') {
       const data = {
-        api_key: this.$store.state.retrieveApiKey,
         company_id: this.$store.state.companyHashId,
         name: this.name,
         region: this.region,
@@ -71,13 +70,12 @@ export default {
         coordinates: this.coords,
         currency: this.currency
       }
-      const buildingInfo = JSON.stringify(data)
       this.$store.dispatch(action, {
-        fields: buildingInfo,
+        fields: data,
         url: '/buildings' + buildingIdPath,
         storageName: 'buildingProperties'
       })
-        .then(response => {
+        .then(() => {
           this.$router.push('/')
         })
         .catch(error => {

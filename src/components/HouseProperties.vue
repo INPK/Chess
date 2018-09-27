@@ -40,13 +40,13 @@
         v-if="!editMode"
         name="Следующий шаг"
         color="green"
-        :actionForClick = "createHouseProperties"
+        :actionForClick="createHouseProperties"
       />
       <div v-else>
         <ButtonDefault
           name="Обновить"
           color="green"
-          :actionForClick = "updateHouseProperties"
+          :actionForClick="updateHouseProperties"
         />
         <ButtonDefault
           name="Пропустить"
