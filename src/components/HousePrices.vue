@@ -5,46 +5,24 @@
         <span>Введите цену и площадь квартир</span>
         <label for="expandFloorToggle">Развернуть все этажи</label>
         <input v-model="expandFloors" type="checkbox" id="expandFloorToggle"/>
-        <ButtonDefault
+        <!--<ButtonDefault
           name="Импорт данных"
           color="green"
           :actionForClick="dataImport"
-        />
+        />-->
       </div>
       <div class="flats_list">
         <div
-          v-for="(item, index) in flats"
+          v-for="(floor, index) in fullHouse"
           :key="index"
         >
-          <div>
-            <div>
-              <div>
-                <span>Этаж {{ item[0].floor }}</span>
-                <span>^</span>
-              </div>
-              <h2>{{ item[0].floor }}</h2>
-            </div>
-            <div>
-              <span>Номер квартиры</span>
-              <span>Планировка</span>
-              <span>Площадь</span>
-              <span>Цена</span>
-              <span>Подъезд</span>
-              <span>Статус</span>
-              <span
-                v-for="(flat, index) in item"
-                class="tmp-flat"
-                :key="index"
-              >
-                <span>Квартира №{{ flat.number }}</span>
-                <span>{{ staticFlatsSchemasTypes[flat.flat_schema_id].title }}</span>
-                <span>{{ 'flat.area' }}</span>
-                <span>{{ 'flat.price' }}</span>
-                <span>{{ flat.entrance }}</span>
-                <span>{{ flat.status }}</span>
-              </span>
-            </div>
-          </div>
+          <HousePricesFloor
+            :floor="floor"
+            :floorIndex="index"
+            :editableFloorIndex="editableFloorIndex"
+            @editFloor="editFloor"
+            @updateFlatsList="getFullHouse"
+          />
         </div>
       </div>
     </HouseContainer>
@@ -54,12 +32,14 @@
 <script>
 import ButtonDefault from './ButtonDefault'
 import HouseContainer from './HouseContainer'
+import HousePricesFloor from './HousePricesFloor'
 
 export default {
   name: 'HousePrices',
   data () {
     return {
-      flats: [],
+      fullHouse: [],
+      editableFloorIndex: null,
       staticFlatsSchemasTypes: {
         'studio_flat': {
           title: 'Студия',
@@ -97,31 +77,42 @@ export default {
       expandFloors: false
     }
   },
+  components: {
+    ButtonDefault,
+    HouseContainer,
+    HousePricesFloor
+  },
   created () {
-    let houseId = this.$store.state.currentHouseId
-    let houseFloors = this.$store.state.houseFloors
-    console.info(houseId, JSON.parse(houseFloors), houseFloors === null)
-    if (houseFloors === null) {
+    let fullHouse = this.$store.state.fullHouse
+    if (fullHouse === null) {
+      this.getFullHouse()
+    } else {
+      this.fullHouse = JSON.parse(fullHouse)
+    }
+  },
+  methods: {
+    getFullHouse () {
+      let houseId = this.$store.state.currentHouseId
       this.$store.dispatch('retrieveItem', {
         url: '/houses/' + houseId + '/flats',
-        storageName: 'houseFloors'
+        storageName: 'fullHouse'
       })
         .then(response => {
-          console.info(response.data.flats)
-          this.flats = response.data.flats
+          this.fullHouse = response.data.flats
+          /* this.$store.dispatch('setItemToStore', {
+            storageName: 'fullHouse',
+            fields: this.fullHouse
+          }) */
         })
         .catch(errors => {
           console.info(errors)
         })
-    }
-  },
-  components: {
-    ButtonDefault,
-    HouseContainer
-  },
-  methods: {
+    },
     dataImport () {
       alert('Импорт цен')
+    },
+    editFloor (floorIndex) {
+      this.editableFloorIndex = floorIndex
     }
   }
 }

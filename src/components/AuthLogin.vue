@@ -44,7 +44,7 @@
         </div>
       </div>
       <div v-if="singleErrorMessage" class="login-alert">
-        {{ singleErrorMessage[0] }}
+        {{ singleErrorMessage }}
       </div>
       <div class="login-button">
         <div>
@@ -78,7 +78,7 @@ export default {
     return {
       email: '',
       password: '',
-      singleErrorMessage: '',
+      // singleErrorMessage: '',
       errorsStack: []
     }
   },
@@ -98,12 +98,13 @@ export default {
         })
         .catch(error => {
           this.errorsStack = error.response.data
+          // if (error.response.data)
         })
     },
     clearError (event) {
       let item = event.target.id
       this.$delete(this.errorsStack, item)
-      this.singleErrorMessage = ''
+      this.$delete(this.errorsStack, 'single_error')
     }
   },
   computed: {
@@ -112,8 +113,14 @@ export default {
       for (let item in this.errorsStack) {
         errors[item] = 'error'
       }
-      console.info(errors)
       return errors
+    },
+    singleErrorMessage () {
+      if (this.errorsStack.single_error) {
+        return this.errorsStack.message
+      } else {
+        return null
+      }
     }
   }
 }

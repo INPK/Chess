@@ -110,7 +110,7 @@ export default {
       country: '',
       video: '',
       images: '',
-      coords: [54.8, 39.8],
+      coords: [],
       currency: '',
       editMode: false
     }

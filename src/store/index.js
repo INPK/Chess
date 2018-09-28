@@ -14,6 +14,7 @@ const store = new Vuex.Store({
     buildings: localStorage.getItem('buildings') || null,
     currentHouseId: localStorage.getItem('currentHouseId') || null,
     houseFloors: localStorage.getItem('houseFloors') || null,
+    fullHouse: localStorage.getItem('fullHouse') || null,
     properties: localStorage.getItem('properties') || null,
     flatsSchemas: localStorage.getItem('flatsSchemas') || null,
     currentBuildingStoreIndex: localStorage.getItem('currentBuildingStoreIndex') || null,
