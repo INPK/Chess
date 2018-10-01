@@ -1,10 +1,18 @@
 <template>
-  <div>
+  <div class="house-floors">
     <div>
-      <h2>
-        Создайте типовые планировки:
-      </h2>
-      <div class="uk-flex uk-child-width-1-5@m uk-child-width-1-2" uk-grid>
+      <div class="floors-title">Создайте типовые планировки:</div>
+      <div class="floors">
+        <div class="floors-create">
+          <div class="floors-create__image">
+            <img width="200" height="200" src="/static/img/blank_layout.svg"/>
+          </div>
+          <ButtonDefault
+            color="green"
+            name="Добавить типовой этаж"
+            :actionForClick="activateSidebar"
+          />
+        </div>
         <HouseFloorsItem
           v-for="(floor, index) in floors"
           :key="floor.hash_id"
@@ -20,14 +28,6 @@
           @emitMarkingFloor="markingFloor"
         />
       </div>
-    </div>
-    <div class="usr-layout-create uk-background-default uk-padding">
-      <img width="200" height="200" src="/static/img/blank_layout.svg"/>
-      <ButtonDefault
-        color="green"
-        name="Добавить типовой этаж"
-        :actionForClick="activateSidebar"
-      />
     </div>
     <HouseFloorsAdd
       v-if="sidebar.show"
@@ -173,6 +173,46 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="less" scoped>
+  @import (less) "../../static/less/color.less";
+  @import (less) "../../static/less/font.less";
+  @import (less) "../../static/less/form.less";
+  @import (less) "../../static/less/grid.less";
+  @import (less) "../../static/less/media.less";
+  @import (less) "../../static/less/padding.less";
+  .house-floors {
+    .floors {
+      &-title {
+        .font(@s: 1.75rem; @w: 100);
+        margin-bottom: 2rem;
+      }
+      .grid(@c: 5);
+      @media @xdesktop {
+        .grid(@c: 4);
+      }
+      @media @desktop {
+        .grid(@c: 3);
+      }
+      @media @tablet {
+        .grid(@c: 2);
+      }
+      @media @mobile {
+        .grid(@c: 1);
+      }
+      &-create {
+        background-color: @color-white;
+        .padding(@v: 2rem);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        &:hover {
+          box-shadow: 0 28px 50px rgba(22, 0, 27, 0.14);
+        }
+        &__image {
+          margin-bottom: 2rem;
+        }
+      }
+    }
+  }
 </style>

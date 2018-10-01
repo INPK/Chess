@@ -1,40 +1,46 @@
 <template>
-  <div class="uk-width-1-1 uk-width-1-3@m"
+  <div class="buildings-item"
        @mouseover="toggleEditButton"
        @mouseout="toggleEditButton"
   >
-    <ButtonDefault
-      v-if="isVisibleButtons"
-      name="Редактировать"
-      color="green"
-      class="button-expand"
-      :actionForClick="redirectToEditHouse"
-    />
-    <div class="uk-card uk-card-default" @click="redirectToCurrentHouseMain">
-      <div class="uk-card-media-top">
+    <div>
+      <div class="item-image" @click="redirectToCurrentHouseMain">
         <img :src="imageSource" alt="">
       </div>
-      <div class="uk-card-body">
-        <div class="uk uk-flex uk-flex-between">
-          <div>
-            <h3 class="uk-card-title">{{ streetName }},{{ number }}</h3>
-            <div>
-              <small>жилой комплекс</small>
-            </div>
+      <div class="item-desc" @click="redirectToCurrentHouseMain">
+        <div>
+          <div class="desc-title">{{ title }}</div>
+          <div class="desc-type">
+            <span class="desc-type__badge">Жилой комплекс</span>
           </div>
-          <div>
-            <h3>Осталось квартир</h3>
-            <div>{{ flatsBalance }}</div>
-          </div>
+          <div class="desc-address">{{ streetName }},{{ number }}</div>
         </div>
-        <div class="uk-divider"></div>
+        <div class="desc-amount">
+          <div class="desc-amount__title">Осталось<br>квартир</div>
+          <div class="desc-amount__count">{{ flatsBalance }}</div>
+        </div>
+      </div>
+      <div class="item-list">
         <div
-          v-for="(flat, key) of flats"
+          v-for="(flat, key) in flats"
           :key="key"
-          class="uk-flex uk-flex-between"
+          class="list-flat"
         >
-          <div>{{ staticFlatsSchemasTypes[flat.type].title }}</div>
-          <div>{{ flat.number_of }}</div>
+          <div class="list-flat__type">{{ staticFlatsSchemasTypes[flat.type].alias }}</div>
+          <div class="list-flat__desc">
+            <div>{{ staticFlatsSchemasTypes[flat.type].title }}</div>
+            <div class="list-flat__desc_price">от 1,25 млн.руб.</div>
+          </div>
+          <div class="list-flat__amount">{{ flat.number_of }}</div>
+        </div>
+        <div class="item-buttons" v-if="isVisibleButtons">
+          <ButtonDefault
+            v-if="isVisibleButtons"
+            name="Редактировать"
+            color="green"
+            class="button-expand"
+            :actionForClick="redirectToEditHouse"
+          />
         </div>
       </div>
     </div>
@@ -161,6 +167,129 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+  @import (less) "../../static/less/color.less";
+  @import (less) "../../static/less/font.less";
+  @import (less) "../../static/less/grid.less";
+  @import (less) "../../static/less/media.less";
+  @import (less) "../../static/less/padding.less";
 
+  .buildings {
+    &-item {
+      background-color: @color-white;
+      cursor: pointer;
+      &:hover {
+        box-shadow: 0 28px 50px rgba(22, 0, 27, 0.14);
+      }
+      .item {
+        &-image {
+          img {
+            display: block;
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+          }
+        }
+        &-desc {
+          display: grid;
+          grid-template-columns: 1fr auto;
+          grid-column-gap: 1rem;
+          align-items: flex-start;
+          .padding(@v: 2rem);
+          .desc {
+            &-title {
+              .font(@s: 2rem; @l: -1px; @w: 100);
+              word-wrap: break-word;
+              word-break: break-all;
+            }
+            &-type {
+              margin: 0.25rem 0rem 1rem;
+              &__badge {
+                color:@color-white;
+                background-color: @color-light-green;
+                padding: 0.25rem 0.5rem;
+                border-radius: 3px;
+                display: inline-block;
+                .font(@s: 0.75rem);
+              }
+            }
+            &-address {
+              color: @color-dark-grey;
+              .font(@s: 0.75rem);
+            }
+            &-amount {
+              .padding(@v: 1rem);
+              border: 1px solid @color-light-grey;
+              border-radius: 5px;
+              color: @color-light-green;
+              text-align: center;
+              &__title {
+                font-size: 0.75rem;
+                font-weight: 500;
+                line-height: 1.4;
+                margin-bottom: 0.5rem;
+              }
+              &__count {
+                font-size: 2rem;
+                font-weight: 100;
+              }
+            }
+          }
+        }
+        &-list {
+          position: relative;
+          border-top: 1px solid #f2f4f6;
+          min-height: 8rem;
+          .padding-v(@v: 1rem);
+          .list {
+            &-flat {
+              color: @color-dark-grey;
+              display: grid;
+              grid-template-columns: auto 1fr auto;
+              grid-column-gap: 1rem;
+              align-items: center;
+              margin-bottom: 0rem;
+              .padding-c(@t: 0.75rem; @b: 0.75rem; @l: 2rem; @r: 2rem);
+              &:last-child {
+                margin-bottom: 0;
+              }
+              &__type {
+                border: 1px solid;
+                border-radius: 50%;
+                width: 2.5rem;
+                height: 2.5rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+              &__desc {
+                &_price {
+                  color: lighten(@color-dark-grey, 20%);
+                  margin-top: 0.35rem;
+                  .font(@s: 0.75rem);
+                }
+              }
+              &__amount {
+                .font(@s: 1.25rem; @w: 100);
+              }
+            }
+          }
+        }
+        &-buttons {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(254,254,254,0.5);
+          .padding(@v:2rem);
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px);
+        }
+      }
+    }
+  }
 </style>
