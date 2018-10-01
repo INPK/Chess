@@ -65,9 +65,7 @@
 </template>
 
 <script>
-import axios from 'axios'
 import AuthContainer from './AuthContainer'
-import CommonMethods from './CommonMethods'
 import ButtonDefault from './ButtonDefault'
 import BeatLoader from './BeatLoader'
 
@@ -78,8 +76,7 @@ export default {
       email: '',
       send: false,
       sendingOut: false,
-      errorsStack: [],
-      singleErrorMessage: ''
+      errorsStack: []
     }
   },
   components: {
@@ -87,18 +84,19 @@ export default {
     ButtonDefault,
     BeatLoader
   },
-  mixins: [ CommonMethods ],
   methods: {
     sentEmailForResetPassword () {
       this.sendingOut = true
-      var data = JSON.stringify({ email: this.email })
-      axios.post(this.$rootUrl + '/password/email', data)
+      this.$store.dispatch('writeItem', {
+        url: '/password/email',
+        fields: { email: this.email }
+      })
         .then(() => {
           this.send = true
           this.sendingOut = false
         })
-        .catch((error) => {
-          this.showError(error, this)
+        .catch(error => {
+          this.errorsStack = error.response.data
           this.sendingOut = false
         })
     }
@@ -110,6 +108,13 @@ export default {
         errors[item] = 'error'
       }
       return errors
+    },
+    singleErrorMessage () {
+      if (this.errorsStack.single_error) {
+        return this.errorsStack.message
+      } else {
+        return null
+      }
     }
   }
 }

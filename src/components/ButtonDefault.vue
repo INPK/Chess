@@ -25,13 +25,6 @@ export default {
     },
     actionForClick: Function
   },
-  created () {
-    console.info(this.actionForClick)
-  },
-  data () {
-    return {
-    }
-  },
   methods: {
     methodFromParent () {
       this.actionForClick()

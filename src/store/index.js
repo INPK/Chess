@@ -97,7 +97,8 @@ const store = new Vuex.Store({
     },
     removeItem (context, data) {
       return new Promise((resolve, reject) => {
-        data.fields['api_key'] = context.state.apiKey
+        // data.fields['api_key'] = context.state.apiKey
+        // console.info(data.url, data.fields)
         axios({
           url: ROOT_URL + data.url,
           method: 'DELETE',

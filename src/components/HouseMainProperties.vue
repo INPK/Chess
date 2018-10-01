@@ -1,5 +1,10 @@
 <template>
     <HouseMain>
+      <AlertDefault
+        v-if="singleErrorMessage"
+        :message="singleErrorMessage"
+        @alertDie="singleErrorMessage = ''"
+      />
       <h1>Характеристики дома</h1>
       <div>
         <div>
@@ -23,6 +28,7 @@
 
 <script>
 import HouseMain from './HouseMain'
+import AlertDefault from './AlertDefault'
 
 export default {
   name: 'HouseMainProperties',
@@ -40,11 +46,13 @@ export default {
       finishing: '',
       stageDevelopment: '',
       startDevelopment: '',
+      singleErrorMessage: '',
       endDevelopment: '',
       editMode: false
     }
   },
   components: {
+    AlertDefault,
     HouseMain
   },
   created () {
@@ -60,7 +68,8 @@ export default {
         })
       })
       .catch(error => {
-        console.info('HouseProperties', error)
+        this.singleErrorMessage = 'Не удалось получить характеристики дома.'
+        console.info(error.response.data)
       })
   },
   methods: {

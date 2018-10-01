@@ -5,6 +5,11 @@
   >
     <div>
       <div>Квартира № {{ flatTypeNumber }}</div>
+      <AlertDefault
+        v-if="singleErrorMessage"
+        :message="singleErrorMessage"
+        @alertDie="singleErrorMessage = ''"
+      />
       <transition name="slide-fade">
         <div v-if="editMode">
           <div>
@@ -50,7 +55,7 @@
     <ButtonDefault
       name="Удалить"
       color="green"
-      :actionForClick="alertConfirm"
+      :actionForClick="alertShow = true"
     />
     <AlertConfirm
       v-if="alertShow"
@@ -63,13 +68,14 @@
 <script>
 import ButtonDefault from './ButtonDefault'
 import AlertConfirm from './AlertConfirm'
+import AlertDefault from './AlertDefault'
 
 export default {
   name: 'FlatMarked',
   data () {
     return {
       alertShow: false,
-      // editMode: false,
+      singleErrorMessage: '',
       selectedFlatType: []
     }
   },
@@ -98,12 +104,10 @@ export default {
   },
   components: {
     AlertConfirm,
-    ButtonDefault
+    ButtonDefault,
+    AlertDefault
   },
   methods: {
-    alertConfirm () {
-      this.alertShow = true
-    },
     removeFlatType () {
       this.$store.dispatch('removeItem', {
         url: '/flat-types/' + this.flatTypeId
@@ -111,11 +115,12 @@ export default {
         .then(() => {
           this.$emit('flatTypeRemovedSuccessful')
         })
+        .catch(error => {
+          this.singleErrorMessage = 'Не удалось удалить квартиру.'
+          console.info('Не удалось удалить квартиру. Вот почему: ', error.response.data)
+        })
     },
     editBlock () {
-      /* this.$store.dispatch('retrieveItem', {
-        url: '/flat-types'
-      }) */
       if (!this.editMode) {
         this.$emit('setCurrentCoordinates', {
           flatTypeId: this.flatTypeId,

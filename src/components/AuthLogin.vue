@@ -6,12 +6,12 @@
         <label class="form-group__label" for="email">Email</label>
         <div class="form-group__input">
           <transition name="slide-fade">
-          <span
-            v-if="errorsStack.email"
-            class="form-group__alert"
-          >
-            {{ errorsStack.email[0] }}
-          </span>
+            <span
+              v-if="errorsStack.email"
+              class="form-group__alert"
+            >
+              {{ errorsStack.email[0] }}
+            </span>
           </transition>
           <input
             :class="validationClass.email"
@@ -27,12 +27,12 @@
         <label class="form-group__label" for="password">Пароль</label>
         <div class="form-group__input">
           <transition name="slide-fade">
-          <span
-            v-if="errorsStack.password"
-            class="form-group__alert"
-          >
-            {{ errorsStack.password[0] }}
-          </span>
+            <span
+              v-if="errorsStack.password"
+              class="form-group__alert"
+            >
+              {{ errorsStack.password[0] }}
+            </span>
           </transition>
           <input
             :class="validationClass.password"
@@ -68,7 +68,6 @@
 </template>
 
 <script>
-import CommonMethods from './CommonMethods'
 import ButtonDefault from './ButtonDefault'
 import AuthContainer from './AuthContainer'
 
@@ -78,7 +77,6 @@ export default {
     return {
       email: '',
       password: '',
-      // singleErrorMessage: '',
       errorsStack: []
     }
   },
@@ -86,7 +84,6 @@ export default {
     AuthContainer,
     ButtonDefault
   },
-  mixins: [ CommonMethods ],
   methods: {
     login () {
       this.$store.dispatch('retrieveAuthData', {
@@ -98,18 +95,22 @@ export default {
         })
         .catch(error => {
           this.errorsStack = error.response.data
-          // if (error.response.data)
         })
     },
     clearError (event) {
+      // Получаем id элемента и удаляем его из стека ошибок
+      // Vue автоматически отреагирует на это, скрыв отображение
       let item = event.target.id
       this.$delete(this.errorsStack, item)
+      // Общее напоминание чистится методом удаления свойства single_error
       this.$delete(this.errorsStack, 'single_error')
     }
   },
   computed: {
     validationClass () {
       let errors = {}
+      // Возвращается массив с набором элементов, для которых отрисовывается класс error
+      // Если элемент удалён из стека ошибок, то и здесь его не будет
       for (let item in this.errorsStack) {
         errors[item] = 'error'
       }

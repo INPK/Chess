@@ -1,5 +1,10 @@
 <template>
     <div class="uk-flex">
+      <AlertDefault
+        v-if="singleErrorMessage"
+        :message="singleErrorMessage"
+        @alertDie="singleErrorMessage = ''"
+      />
       <div class="tmp-chess uk-width-1-3">
         <h3>Проверьте правильность нумерации квартир и приступите к последнему шагу</h3>
         <h5>При необходимости вернитесь на предыдущий шаг для внесения правок</h5>
@@ -58,21 +63,24 @@
 </template>
 
 <script>
+import AlertDefault from './AlertDefault'
+
 export default {
   name: 'HouseChessBase',
   data () {
     return {
       roomsView: true,
-      focusedFloor: false,
-      focusMode: 'off',
+      singleErrorMessage: '',
       flats: {},
       flatTypes: {}
     }
   },
+  components: {
+    AlertDefault
+  },
   created () {
     this.houseId = this.$store.state.currentHouseId
     this.$store.dispatch('retrieveItem', {
-      // url: '/houses/' + this.houseId + '/flats'
       url: '/houses/' + this.houseId + '/flats'
     })
       .then(response => {
@@ -80,7 +88,8 @@ export default {
         this.flatTypes = response.data.number_of_flats_by_type
       })
       .catch(error => {
-        console.info('ERROR', error.response.data)
+        this.singleErrorMessage = 'Не могу получить список квартир. Обратитесь к администратору.'
+        console.info('Не получил список квартир. Вот почему: ', error.response.data)
       })
   },
   methods: {
@@ -98,14 +107,9 @@ export default {
               this.flatsSchemas = JSON.parse(flatsSchemas.data)
             })
             .catch(error => {
-              console.info(error)
+              console.info('Не удалось получить планировки. Вот почему: ', error.response.data)
             })
         })
-    },
-    setFocus (event) {
-      let floor = event.target.getAttribute('floor')
-      console.info(document.getElementsByTagNameNS('floor', floor))
-      document.getElementsByTagNameNS('floor', floor).classList.add('focus-on')
     }
   },
   computed: {

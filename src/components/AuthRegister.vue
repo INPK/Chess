@@ -28,12 +28,12 @@
         <label class="form-group__label" for="last_name">Фамилия:</label>
         <div class="form-group__input">
           <transition name="slide-fade">
-        <span
-          v-if="errorsStack.last_name"
-          class="form-group__alert"
-        >
-          {{ errorsStack.last_name[0] }}
-        </span>
+            <span
+              v-if="errorsStack.last_name"
+              class="form-group__alert"
+            >
+              {{ errorsStack.last_name[0] }}
+            </span>
           </transition>
           <input
             :class="validationClass.last_name"
@@ -50,12 +50,12 @@
         <label class="form-group__label" for="first_name">Имя:</label>
         <div class="form-group__input">
           <transition name="slide-fade">
-        <span
-          v-if="errorsStack.first_name"
-          class="form-group__alert"
-        >
-          {{ errorsStack.first_name[0] }}
-        </span>
+            <span
+              v-if="errorsStack.first_name"
+              class="form-group__alert"
+            >
+              {{ errorsStack.first_name[0] }}
+            </span>
           </transition>
           <input
             :class="validationClass.first_name"
@@ -94,12 +94,12 @@
         <label class="form-group__label" for="email">Email:</label>
         <div class="form-group__input">
           <transition name="slide-fade">
-        <span
-          v-if="errorsStack.email"
-          class="form-group__alert"
-        >
-          {{ errorsStack.email[0] }}
-        </span>
+            <span
+              v-if="errorsStack.email"
+              class="form-group__alert"
+            >
+              {{ errorsStack.email[0] }}
+            </span>
           </transition>
           <input
             :class="validationClass.email"
@@ -117,12 +117,12 @@
         <label class="form-group__label" for="phone">Телефон:</label>
         <div class="form-group__input">
           <transition name="slide-fade">
-        <span
-          v-if="errorsStack.phone"
-          class="form-group__alert"
-        >
-          {{ errorsStack.phone[0] }}
-        </span>
+            <span
+              v-if="errorsStack.phone"
+              class="form-group__alert"
+            >
+              {{ errorsStack.phone[0] }}
+            </span>
           </transition>
           <input
             :class="validationClass.phone"
@@ -138,12 +138,12 @@
         <label class="form-group__label" for="password">Пароль:</label>
         <div class="form-group__input">
           <transition name="slide-fade">
-        <span
-          v-if="errorsStack.password"
-          class="form-group__alert"
-        >
-          {{ errorsStack.password[0] }}
-        </span>
+            <span
+              v-if="errorsStack.password"
+              class="form-group__alert"
+            >
+              {{ errorsStack.password[0] }}
+            </span>
           </transition>
           <input
             :class="validationClass.password"
@@ -160,12 +160,12 @@
         <label class="form-group__label" for="password_confirmation">Повторить пароль:</label>
         <div class="form-group__input">
           <transition name="slide-fade">
-        <span
-          v-if="errorsStack.password_confirmation"
-          class="form-group__alert"
-        >
-          {{ errorsStack.password_confirmation[0] }}
-        </span>
+            <span
+              v-if="errorsStack.password_confirmation"
+              class="form-group__alert"
+            >
+              {{ errorsStack.password_confirmation[0] }}
+            </span>
           </transition>
           <input
             :class="validationClass.password_confirmation"
@@ -196,13 +196,12 @@
       <div v-if="singleErrorMessage" class="static-error">
         {{ singleErrorMessage }}
       </div>
-
       <ButtonDefault
         class="button-expand"
         name="Отправить"
         color="green"
-        :actionForClick="register"/>
-
+        :actionForClick="register"
+      />
     </div>
     <div class="login-reset" v-else>
       <div class="login-reset__title">Отлично! Осталось подтвердить ваш email. На вашу почту отправлено письмо с
@@ -240,7 +239,6 @@ export default {
       passwordConfirmation: '',
       errorsStack: [],
       isAgreeWithSavePersonalData: false,
-      singleErrorMessage: '',
       send: false
     }
   },
@@ -267,8 +265,7 @@ export default {
           .then(() => {
             this.send = true
           })
-          .catch((error) => {
-            // this.showError(error, this)
+          .catch(error => {
             this.errorsStack = error.response.data
           })
       } else {
@@ -282,8 +279,14 @@ export default {
       for (let item in this.errorsStack) {
         errors[item] = 'error'
       }
-      console.info(errors)
       return errors
+    },
+    singleErrorMessage () {
+      if (this.errorsStack.single_error) {
+        return this.errorsStack.message
+      } else {
+        return null
+      }
     }
   }
 }

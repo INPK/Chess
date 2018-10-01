@@ -1,6 +1,11 @@
 <template>
   <div>
     <HouseContainer>
+      <AlertDefault
+        v-if="singleErrorMessage"
+        :message="singleErrorMessage"
+        @alertDie="singleErrorMessage = ''"
+      />
       <div>
         <span>Введите цену и площадь квартир</span>
         <label for="expandFloorToggle">Развернуть все этажи</label>
@@ -31,6 +36,7 @@
 
 <script>
 import ButtonDefault from './ButtonDefault'
+import AlertDefault from './AlertDefault'
 import HouseContainer from './HouseContainer'
 import HousePricesFloor from './HousePricesFloor'
 
@@ -40,6 +46,7 @@ export default {
     return {
       fullHouse: [],
       editableFloorIndex: null,
+      singleErrorMessage: '',
       staticFlatsSchemasTypes: {
         'studio_flat': {
           title: 'Студия',
@@ -79,6 +86,7 @@ export default {
   },
   components: {
     ButtonDefault,
+    AlertDefault,
     HouseContainer,
     HousePricesFloor
   },
@@ -99,13 +107,10 @@ export default {
       })
         .then(response => {
           this.fullHouse = response.data.flats
-          /* this.$store.dispatch('setItemToStore', {
-            storageName: 'fullHouse',
-            fields: this.fullHouse
-          }) */
         })
-        .catch(errors => {
-          console.info(errors)
+        .catch(error => {
+          this.singleErrorMessage = 'Не могу получить информацию о доме.'
+          console.info(this.singleErrorMessage + 'Вот почему: ', error.response.data)
         })
     },
     dataImport () {

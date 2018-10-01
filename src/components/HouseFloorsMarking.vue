@@ -49,6 +49,7 @@
             <AlertDefault
               v-if="alertMessage"
               :message="alertMessage"
+              @alertDie="alertMessage = ''"
             />
             <h2
               v-if="markingIsNotCompleted"
@@ -125,11 +126,9 @@ export default {
       flatTypes: [],
       originalFlatTypes: [],
       editMode: false,
+      errorsStack: [],
       editableFlatIndex: null,
       alertMessage: ''
-      // readyFlatsCoordinates: ['321,245 245,316 444,555 641,312', '555,147 548,941 321,111 222,444'],
-      // readyFlatsCoordinates: [],
-      // flatsColors: []
     }
   },
   props: {
@@ -165,7 +164,7 @@ export default {
                 this.flatsSchemasOfCurrentHouse = JSON.parse(flatsSchemas.data)
               })
               .catch(error => {
-                console.info(error)
+                console.info('Не удалось получить планировки. Вот почему: ', error.response.data)
               })
           })
       } else {
@@ -189,7 +188,12 @@ export default {
               })
             })
             .catch(error => {
-              console.info(error)
+              if (error.response.status === 500) {
+                this.alertMessage = 'Что-то пошло не так.'
+              } else {
+                this.errorsStack = error.response.data
+                this.alertMessage = error.response.message
+              }
             })
         })
     },
@@ -236,9 +240,6 @@ export default {
         let lastFlatEntrance = this.flatTypes[lastFlatIndex].fields.entrance
         if ((Number(this.newFlat.entrance) - Number(lastFlatEntrance)) !== 1 || ((this.newFlat.number - lastFlatNumber) !== 1 && this.newFlat.entrance === lastFlatEntrance)) {
           this.alertMessage = 'Вы должны создавать квартиры последовательно!'
-          setTimeout(() => {
-            this.alertMessage = ''
-          }, 2500)
           return
         }
       }
@@ -248,7 +249,12 @@ export default {
           this.getFlatTypes()
         })
         .catch(error => {
-          console.info(error)
+          if (error.response.status === 500) {
+            this.alertMessage = 'Что-то пошло не так.'
+          } else {
+            this.errorsStack = error.response.data
+            this.alertMessage = error.response.message
+          }
         })
     },
     closeMarking () {
@@ -261,7 +267,7 @@ export default {
       this.newFlat.flatSchema = event.target.files[0]
     },
     updatePoints (event) {
-      this.setPoint(event.pageX, event.pageY)
+      this.setPoint(event.layerX, event.layerY)
     },
     checkSamePosition (nativeX, nativeY, pageX, pageY) {
       const differentStartPageX = Math.abs(nativeX - pageX)

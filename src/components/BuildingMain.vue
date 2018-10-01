@@ -18,6 +18,17 @@
         </div>
       </div>
       <div class="houses">
+        <AlertDefault
+          v-if="alertMessage"
+          :message="alertMessage"
+          @alertDie="alertMessage = ''"
+        />
+        <AlertConfirm
+          v-if="alertConfirm.isActive"
+          :additionalMessage="alertConfirm.additionalMessage"
+          @isAgree="removeHouse"
+          @isDisagree="closeAlertConfirm"
+        />
         <h1>Список домов:</h1>
         <div class="houses-container uk-flex">
           <div class="uk-card uk-card-default">
@@ -53,6 +64,7 @@
               :stageDevelopment=item.house.stage_development
               :startDevelopment=item.house.start_development
               :endDevelopment=item.house.end_development
+              @activateAlertConfirm="activateAlertConfirm"
             />
           </div>
         </div>
@@ -63,6 +75,8 @@
 <script>
 import ButtonDefault from './ButtonDefault'
 import HouseItem from './HouseItem'
+import AlertDefault from './AlertDefault'
+import AlertConfirm from './AlertConfirm'
 
 export default {
   name: 'BuildingMain',
@@ -77,15 +91,22 @@ export default {
       video: '',
       images: '',
       coords: [],
-      houses: []
+      houses: [],
+      alertMessage: '',
+      selectedHouseId: '',
+      alertConfirm: {
+        isActive: false,
+        additionalMessage: 'Если вы удалите этот объект, то все данные будут отображаться не корректно'
+      }
     }
   },
   components: {
     HouseItem,
-    ButtonDefault
+    ButtonDefault,
+    AlertDefault,
+    AlertConfirm
   },
   created () {
-    // let companyHashId = this.$store.state.companyHashId
     this.$store.dispatch('destroyItemFromStore', 'currentHouseId')
     this.$store.dispatch('destroyItemFromStore', 'properties')
     let urlBuildingStoreIndex = this.$route.params.buildingStoreIndex
@@ -113,10 +134,13 @@ export default {
             fields: JSON.stringify(this.houses)
           })
         })
+        .catch(error => {
+          this.alertMessage = 'Не могу получить список домов. Обратитесь к администратору.'
+          console.info(error.response.data)
+        })
     },
     fillBuildingsByData (storeIndex) {
       let buildingsJson = this.$store.state.buildings
-      console.info(buildingsJson)
       let building = JSON.parse(buildingsJson)[storeIndex].building
 
       this.hashId = building.hash_id
@@ -137,9 +161,30 @@ export default {
         name: 'HouseProperties',
         params: {
           houseStoreIndex: this.storeIndex
-          // editMode: true
         }
       })
+    },
+    removeHouse () {
+      console.info('remH', this.selectedHouseId)
+      this.$store.dispatch('removeItem', {
+        url: '/houses/' + this.selectedHouseId
+      })
+        .then(() => {
+          this.alertMessage = 'Дом успешно удалён'
+          this.getHouses(this.hashId)
+        })
+        .catch(error => {
+          this.alertMessage = 'Не удалось удалить дом'
+          console.info('Не удалось удалить дом. Вот почему: ', error.response.data)
+        })
+      this.closeAlertConfirm()
+    },
+    activateAlertConfirm (houseId) {
+      this.selectedHouseId = houseId
+      this.alertConfirm.isActive = true
+    },
+    closeAlertConfirm () {
+      this.alertConfirm.isActive = false
     }
   }
 }

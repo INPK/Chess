@@ -40,6 +40,13 @@
             class="button-expand"
             :actionForClick="editBuilding"
           />
+          <ButtonDefault
+            v-if="isVisibleButtons"
+            name="Удалить"
+            color="grey"
+            class="button-expand"
+            :actionForClick="removeBuilding"
+          />
         </div>
       </div>
     </div>
@@ -63,6 +70,10 @@ export default {
       required: true
     },
     city: String,
+    buildingId: {
+      type: String,
+      required: true
+    },
     address: String,
     country: String,
     district: String,
@@ -109,9 +120,6 @@ export default {
     }
   },
   methods: {
-    viewDetailsClicked () {
-      this.$emit('viewDetail', this.title)
-    },
     toggleEditButton () {
       this.isVisibleButtons = !this.isVisibleButtons
     },
@@ -124,12 +132,14 @@ export default {
         }
       })
     },
+    removeBuilding () {
+      this.$emit('activateAlertConfirm', this.buildingId)
+    },
     redirectToCurrentBuildingMain () {
       this.$router.push({
         name: 'BuildingMain',
         params: {
           buildingStoreIndex: this.storeIndex
-          // editMode: true
         }
       })
     }

@@ -49,7 +49,6 @@ export default {
       })
     },
     redirectToNextStep () {
-      console.info(this.$store.state.flatsSchemas, this.$store.state.flatsSchemas.length)
       if (this.$store.state.flatsSchemas) {
         this.$router.push({
           name: 'HouseFloors',

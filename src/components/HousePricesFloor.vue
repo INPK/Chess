@@ -82,22 +82,6 @@ export default {
     },
     updateFlatsList (editableFlatData) {
       this.$emit('updateFlatsList', editableFlatData)
-    },
-    test () {
-      this.$store.dispatch('updateItem', {
-        url: '/flats/d52bc052',
-        fields: {
-          status: 1,
-          price: '5000.00',
-          area: '200.00'
-        }
-      })
-        .then(() => {
-          console.info('SUCCESS')
-        })
-        .catch(error => {
-          console.info(error.response)
-        })
     }
   },
   computed: {

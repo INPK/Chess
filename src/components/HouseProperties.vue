@@ -2,7 +2,11 @@
   <div>
     <HouseContainer>
       <router-link :to="{ name: 'Buildings'  }">Главная</router-link>
-
+      <AlertDefault
+        v-if="singleErrorMessage"
+        :message="singleErrorMessage"
+        @alertDie="singleErrorMessage = ''"
+      />
       <div class="uk-container uk-background-default uk-padding" uk-grid>
         <div class="uk-width-2-3">
           <h2>Введите информацию о комплексе:</h2>
@@ -84,13 +88,22 @@ export default {
       stageDevelopment: '',
       startDevelopment: '',
       endDevelopment: '',
+      errorsStack: [],
       editMode: false
     }
   },
-  computed: {
-    livingFloors () {
-      return this.livingFloorsStart + ',' + this.livingFloorsEnd
+  created () {
+    this.houseId = this.$store.state.currentHouseId
+    if (this.houseId !== undefined) {
+      this.getProperties()
+        .then(houseProperties => {
+          this.editMode = true
+          this.fillHouseProperties(houseProperties.data)
+        })
     }
+    /** Временно, пока для записи нужен Building Id. Илья обещал убрать */
+    let currentBuildingStoreIndex = this.$store.state.currentBuildingStoreIndex
+    this.buildingId = JSON.parse(this.$store.state.buildings)[currentBuildingStoreIndex].building.hash_id
   },
   methods: {
     getProperties () {
@@ -123,9 +136,15 @@ export default {
             storageName: 'properties',
             fields: JSON.stringify(response.data)
           })
+          this.$store.dispatch('setItemToStore', {
+            storageName: 'currentHouseId',
+            fields: response.data.hash_id
+          })
           this.$router.push({ name: 'HouseFlatsSchemas' })
         })
-        .catch(error => { console.info(error) })
+        .catch(error => {
+          this.errorsStack = error.response.data
+        })
     },
     updateHouseProperties () {
       this.storeHouseProperties('/' + this.houseId, 'updateItem')
@@ -155,24 +174,40 @@ export default {
         url: '/houses' + houseIdPath,
         storageName: 'properties'
       })
+    },
+    clearSingleError () {
+      // Общее напоминание чистится методом удаления свойства single_error
+      this.$delete(this.errorsStack, 'single_error')
+    },
+    clearError (event) {
+      // Получаем id элемента и удаляем его из стека ошибок
+      // Vue автоматически отреагирует на это, скрыв отображение
+      let item = event.target.id
+      this.$delete(this.errorsStack, item)
+      this.clearSingleError()
     }
   },
-  created () {
-    this.houseId = this.$store.state.currentHouseId
-    if (this.houseId !== undefined) {
-      this.getProperties()
-        .then(houseProperties => {
-          this.editMode = true
-          this.fillHouseProperties(houseProperties.data)
-        })
+  computed: {
+    validationClass () {
+      let errors = {}
+      // Возвращается массив с набором элементов, для которых отрисовывается класс error
+      // Если элемент удалён из стека ошибок, то и здесь его не будет
+      for (let item in this.errorsStack) {
+        errors[item] = 'error'
+      }
+      return errors
+    },
+    singleErrorMessage () {
+      if (this.errorsStack.single_error) {
+        return this.errorsStack.message
+      } else {
+        return null
+      }
+    },
+    livingFloors () {
+      return this.livingFloorsStart + ',' + this.livingFloorsEnd
     }
-    /** Временно, пока для записи нужен Building Id. Илья обещал убрать */
-    let currentBuildingStoreIndex = this.$store.state.currentBuildingStoreIndex
-    this.buildingId = JSON.parse(this.$store.state.buildings)[currentBuildingStoreIndex].building.hash_id
   }
-  /* destroyed () {
-    this.$store.dispatch('destroyItemFromStore', 'properties')
-  } */
 }
 </script>
 

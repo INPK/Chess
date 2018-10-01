@@ -5,8 +5,9 @@
     @closeSidebar="closeSidebarToFloor"
   >
     <AlertDefault
-      v-if="alertMessage"
-      :message="alertMessage"
+      v-if="singleErrorMessage"
+      :message="singleErrorMessage"
+      @alertDie="clearSingleError"
     />
     <div>
       <img
@@ -102,7 +103,6 @@ export default {
       cloneFloors: [],
       floorImage: this.selectedFloor.image,
       freeFloors: [],
-      alertMessage: '',
       errorsStack: []
     }
   },
@@ -128,7 +128,6 @@ export default {
     Sidebar
   },
   created () {
-    console.info(this.$store.state.houseFloors)
     /* if (this.selectedFloor.clone_floors) {
       this.cloneFloors = this.selectedFloor.clone_floors
     } */
@@ -140,6 +139,7 @@ export default {
     storeFloor (floorIdPath = '', action = 'writeItem') {
       let floorProperties = new FormData()
       const data = {
+        api_key: this.$store.state.apiKey,
         house_id: this.houseId,
         number: this.floorNumber,
         number_of_flats: this.numberOfFlats,
@@ -160,14 +160,20 @@ export default {
         .then(() => {
           this.$emit('refreshAfterChange')
         })
-        .catch(error => { console.info(error) })
+        .catch(error => {
+          this.errorsStack = error.response.data
+          console.info(error)
+        })
     },
     updateFloor () {
       this.storeFloor('/' + this.selectedFloor.hash_id, 'updateItem')
         .then(() => {
           this.$emit('refreshAfterChange')
         })
-        .catch(error => { console.info(error) })
+        .catch(error => {
+          this.errorsStack = error.response.data
+          console.info(error.response.data)
+        })
     },
     chooseCloneFloor (event) {
       let selectedFloor = Number(event.target.value)
@@ -180,12 +186,23 @@ export default {
         return first - second
       })
       if (this.cloneFloors[0] > firsValidFloor) {
-        this.alertMessage = 'Вы не можете оставить предыдущие этажи пустыми'
+        this.errorsStack.message = 'Вы не можете оставить предыдущие этажи пустыми'
         this.cloneFloors = []
         setTimeout(() => {
-          this.alertMessage = ''
+          this.errorsStack.message = ''
         }, 3000)
       }
+    },
+    clearSingleError () {
+      // Общее напоминание чистится методом удаления свойства single_error
+      this.$delete(this.errorsStack, 'single_error')
+    },
+    clearError (event) {
+      // Получаем id элемента и удаляем его из стека ошибок
+      // Vue автоматически отреагирует на это, скрыв отображение
+      let item = event.target.id
+      this.$delete(this.errorsStack, item)
+      this.clearSingleError()
     },
     processFile (event) {
       this.floorImage = event.target.files[0]
@@ -199,22 +216,6 @@ export default {
       }
       return floorSequence
     }
-    /* updateFloorsInStore (response, storeIndex) {
-      let floors = JSON.parse(this.$store.state.houseFloors)
-      console.info(response)
-      let data = response.data
-      if (storeIndex === undefined) {
-        storeIndex = floors.length
-        data = JSON.parse(response.data)
-      }
-      floors[storeIndex] = data
-      this.$store.dispatch('setItemToStore', {
-        storageName: 'houseFloors',
-        fields: JSON.stringify(floors)
-      })
-      this.closeSidebarToFloor()
-      this.$emit('updateFloors')
-    } */
   },
   computed: {
     sidebarShowComputed () {
@@ -237,6 +238,20 @@ export default {
         }
       }
       return this.convertFloorRangeToSequence(livingFloorsArr)
+    },
+    singleErrorMessage () {
+      if (this.errorsStack.single_error) {
+        return this.errorsStack.message
+      } else {
+        return null
+      }
+    },
+    validationClass () {
+      let errors = {}
+      for (let item in this.errorsStack) {
+        errors[item] = 'error'
+      }
+      return errors
     }
   }
 }

@@ -49,11 +49,12 @@
       v-if="alertConfirm.isActive"
       :additionalMessage="alertConfirm.additionalMessage"
       @isAgree="removeFloor"
-      @isDisagree="cancelRemove"
+      @isDisagree="closeAlertConfirm"
     />
     <AlertDefault
       v-if="alertMessage"
       :message="alertMessage"
+      @alertDie="alertMessage = ''"
     />
   </div>
 </template>
@@ -132,7 +133,8 @@ export default {
               this.floors = houseFloors.data
             })
             .catch(error => {
-              console.info(error)
+              this.alertMessage = 'Не могу получить список этажей. Обратитесь к администратору'
+              console.info('Не могу получить список этажей. Вот почему: ', error.response.data)
             })
         })
     },
@@ -142,16 +144,12 @@ export default {
       this.selectedFloor.numberOfFlats = floorParams.numberOfFlats
       if (!this.floorMarking) {
         this.alertMessage = 'Сначала Вы должны разметить предыдущий этаж'
-        setTimeout(() => {
-          this.alertMessage = ''
-        }, 2500)
       }
     },
     activateSidebar (floorStoreIndex) {
       if (floorStoreIndex !== undefined) {
         this.sidebar.storeIndex = floorStoreIndex
-        this.sidebar.selectedFloor = this.floors[floorStoreIndex].fields
-        console.info(this.floors, this.floors[floorStoreIndex].fields)
+        this.sidebar.selectedFloor = this.floors[floorStoreIndex]
         this.sidebar.editMode = true
       }
       this.sidebar.show = true
@@ -160,10 +158,22 @@ export default {
       this.$store.dispatch('removeItem', {
         url: '/floor-types/' + this.selectedFloor.id
       })
+        .then(() => {
+          this.alertMessage = 'Этаж успешно удалён'
+          this.getFloors()
+        })
+        .catch(error => {
+          this.alertMessage = 'Не удалось удалить этаж'
+          console.info('Не удалось удалить этаж. Вот почему: ', error.response.data)
+        })
+      this.closeAlertConfirm()
     },
     activateAlertConfirm (floorId) {
       this.selectedFloor.id = floorId
       this.alertConfirm.isActive = true
+    },
+    closeAlertConfirm () {
+      this.alertConfirm.isActive = false
     },
     refreshAfterChange () {
       this.getFloors()

@@ -1,5 +1,10 @@
 <template>
   <div class="buildings">
+    <AlertDefault
+      v-if="alertMessage"
+      :message="alertMessage"
+      @alertDie="alertMessage = ''"
+    />
     <div class="buildings-create">
       <div class="create">
         <div class="create-title">Новый объект</div>
@@ -19,11 +24,17 @@
       </div>
       <img class="create-image" src="/static/img/PersonalManager.jpg" alt="">
     </div>
+    <AlertConfirm
+      v-if="alertConfirm.isActive"
+      :additionalMessage="alertConfirm.additionalMessage"
+      @isAgree="removeBuilding"
+      @isDisagree="closeAlertConfirm"
+    />
     <BuildingsItem
       v-for="(item, index) of buildings"
       :key="item.building.id"
       :storeIndex="index"
-      :id="item.building.id"
+      :buildingId="item.building.hash_id"
       :title="item.building.name"
       :imageSource="item.building.images"
       :city="item.building.city"
@@ -32,7 +43,7 @@
       :district="item.building.district"
       :region="item.building.region"
       :flats="item.flats_by_type"
-      @viewDetail="viewDetail"
+      @activateAlertConfirm="activateAlertConfirm"
     />
   </div>
 </template>
@@ -40,42 +51,75 @@
 <script>
 import ButtonDefault from './ButtonDefault'
 import BuildingsItem from './BuildingsItem'
+import AlertDefault from './AlertDefault'
+import AlertConfirm from './AlertConfirm'
 
 export default {
   name: 'Buildings',
   data () {
     return {
-      buildings: []
+      buildings: [],
+      alertMessage: '',
+      selectedBuildingId: '',
+      alertConfirm: {
+        isActive: false,
+        additionalMessage: 'Если вы удалите этот объект, то все данные будут отображаться не корректно'
+      }
     }
   },
   components: {
+    AlertDefault,
+    AlertConfirm,
     BuildingsItem,
     ButtonDefault
   },
   created () {
+    // На главной странице удаляем индекс текущего дома из store.
     this.$store.dispatch('destroyItemFromStore', 'currentBuildingStoreIndex')
-    let companyHashId = this.$store.state.companyHashId
-    this.$store.dispatch('retrieveItem', {
-      url: '/company/' + companyHashId + '/buildings',
-      storageName: 'buildings'
-    })
-      .then(response => {
-        this.$store.dispatch('setItemToStore', {
-          storageName: 'buildings',
-          fields: JSON.stringify(response.data)
-        })
-        this.buildings = response.data
-      })
-      .catch(error => {
-        console.info(error)
-      })
+    this.getBuildings()
   },
   methods: {
-    viewDetail (title) {
-      console.log(title)
+    getBuildings () {
+      let companyHashId = this.$store.state.companyHashId
+      this.$store.dispatch('retrieveItem', {
+        url: '/company/' + companyHashId + '/buildings',
+        storageName: 'buildings'
+      })
+        .then(response => {
+          this.$store.dispatch('setItemToStore', {
+            storageName: 'buildings',
+            fields: JSON.stringify(response.data)
+          })
+          this.buildings = response.data
+        })
+        .catch(error => {
+          this.alertMessage = 'Не могу получить список домов. Обратитесь к администратору.'
+          console.info(error.response)
+        })
     },
     redirectToCreate () {
       this.$router.push({ name: 'BuildingProperties' })
+    },
+    removeBuilding () {
+      this.$store.dispatch('removeItem', {
+        url: '/buildings/' + this.selectedBuildingId
+      })
+        .then(() => {
+          this.alertMessage = 'Объект успешно удалён'
+          this.getBuildings()
+        })
+        .catch(error => {
+          this.alertMessage = 'Не удалось удалить объект'
+          console.info('Не удалось удалить объект. Вот почему: ', error.response.data)
+        })
+      this.closeAlertConfirm()
+    },
+    activateAlertConfirm (buildingId) {
+      this.selectedBuildingId = buildingId
+      this.alertConfirm.isActive = true
+    },
+    closeAlertConfirm () {
+      this.alertConfirm.isActive = false
     }
   }
 }

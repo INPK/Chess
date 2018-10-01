@@ -13,7 +13,7 @@
       <ButtonDefault
         v-if="isVisibleButtons"
         name="Удалить"
-        color="red"
+        color="grey"
         class="button-expand"
         :actionForClick="removeFloor"
       />

@@ -10,6 +10,13 @@
       class="button-expand"
       :actionForClick="redirectToEditHouse"
     />
+    <ButtonDefault
+      v-if="isVisibleButtons"
+      name="Удалить"
+      color="grey"
+      class="button-expand"
+      :actionForClick="removeHouse"
+    />
     <div class="uk-card uk-card-default" @click="redirectToCurrentHouseMain">
       <div class="uk-card-media-top">
         <img :src="imageSource" alt="">
@@ -29,7 +36,7 @@
         </div>
         <div class="uk-divider"></div>
         <div
-          v-for="(flat, key) of flats"
+          v-for="(flat, key) in flats"
           :key="key"
           class="uk-flex uk-flex-between"
         >
@@ -125,6 +132,9 @@ export default {
             fields: JSON.stringify(response.data)
           })
         })
+        .catch(error => {
+          console.info('Не могу получить характеристики дома. Вот почему: ', error.response.data)
+        })
     },
     redirectToEditHouse () {
       this.getFullHouse()
@@ -144,9 +154,12 @@ export default {
         name: 'HouseMainProperties',
         params: {
           houseStoreIndex: this.storeIndex
-          // editMode: true
         }
       })
+    },
+    removeHouse () {
+      console.info(this.houseId)
+      this.$emit('activateAlertConfirm', this.houseId)
     }
   },
   computed: {

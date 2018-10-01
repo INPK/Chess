@@ -4,9 +4,11 @@
     title="Создание"
     @closeSidebar="closeSidebarToFlatsSchemas"
   >
-    <div v-if="singleErrorMessage" class="login-alert">
-      {{ singleErrorMessage }}
-    </div>
+    <AlertDefault
+      v-if="singleErrorMessage"
+      :message="singleErrorMessage"
+      @alertDie="clearSingleError"
+    />
     <div class="login-form">
       <img
         v-if="editMode"
@@ -103,7 +105,13 @@
               {{ errorsStack.price }}
             </span>
           </transition>
-          Цена: <input v-model="price" name="price"/>
+          Цена:
+          <input
+            v-model="price"
+            name="price"
+            :class="validationClass.password_confirmation"
+            @click="clearError"
+          />
         </div>
       </div>
       <div class="form-group">
@@ -137,6 +145,7 @@
 
 <script>
 import ButtonDefault from './ButtonDefault'
+import AlertDefault from './AlertDefault'
 import Sidebar from './Sidebar'
 
 export default {
@@ -146,7 +155,6 @@ export default {
       type: this.selectedFlatSchema.type,
       flatSchemaId: this.selectedFlatSchema.hash_id,
       area: this.selectedFlatSchema.area,
-      singleErrorMessage: '',
       numberOfBalcony: this.selectedFlatSchema.number_of_balcony,
       numberOfLoggia: this.selectedFlatSchema.number_of_loggia,
       numberOfRooms: this.selectedFlatSchema.number_of_rooms,
@@ -162,7 +170,6 @@ export default {
         'euro_two_room_flat': 'Евро 2х-комнатная',
         'euro_three_room_flat': 'Евро 3х-комнатная'
       },
-      errorsShow: false,
       errorsStack: []
     }
   },
@@ -184,6 +191,7 @@ export default {
   },
   components: {
     ButtonDefault,
+    AlertDefault,
     Sidebar
   },
   methods: {
@@ -218,10 +226,7 @@ export default {
           this.$emit('refreshAfterChange')
         })
         .catch(error => {
-          // this.showError(error, this)
-          // console.info(error.response.data)
           this.errorsStack = error.response.data
-          this.errorsShow = true
         })
     },
     updateFlatSchema () {
@@ -229,10 +234,40 @@ export default {
         .then(() => {
           this.$emit('refreshAfterChange')
         })
-        .catch(error => { console.info(error) })
+        .catch(error => {
+          this.errorsStack = error.response.data
+          console.info(error.response.data)
+        })
+    },
+    clearSingleError () {
+      // Общее напоминание чистится методом удаления свойства single_error
+      this.$delete(this.errorsStack, 'single_error')
+    },
+    clearError (event) {
+      // Получаем id элемента и удаляем его из стека ошибок
+      // Vue автоматически отреагирует на это, скрыв отображение
+      let item = event.target.id
+      this.$delete(this.errorsStack, item)
+      this.clearSingleError()
     },
     processFile (event) {
       this.flatSchemaImage = event.target.files[0]
+    }
+  },
+  computed: {
+    singleErrorMessage () {
+      if (this.errorsStack.single_error) {
+        return this.errorsStack.message
+      } else {
+        return null
+      }
+    },
+    validationClass () {
+      let errors = {}
+      for (let item in this.errorsStack) {
+        errors[item] = 'error'
+      }
+      return errors
     }
   }
 }

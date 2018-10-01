@@ -3,7 +3,7 @@
      @mouseover="toggleEditButton"
      @mouseout="toggleEditButton"
   >
-    <a href="#make-flats-schemas_container" uk-toggle>
+    <!--<a href="#make-flats-schemas_container" uk-toggle>-->
       <ButtonDefault
         v-if="isVisibleButtons"
         name="Редактировать"
@@ -11,7 +11,7 @@
         class="button-expand"
         :actionForClick="editFlatSchema"
       />
-    </a>
+    <!--</a>-->
     <ButtonDefault
       v-if="isVisibleButtons"
       name="Удалить"

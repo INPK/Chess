@@ -13,40 +13,110 @@
           <span class="form-group__input_bar"></span>
         </div>
       </div>
+      <AlertDefault
+        v-if="singleErrorMessage"
+        :message="singleErrorMessage"
+        @alertDie="singleErrorMessage = ''"
+      />
       <div class="form-subtitle">Расположение:</div>
       <div class="form-grid">
         <div class="form-group properties-group">
           <label class="form-group__label label" for="country">Страна</label>
           <div class="form-group__input">
-            <input v-model="country" name="country" />
+            <transition name="slide-fade">
+              <span
+                v-if="errorsStack.country"
+                class="form-group__alert"
+              >
+                {{ errorsStack.country[0] }}
+              </span>
+            </transition>
+            <input
+              v-model="country"
+              name="country"
+              :class="validationClass.country"
+              @click="clearError"
+            />
             <span class="form-group__input_bar"></span>
           </div>
         </div>
         <div class="form-group properties-group">
           <label class="form-group__label label" for="region">Регион</label>
           <div class="form-group__input">
-            <input v-model="region" name="region" />
+            <transition name="slide-fade">
+              <span
+                v-if="errorsStack.region"
+                class="form-group__alert"
+              >
+                {{ errorsStack.region[0] }}
+              </span>
+            </transition>
+            <input
+              v-model="region"
+              name="region"
+              :class="validationClass.region"
+              @click="clearError"
+            />
             <span class="form-group__input_bar"></span>
           </div>
         </div>
         <div class="form-group properties-group">
           <label class="form-group__label label" for="currency">Валюта</label>
           <div class="form-group__input">
-            <input v-model="currency" name="currency" />
+            <transition name="slide-fade">
+              <span
+                v-if="errorsStack.currency"
+                class="form-group__alert"
+              >
+                {{ errorsStack.currency[0] }}
+              </span>
+            </transition>
+            <input
+              v-model="currency"
+              name="currency"
+              :class="validationClass.currency"
+              @click="clearError"
+            />
             <span class="form-group__input_bar"></span>
           </div>
         </div>
         <div class="form-group properties-group">
           <label class="form-group__label label" for="city">Город</label>
           <div class="form-group__input">
-            <input v-model="city" name="city" />
+            <transition name="slide-fade">
+              <span
+                v-if="errorsStack.city"
+                class="form-group__alert"
+              >
+                {{ errorsStack.city[0] }}
+              </span>
+            </transition>
+            <input
+              v-model="city"
+              name="city"
+              :class="validationClass.city"
+              @click="clearError"
+            />
             <span class="form-group__input_bar"></span>
           </div>
         </div>
         <div class="form-group properties-group">
           <label class="form-group__label label" for="district">Район</label>
           <div class="form-group__input">
-            <input v-model="district" name="district" />
+            <transition name="slide-fade">
+              <span
+                v-if="errorsStack.district"
+                class="form-group__alert"
+              >
+                {{ errorsStack.district[0] }}
+              </span>
+            </transition>
+            <input
+              v-model="district"
+              name="district"
+              :class="validationClass.district"
+              @click="clearError"
+            />
             <span class="form-group__input_bar"></span>
           </div>
         </div>
@@ -67,7 +137,20 @@
         <div class="form-group properties-group">
           <label class="form-group__label label" for="coordinates">Координаты</label>
           <div class="form-group__input">
-            <input v-model="coords" name="coordinates" />
+            <transition name="slide-fade">
+              <span
+                v-if="errorsStack.coordinates"
+                class="form-group__alert"
+              >
+                {{ errorsStack.coordinates[0] }}
+              </span>
+            </transition>
+            <input
+              v-model="coords"
+              name="coordinates"
+              :class="validationClass.coordinates"
+              @click="clearError"
+            />
             <span class="form-group__input_bar"></span>
           </div>
         </div>
@@ -92,13 +175,13 @@
 
 <script>
 import ButtonDefault from './ButtonDefault'
-import MultipleFileUploader from 'vue2-multi-uploader'
+import AlertDefault from './AlertDefault'
 
 export default {
   name: 'BuildingProperties',
   components: {
     ButtonDefault,
-    MultipleFileUploader
+    AlertDefault
   },
   data () {
     return {
@@ -112,7 +195,23 @@ export default {
       images: '',
       coords: [],
       currency: '',
+      errorsStack: [],
       editMode: false
+    }
+  },
+  created () {
+    let buildingStoreIndex = this.$route.params.buildingStoreIndex
+    if (buildingStoreIndex !== undefined) {
+      this.$store.dispatch('setItemToStore', {
+        storageName: 'currentBuildingStoreIndex',
+        fields: buildingStoreIndex
+      })
+    }
+    let currentBuildingStoreIndex = this.$store.state.currentBuildingStoreIndex
+    // Если в Store есть индекс массива текущего строения, то значит пользователь редактирует
+    if (currentBuildingStoreIndex !== null) {
+      this.editMode = true
+      this.fillLinesByData(currentBuildingStoreIndex)
     }
   },
   methods: {
@@ -138,7 +237,7 @@ export default {
           this.$router.push('/')
         })
         .catch(error => {
-          console.info(error.message)
+          this.errorsStack = error.response.data
         })
     },
     updateBuildingsProperties () {
@@ -158,20 +257,35 @@ export default {
       this.video = building.video
       this.images = building.images
       this.coords = building.coordinates
+    },
+    clearSingleError () {
+      // Общее напоминание чистится методом удаления свойства single_error
+      this.$delete(this.errorsStack, 'single_error')
+    },
+    clearError (event) {
+      // Получаем id элемента и удаляем его из стека ошибок
+      // Vue автоматически отреагирует на это, скрыв отображение
+      let item = event.target.id
+      this.$delete(this.errorsStack, item)
+      this.clearSingleError()
     }
   },
-  created () {
-    let buildingStoreIndex = this.$route.params.buildingStoreIndex
-    if (buildingStoreIndex !== undefined) {
-      this.$store.dispatch('setItemToStore', {
-        storageName: 'currentBuildingStoreIndex',
-        fields: buildingStoreIndex
-      })
-    }
-    let currentBuildingStoreIndex = this.$store.state.currentBuildingStoreIndex
-    if (currentBuildingStoreIndex !== null) {
-      this.editMode = true
-      this.fillLinesByData(currentBuildingStoreIndex)
+  computed: {
+    validationClass () {
+      let errors = {}
+      // Возвращается массив с набором элементов, для которых отрисовывается класс error
+      // Если элемент удалён из стека ошибок, то и здесь его не будет
+      for (let item in this.errorsStack) {
+        errors[item] = 'error'
+      }
+      return errors
+    },
+    singleErrorMessage () {
+      if (this.errorsStack.single_error) {
+        return this.errorsStack.message
+      } else {
+        return null
+      }
     }
   }
 }

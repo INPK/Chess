@@ -3,7 +3,7 @@
     name="slide-fade"
     class="uk-alert"
     :alertType="alertType">
-    <div>{{ message }}</div>
+    <div v-if="message">{{ message }}</div>
   </transition>
 </template>
 
@@ -19,6 +19,12 @@ export default {
       type: String,
       default: 'warning'
     }
+  },
+  created () {
+    const context = this
+    setTimeout(function () {
+      context.$emit('alertDie')
+    }, 3000)
   }
 }
 </script>

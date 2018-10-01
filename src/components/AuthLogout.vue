@@ -1,7 +1,7 @@
 <template>
   <AlertDefault v-if="alert.alive"
     :message="alert.message"
-    :alertType="alert.alertType"
+    :alertType="alert.type"
   />
 </template>
 
@@ -16,7 +16,7 @@ export default {
     return {
       alert: {
         alive: false,
-        alertType: 'danger',
+        type: 'danger',
         message: ''
       }
     }
@@ -24,12 +24,16 @@ export default {
   mixins: [ CommonMethods ],
   created () {
     this.$store.dispatch('destroyApiKey')
-      .then(response => {
+      .then(() => {
         this.$router.push('/')
       })
       .catch((error) => {
         const alert = this.alert
-        this.alert.message = error.response.data.message
+        if (error.response.status === 500) {
+          this.alert.message = 'Что-то пошло не так.'
+        } else {
+          this.alert.message = error.response.data.message
+        }
         alert.alive = true
         setTimeout(function () {
           alert.alive = false

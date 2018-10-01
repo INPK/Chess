@@ -13,6 +13,11 @@
             :actionForClick="activateSidebar"
           />
         </div>
+        <AlertDefault
+          v-if="singleErrorMessage"
+          :message="singleErrorMessage"
+          @alertDie="singleErrorMessage = ''"
+        />
         <HouseFlatsSchemasItem
           v-for="(flatSchema, index) in flatsSchemas"
           :key="flatSchema.fields.hash_id"
@@ -42,7 +47,7 @@
       v-if="alertConfirm.isActive"
       :additionalMessage="alertConfirm.additionalMessage"
       @isAgree="removeFlatSchema"
-      @isDisagree="cancelRemove"
+      @isDisagree="closeAlertConfirm"
     />
   </div>
 </template>
@@ -50,6 +55,7 @@
 <script>
 import ButtonDefault from './ButtonDefault'
 import AlertConfirm from './AlertConfirm'
+import AlertDefault from './AlertDefault'
 import HouseFlatsSchemasItem from './HouseFlatsSchemasItem'
 import HouseFlatsSchemasAdd from './HouseFlatsSchemasAdd'
 
@@ -68,18 +74,21 @@ export default {
         show: false,
         editMode: false,
         selectedFlatSchema: {}
-      }
+      },
+      singleErrorMessage: ''
     }
   },
   components: {
     ButtonDefault,
     AlertConfirm,
+    AlertDefault,
     HouseFlatsSchemasItem,
     HouseFlatsSchemasAdd
   },
   created () {
-    this.houseId = JSON.parse(this.$store.state.properties).hash_id
-    if (this.houseId !== undefined) {
+    let jsonHouseId = this.$store.state.properties
+    if (jsonHouseId !== null) {
+      this.houseId = JSON.parse(jsonHouseId).hash_id
       this.getFlatsSchemas()
     }
   },
@@ -110,7 +119,11 @@ export default {
               this.flatsSchemas = JSON.parse(flatsSchemas.data)
             })
             .catch(error => {
-              console.info(error)
+              this.singleErrorMessage = 'Не могу получить список планировок. Обратитесь к администратору.'
+              console.info(error.response.data)
+              setTimeout(function () {
+                this.singleErrorMessage = ''
+              }, 3000)
             })
         })
     },
@@ -128,6 +141,10 @@ export default {
         .then(() => {
           this.refreshAfterChange()
         })
+        .catch(() => {
+          this.singleErrorMessage = 'Не получилось удалить планировку'
+        })
+      this.closeAlertConfirm()
     },
     activateAlertConfirm (flatSchemaId) {
       this.selectedFlatSchemaId = flatSchemaId
@@ -135,10 +152,10 @@ export default {
     },
     refreshAfterChange () {
       this.alertConfirm.isActive = false
-      this.getFlatsSchemas()
+      this.getFloors()
       this.closeSidebar()
     },
-    cancelRemove () {
+    closeAlertConfirm () {
       this.alertConfirm.isActive = false
     }
   }
