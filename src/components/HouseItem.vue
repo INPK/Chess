@@ -5,7 +5,7 @@
   >
     <div>
       <div class="item-image" @click="redirectToCurrentHouseMain">
-        <img :src="imageSource" alt="">
+        <img alt="" src="/static/img/blank_layout.svg"><!--:src="image"-->
       </div>
       <div class="item-desc" @click="redirectToCurrentHouseMain">
         <div>

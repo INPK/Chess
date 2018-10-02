@@ -22,12 +22,12 @@
       />
     </div>
     <div class="item-image">
-      <img :src="image" src="/static/img/blank_layout.svg">
+      <img src="/static/img/blank_layout.svg"><!--:src="image"-->
     </div>
     <div class="item-desc">
       <div class="item-desc__list">
         <div>Тип квартиры:</div>
-        <div class="item-desc__list_right">{{ type }}</div>
+        <div class="item-desc__list_right">{{ staticFlatsSchemasTypes[type].title }}</div>
       </div>
       <div class="item-desc__list">
         <div>Типовая площадь:</div>
@@ -58,7 +58,41 @@ export default {
   data () {
     return {
       isVisibleButtons: false,
-      sidebarShow: false
+      sidebarShow: false,
+      staticFlatsSchemasTypes: {
+        'studio_flat': {
+          title: 'Студия',
+          alias: 'S'
+        },
+        'one_room_flat': {
+          title: 'Однокомнатная',
+          alias: '1к'
+        },
+        'two_room_flat': {
+          title: '2х-комнатная',
+          alias: '2х'
+        },
+        'three_room_flat': {
+          title: '3х-комнатная',
+          alias: '3х'
+        },
+        'four_room_flat': {
+          title: '4х-комнатная',
+          alias: '4х'
+        },
+        'five_room_flat': {
+          title: '5и-комнатная',
+          alias: '5к'
+        },
+        'euro_two_room_flat': {
+          title: 'Евро 2х-комнатная',
+          alias: 'Е2'
+        },
+        'euro_three_room_flat': {
+          title: 'Евро 3х-комнатная',
+          alias: 'Е3'
+        }
+      }
     }
   },
   props: {

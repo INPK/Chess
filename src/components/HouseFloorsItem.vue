@@ -20,7 +20,7 @@
       />
     </div>
     <div class="item-image">
-      <img :src="image" src="/static/img/blank_layout.svg">
+      <img :src="image">
     </div>
     <div class="item-desc">
       <div
