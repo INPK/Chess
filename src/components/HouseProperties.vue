@@ -157,7 +157,13 @@
                 <input v-model="materials" type="checkbox" id="with_repair" value="С ремонтом"/>
                 <label for="with_repair">С ремонтом</label>
               </div>
-              <span>Материалы: {{ materials }}</span>
+              <div style="width: 500px;">
+                <DraggableCal
+                  lang="RU"
+                  :days=Number(1095)
+                  @dateSelected="startDevelopment = createStrDateFromObject($event)"
+                />
+              </div>
             </div>
           </div>
           <div class="properties-buttons">
@@ -189,6 +195,7 @@
 <script>
 import HouseContainer from './HouseContainer'
 import ButtonDefault from './ButtonDefault'
+import DraggableCal from 'vue-draggable-cal'
 import AlertDefault from './AlertDefault'
 
 export default {
@@ -196,12 +203,14 @@ export default {
   components: {
     ButtonDefault,
     HouseContainer,
+    DraggableCal,
     AlertDefault
   },
   data () {
     return {
       houseId: '',
       buildingId: '',
+      pluginDate: '',
       materials: [],
       numberOfFloors: null,
       livingFloorsStart: '',
@@ -232,6 +241,20 @@ export default {
     this.buildingId = JSON.parse(this.$store.state.buildings)[currentBuildingStoreIndex].building.hash_id
   },
   methods: {
+    createStrDateFromObject (dateObject) {
+      let dateArr = [dateObject.getDate(), dateObject.getMonth() + 1, dateObject.getFullYear()]
+      for (let i in dateArr) {
+        dateArr[i] = dateArr[i].toString().replace(/^([0-9])$/, '0$1')
+      }
+      let serverDate = dateArr[2] + '-' + dateArr[1] + '-' + dateArr[0]
+      return serverDate
+    },
+    reformatDateFromServer (dataString) {
+      let dateArr = dataString.split('-')
+      let newDate = dateArr[2] + '.' + dateArr[1] + '.' + dateArr[0]
+      console.info(newDate)
+      return newDate
+    },
     getProperties () {
       return this.$store.dispatch('retrieveItem', {
         url: '/houses/' + this.houseId,
@@ -252,8 +275,8 @@ export default {
       this.number = house.number
       this.finishing = house.finishing
       this.stageDevelopment = house.stage_development
-      this.startDevelopment = house.start_development
-      this.endDevelopment = house.end_development
+      this.startDevelopment = this.reformatDateFromServer(house.start_development)
+      this.endDevelopment = this.reformatDateFromServer(house.end_development)
     },
     createHouseProperties () {
       this.storeHouseProperties()
