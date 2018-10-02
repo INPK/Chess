@@ -1,13 +1,14 @@
 <template>
-  <div class="uk-card"
+  <div class="floors-item"
        @mouseover="toggleEditButton"
        @mouseout="toggleEditButton"
   >
+    <div class="item-buttons">
       <ButtonDefault
         v-if="isVisibleButtons"
         name="Редактировать"
         color="green"
-        class="button-expand"
+        class="button-small"
         :actionForClick="editFloor"
       />
       <ButtonDefault
@@ -17,30 +18,30 @@
         class="button-expand"
         :actionForClick="removeFloor"
       />
-    <div class="uk-card">
+    </div>
+    <div class="item-image">
+      <img :src="image" src="/static/img/blank_layout.svg">
+    </div>
+    <div class="item-desc">
       <div
         v-if="markingEnable">
         Этаж доступен для разметки
       </div>
-      <div class="uk-card-header">
-        <img :src="image">
+      <div>
+        № этажа: {{ floorNumber }}
       </div>
-      <div class="uk-card-body">
-        <div>
-          № этажа: {{ floorNumber }}
+      <div class="item-desc__clone">
+        <div>Клонировать для этажей:</div>
+        <div class="clone-items">
+          <span class="clone-item" v-for="(cloneFloor, i) in cloneFloors" :key="i">{{ cloneFloor }}</span>
         </div>
-        <div>
-          Клонировать для этажей:
-          <span v-for="(cloneFloor, i) in cloneFloors" :key="i">{{ cloneFloor }},</span>
-        </div>
-        <ButtonDefault
-          v-if="isVisibleButtons"
-          name="Разметить этаж"
-          color="green"
-          class="button-expand"
-          :actionForClick="emitMarkingFloor"
-        />
       </div>
+      <ButtonDefault
+        name="Разметить этаж"
+        color="yellow"
+        class="button-expand"
+        :actionForClick="emitMarkingFloor"
+      />
     </div>
   </div>
 </template>
@@ -117,6 +118,57 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="less" scoped>
+  @import (less) "../../static/less/color.less";
+  @import (less) "../../static/less/grid.less";
+  @import (less) "../../static/less/media.less";
+  @import (less) "../../static/less/padding.less";
+  .floors-item {
+    position: relative;
+    background-color: @color-white;
+    &:hover {
+      box-shadow: 0 28px 50px rgba(22, 0, 27, 0.14);
+    }
+    .item {
+      &-buttons {
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+      &-image {
+        .padding-v(@v: 2rem);
+        .padding-h(@v: 4rem);
+        img {
+          object-fit: contain;
+          width: 100%;
+        }
+      }
+      &-desc {
+        .grid(@c: 1;@rg: 1rem);
+        border-top: 1px solid @color-light-grey;
+        .padding(@v: 2rem);
+        &__list {
+          .grid(@c: 2;@cg: 1rem);
+          &_right {
+            text-align: right;
+          }
+        }
+        &__clone {
+          .clone {
+            &-items {
+              display: grid;
+              grid-template-columns: repeat(10, 1fr);
+              grid-column-gap: 10px;
+              grid-row-gap: 10px;
+            }
+            &-item {
+              background-color: @color-dark-grey;
+              padding: 0.5rem;
+              display: block;
+            }
+          }
+        }
+      }
+    }
+  }
 </style>

@@ -1,18 +1,20 @@
 <template>
   <div>
-    <ButtonDefault
-      name="Предыдущий шаг"
-      color="green"
-      :actionForClick="getBack"
-    />
     <HouseContainer>
       <HouseFloorsList/>
     </HouseContainer>
-    <ButtonDefault
-      name="Следующий шаг"
-      color="green"
-      :actionForClick="redirectToNextStep"
-    />
+    <div class="house-buttons">
+      <ButtonDefault
+        name="Предыдущий шаг"
+        color="grey"
+        :actionForClick="getBack"
+      />
+      <ButtonDefault
+        name="Следующий шаг"
+        color="green"
+        :actionForClick="redirectToNextStep"
+      />
+    </div>
   </div>
 </template>
 
@@ -39,6 +41,13 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="less" scoped>
+  @import (less) "../../static/less/color.less";
+  .house-buttons {
+    border-top: 1px solid @color-light-grey;
+    padding-top: 2rem;
+    margin-top: 4rem;
+    display: flex;
+    justify-content: space-between;
+  }
 </style>

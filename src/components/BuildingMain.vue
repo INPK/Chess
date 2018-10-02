@@ -1,75 +1,73 @@
 <template>
-    <div class="uk-container">
-      <div class="building">
-        <h1 class="building-title">{{ name }}</h1>
-        <div class="building-container" uk-grid>
-          <div class="building-info">
-            <h2>Расположение объекта:</h2>
-            <div><span>Страна: </span>{{ country }}</div>
-            <div><span>Регион: </span>{{ region }}</div>
-            <div><span>Город: </span>{{ city }}</div>
-            <div><span>Район: </span>{{ district }}</div>
-            <div><span>Координаты: </span>{{ coords }}</div>
-          </div>
-          <div class="building-media">
-            <div class="building-media_images">{{ images }}</div>
-            <div class="building-media_video">{{ video }}</div>
-          </div>
+  <div>
+    <h1 class="building-title">{{ name }}</h1>
+    <div class="building">
+      <div class="building-container" uk-grid>
+        <div class="building-info">
+          <h2>Расположение объекта:</h2>
+          <div><span>Страна: </span>{{ country }}</div>
+          <div><span>Регион: </span>{{ region }}</div>
+          <div><span>Город: </span>{{ city }}</div>
+          <div><span>Район: </span>{{ district }}</div>
+          <div><span>Координаты: </span>{{ coords }}</div>
+        </div>
+        <div class="building-media">
+          <div class="building-media_images">{{ images }}</div>
+          <div class="building-media_video">{{ video }}</div>
         </div>
       </div>
-      <div class="houses">
-        <AlertDefault
-          v-if="alertMessage"
-          :message="alertMessage"
-          @alertDie="alertMessage = ''"
-        />
-        <AlertConfirm
-          v-if="alertConfirm.isActive"
-          :additionalMessage="alertConfirm.additionalMessage"
-          @isAgree="removeHouse"
-          @isDisagree="closeAlertConfirm"
-        />
-        <h1>Список домов:</h1>
-        <div class="houses-container uk-flex">
-          <div class="uk-card uk-card-default">
-            <div class="uk-card-body">
-              <h2 class="uk-text-left">Новый объект</h2>
-              <ButtonDefault
-                name="Добавить дом"
-                color="grey"
-                :actionForClick = "redirectToHouseProperties"
-              />
-              <ButtonDefault
-                name="Создадим за вас (бесплатно)"
-                color="aqua"
-              ></ButtonDefault>
-            </div>
-            <img src="/static/img/PersonalManager.jpg" alt="">
-          </div>
-          <div class="uk-flex">
-            <HouseItem
-              class="uk-padding-small"
-              v-for="(item, index) in houses"
-              :key=item.house.id
-              :houseId=item.house.hash_id
-              :numberOfFloors=item.house.number_of_floors
-              :livingFloors=item.house.living_floors
-              :numberOfEntrance=item.house.number_of_entrance
-              :numberOfFlat=item.house.number_of_flat
-              :streetName=item.house.street_name
-              :storeIndex=index
-              :number=item.house.number
-              :flats=item.flats
-              :finishing=item.house.finishing
-              :stageDevelopment=item.house.stage_development
-              :startDevelopment=item.house.start_development
-              :endDevelopment=item.house.end_development
-              @activateAlertConfirm="activateAlertConfirm"
+      <AlertDefault
+        v-if="alertMessage"
+        :message="alertMessage"
+        @alertDie="alertMessage = ''"
+      />
+      <AlertConfirm
+        v-if="alertConfirm.isActive"
+        :additionalMessage="alertConfirm.additionalMessage"
+        @isAgree="removeHouse"
+        @isDisagree="closeAlertConfirm"
+      />
+    </div>
+    <div class="buildings">
+      <div class="buildings-create">
+        <div class="create">
+          <div class="create-title">Новый объект</div>
+          <div class="create-button">
+            <ButtonDefault
+              name="Добавить объект"
+              color="grey"
+              class="create-button__add button-expand"
+              :actionForClick = "redirectToCreate"
+            ></ButtonDefault>
+            <ButtonDefault
+              name="Создадим за вас"
+              color="green"
+              class="button-expand"
             />
           </div>
         </div>
+        <img class="create-image" src="/static/img/PersonalManager.jpg" alt="">
       </div>
+        <HouseItem
+          v-for="(item, index) in houses"
+          :key=item.house.id
+          :houseId=item.house.hash_id
+          :numberOfFloors=item.house.number_of_floors
+          :livingFloors=item.house.living_floors
+          :numberOfEntrance=item.house.number_of_entrance
+          :numberOfFlat=item.house.number_of_flat
+          :streetName=item.house.street_name
+          :storeIndex=index
+          :number=item.house.number
+          :flats=item.flats
+          :finishing=item.house.finishing
+          :stageDevelopment=item.house.stage_development
+          :startDevelopment=item.house.start_development
+          :endDevelopment=item.house.end_development
+          @activateAlertConfirm="activateAlertConfirm"
+        />
     </div>
+  </div>
 </template>
 
 <script>
@@ -190,6 +188,62 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+  @import (less) "../../static/less/color.less";
+  @import (less) "../../static/less/grid.less";
+  @import (less) "../../static/less/media.less";
+  @import (less) "../../static/less/padding.less";
 
+  .building {
+    background-color: @color-white;
+    .padding();
+    margin-bottom: 2rem;
+  }
+
+  .buildings {
+    .grid();
+    @media @desktop {
+      .grid(@c: 2);
+    }
+    @media @tablet{
+      .grid(@c: 1);
+    }
+    @media @mobile {
+      grid-row-gap: 1rem;
+    }
+    &-create {
+      background-color: @color-white;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      &:hover {
+        box-shadow: 0 28px 50px rgba(22, 0, 27, 0.14);
+      }
+      .create {
+        .padding(@v: 2rem);
+        &-title {
+          font-size: 2rem;
+          font-weight: 100;
+        }
+        &-button {
+          .padding-v(@v: 2rem);
+          .grid(@c: 2);
+          @media @xdesktop {
+            .grid(@c: 1;@rg: 1rem);
+          }
+          @media @desktop {
+            .grid(@c: 2;@rg: 1rem);
+          }
+          @media @mobile {
+            .grid(@c: 1;@rg: 1rem);
+          }
+        }
+        &-image {
+          display: block;
+          width: 100%;
+          object-fit: cover;
+        }
+      }
+    }
+  }
 </style>

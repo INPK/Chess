@@ -1,62 +1,186 @@
 <template>
   <div>
     <HouseContainer>
-      <router-link :to="{ name: 'Buildings'  }">Главная</router-link>
       <AlertDefault
         v-if="singleErrorMessage"
         :message="singleErrorMessage"
         @alertDie="singleErrorMessage = ''"
       />
-      <div class="uk-container uk-background-default uk-padding" uk-grid>
-        <div class="uk-width-2-3">
-          <h2>Введите информацию о комплексе:</h2>
-          <h2>Введите характеристики дома:</h2>
-          <span>этажей</span><input v-model="numberOfFloors" name="number_of_floors"/>
-          <div><span>жилые этажы</span>
-            <input v-model="livingFloorsStart" placeholder="с"/>
-            <input v-model="livingFloorsEnd" placeholder="по"/>
+      <div class="house-properties">
+        <div class="properties">
+          <div class="properties-characteristics">
+            <div class="characteristics-title">Введите характеристики дома:</div>
+            <div class="characteristics-grid">
+              <div class="form-group">
+                <label class="form-group__label" for="number_of_floors">Всего этажей</label>
+                <div class="form-group__input">
+                  <input
+                    v-model="numberOfFloors"
+                    type="text"
+                    id="number_of_floors"
+                  />
+                  <span class="form-group__input_bar"></span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-group__label" for="livingFloorsStart">С</label>
+                <div class="form-group__input">
+                  <input
+                    v-model="livingFloorsStart"
+                    type="text"
+                    id="livingFloorsStart"
+                  />
+                  <span class="form-group__input_bar"></span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-group__label" for="livingFloorsEnd">По</label>
+                <div class="form-group__input">
+                  <input
+                    v-model="livingFloorsEnd"
+                    type="text"
+                    id="livingFloorsEnd"
+                  />
+                  <span class="form-group__input_bar"></span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-group__label" for="numberOfEntrance">Подъездов</label>
+                <div class="form-group__input">
+                  <input
+                    v-model="numberOfEntrance"
+                    type="text"
+                    id="numberOfEntrance"
+                  />
+                  <span class="form-group__input_bar"></span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-group__label" for="numberOfFlat">Квартир</label>
+                <div class="form-group__input">
+                  <input
+                    v-model="numberOfFlat"
+                    type="text"
+                    id="numberOfFlat"
+                  />
+                  <span class="form-group__input_bar"></span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-group__label" for="streetName">Улица</label>
+                <div class="form-group__input">
+                  <input
+                    v-model="streetName"
+                    type="text"
+                    id="streetName"
+                  />
+                  <span class="form-group__input_bar"></span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-group__label" for="number">№ дома</label>
+                <div class="form-group__input">
+                  <input
+                    v-model="number"
+                    type="text"
+                    id="number"
+                  />
+                  <span class="form-group__input_bar"></span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-group__label" for="finishing">Отделка</label>
+                <div class="form-group__input">
+                  <input
+                    v-model="finishing"
+                    type="text"
+                    id="finishing"
+                  />
+                  <span class="form-group__input_bar"></span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-group__label" for="stageDevelopment">Этап строительства</label>
+                <div class="form-group__input">
+                  <input
+                    v-model="stageDevelopment"
+                    type="text"
+                    id="stageDevelopment"
+                  />
+                  <span class="form-group__input_bar"></span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-group__label" for="startDevelopment">Начало строительства</label>
+                <div class="form-group__input">
+                  <input
+                    v-model="startDevelopment"
+                    type="text"
+                    id="startDevelopment"
+                  />
+                  <span class="form-group__input_bar"></span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-group__label" for="endDevelopment">Конец строительства</label>
+                <div class="form-group__input">
+                  <input
+                    v-model="endDevelopment"
+                    type="text"
+                    id="endDevelopment"
+                  />
+                  <span class="form-group__input_bar"></span>
+                </div>
+              </div>
+            </div>
           </div>
-          <span>подъездов</span><input v-model="numberOfEntrance" name="number_of_entrance"/>
-          <span>квартир</span><input v-model="numberOfFlat" name="number_of_flat"/>
-          <span>улицай</span><input v-model="streetName" name="street_name"/>
-          <span>№ дома</span><input v-model="number" name="number"/>
-          <span>Отделка</span><input v-model="finishing" name="finishing"/>
-          <span>Этап строительства</span><input v-model="stageDevelopment" name="stage_development"/>
-          <span>Начало строительства</span><input v-model="startDevelopment" name="start_development"/>
-          <span>Конец строительства</span><input v-model="endDevelopment" name="end_development"/>
-          <h2>Отделка:</h2>
-          <div class="uk-flex uk-flex-row">
-            <label for="without_finishing">Стройвариант</label>
-            <input v-model="materials" type="checkbox" id="without_finishing" value="Стройвариант"/>
-            <label for="rough_finishing">Черновая</label>
-            <input v-model="materials" type="checkbox" id="rough_finishing" value="Черновая"/>
-            <label for="prefinishing_finishing">Предчистовая</label>
-            <input v-model="materials" type="checkbox" id="prefinishing_finishing" value="Предчистовая"/>
-            <label for="finishing_finishing">Чистовая</label>
-            <input v-model="materials" type="checkbox" id="finishing_finishing" value="Чистовая"/>
-            <label for="with_repair">С ремонтом</label>
-            <input v-model="materials" type="checkbox" id="with_repair" value="С ремонтом"/>
-            <span>Материалы: {{ materials }}</span>
+          <div class="properties-finishing">
+            <div class="finishing-title">Отделка:</div>
+            <div class="finishing-grid">
+              <div>
+                <input v-model="materials" type="checkbox" id="without_finishing" value="Стройвариант"/>
+                <label for="without_finishing">Стройвариант</label>
+              </div>
+              <div>
+                <input v-model="materials" type="checkbox" id="rough_finishing" value="Черновая"/>
+                <label for="rough_finishing">Черновая</label>
+              </div>
+              <div>
+                <input v-model="materials" type="checkbox" id="prefinishing_finishing" value="Предчистовая"/>
+                <label for="prefinishing_finishing">Предчистовая</label>
+              </div>
+              <div>
+                <input v-model="materials" type="checkbox" id="finishing_finishing" value="Чистовая"/>
+                <label for="finishing_finishing">Чистовая</label>
+              </div>
+              <div>
+                <input v-model="materials" type="checkbox" id="with_repair" value="С ремонтом"/>
+                <label for="with_repair">С ремонтом</label>
+              </div>
+              <span>Материалы: {{ materials }}</span>
+            </div>
+          </div>
+          <div class="properties-buttons">
+            <ButtonDefault
+              v-if="!editMode"
+              name="Следующий шаг"
+              color="green"
+              :actionForClick="createHouseProperties"
+            />
+            <div v-else>
+              <ButtonDefault
+                name="Обновить"
+                color="green"
+                :actionForClick="updateHouseProperties"
+              />
+              <ButtonDefault
+                name="Пропустить"
+                color="green"
+                :actionForClick = "skipStep"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <ButtonDefault
-        v-if="!editMode"
-        name="Следующий шаг"
-        color="green"
-        :actionForClick="createHouseProperties"
-      />
-      <div v-else>
-        <ButtonDefault
-          name="Обновить"
-          color="green"
-          :actionForClick="updateHouseProperties"
-        />
-        <ButtonDefault
-          name="Пропустить"
-          color="green"
-          :actionForClick = "skipStep"
-        />
       </div>
     </HouseContainer>
   </div>
@@ -65,12 +189,14 @@
 <script>
 import HouseContainer from './HouseContainer'
 import ButtonDefault from './ButtonDefault'
+import AlertDefault from './AlertDefault'
 
 export default {
   name: 'HouseProperties',
   components: {
     ButtonDefault,
-    HouseContainer
+    HouseContainer,
+    AlertDefault
   },
   data () {
     return {
@@ -149,7 +275,9 @@ export default {
     updateHouseProperties () {
       this.storeHouseProperties('/' + this.houseId, 'updateItem')
         .then(() => { this.$router.push({ name: 'BuildingMain' }) })
-        .catch(error => { console.info(error) })
+        .catch(error => {
+          this.errorsStack = error.response.data
+        })
     },
     skipStep () {
       this.$router.push({ name: 'HouseFlatsSchemas' })
@@ -211,6 +339,73 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+  @import (less) "../../static/less/color.less";
+  @import (less) "../../static/less/font.less";
+  @import (less) "../../static/less/form.less";
+  @import (less) "../../static/less/grid.less";
+  @import (less) "../../static/less/media.less";
+  @import (less) "../../static/less/padding.less";
 
+  .house-properties {
+    .properties {
+      background-color: @color-white;
+      .padding();
+      @media @desktop {
+        .padding(@v: 2rem);
+      }
+      &-characteristics {
+        .characteristics {
+          &-title {
+            .font(@s: 1.75rem; @w: 100);
+            margin-bottom: 2rem;
+          }
+          &-grid {
+            .grid(@c: 2);
+            @media @mobile {
+              .grid(@c: 1);
+            }
+            .form {
+              &-group {
+                grid-template-columns: 120px 1fr;
+                margin-bottom: 1rem;
+                label {
+                  color: @color-dark-grey ;
+                  .font(@s: 0.875rem;);
+                }
+                @media @mobile {
+                  margin-bottom: 0rem;
+                }
+              }
+            }
+          }
+        }
+      }
+      &-finishing {
+        .finishing {
+          &-title {
+            color: @color-dark-grey;
+            .font(@s: 1.25rem; @w: 100);
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+          }
+          &-grid {
+            .grid(@c: 5);
+            @media @desktop {
+              .grid(@c: 3);
+            }
+            @media @tablet {
+              .grid(@c: 2);
+            }
+            @media @mobile {
+              .grid(@c: 1);
+            }
+          }
+        }
+      }
+      &-buttons {
+        margin-top: 2rem;
+      }
+    }
+  }
 </style>

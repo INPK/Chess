@@ -10,6 +10,11 @@
   &-expand {
     width: 100%;
   }
+  &-small {
+    font-size: 0.875rem;
+    padding: 7px 15px;
+    border-radius: 3px;
+  }
   &[button-color=green] {
     background-color: @color-base;
     &:hover {
@@ -26,6 +31,24 @@
     }
     &:active {
       background-color: darken(@color-grey, 10%)
+    }
+  }
+  &[button-color=yellow] {
+    background-color: @color-light-yellow;
+    &:hover {
+      background-color: darken(@color-light-yellow, 5%)
+    }
+    &:active {
+      background-color: darken(@color-light-yellow, 10%)
+    }
+  }
+  &[button-color=red] {
+    background-color: @color-red;
+    &:hover {
+      background-color: darken(@color-red, 5%)
+    }
+    &:active {
+      background-color: darken(@color-red, 10%)
     }
   }
 }

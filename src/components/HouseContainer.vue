@@ -1,23 +1,51 @@
 <template>
-  <div>
-    <div>
-      <div class="uk-flex uk-flex-between">
-        <router-link :to="{ name: 'BuildingMain'  }">Жилой комплекс</router-link>
-        <h1>ЖК "Millennium Falcon" (шаг №1 из 6)</h1>
+  <div class="house-container">
+    <div class="house-header">
+      <div class="header-top">
+        <div class="header-title">
+          <router-link class="header-title__link" :to="{ name: 'BuildingMain' }">ЖК "Millennium Falcon"</router-link>
+          <span>(шаг №1 из 6)</span>
+        </div>
         <ButtonDefault
           name="Удалить объект"
           color="red"
+          class="button"
         />
       </div>
-      <ul class="uk-width-1-1 uk-navbar-nav">
-        <li><router-link :to="{ name: 'HouseProperties' }">1. Характеристики дома</router-link></li>
-        <li><router-link :to="{ name: 'HouseFlatsSchemas' }">2. Типовые планровки</router-link></li>
-        <li><router-link :to="{ name: 'HouseFloors' }">3. Типовые этажи</router-link></li>
-        <li><router-link :to="{ name: 'HouseChess' }">4. Пронумеровать</router-link></li>
-        <li><router-link :to="{ name: 'HousePrices' }">5. Цены</router-link></li>
+      <ul class="header-nav">
+        <li class="nav-item">
+          <router-link class="nav-link" :to="{ name: 'HouseProperties' }">
+            <span class="nav-link__step">1.</span>
+            <span class="nav-link__title">Характеристики дома</span>
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link class="nav-link" :to="{ name: 'HouseFlatsSchemas' }">
+            <span class="nav-link__step">2.</span>
+            <span class="nav-link__title">Типовые планровки</span>
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link class="nav-link" :to="{ name: 'HouseFloors' }">
+            <span class="nav-link__step">3.</span>
+            <span class="nav-link__title">Типовые этажи</span>
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link class="nav-link" :to="{ name: 'HouseChess' }">
+            <span class="nav-link__step">4.</span>
+            <span class="nav-link__title">Пронумеровать</span>
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link class="nav-link" :to="{ name: 'HousePrices' }">
+            <span class="nav-link__step">5.</span>
+            <span class="nav-link__title">Цены</span>
+          </router-link>
+        </li>
       </ul>
-      <slot></slot>
     </div>
+    <slot></slot>
   </div>
 </template>
 
@@ -32,6 +60,56 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+  @import (less) "../../static/less/button.less";
+  @import (less) "../../static/less/color.less";
+  @import (less) "../../static/less/font.less";
+  @import (less) "../../static/less/grid.less";
+  @import (less) "../../static/less/media.less";
+  @import (less) "../../static/less/padding.less";
+  .house-container {
+    .house {
+      &-header {
+        margin-bottom: 3rem;
+        .header {
+          &-title {
+            .font(@s: 2rem);
+            &__link {
+              color: @color-dark-black;
+              text-decoration: none;
+            }
+          }
+          &-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+          }
+          &-nav {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              list-style-type: none;
+            .nav {
+              &-item {
+
+              }
+              &-link {
+                color: @color-dark-grey;
+                .font(@w: 700);
+                text-decoration: none;
+                &:hover {
+                  color: darken(@color-dark-grey, 50%);
+                }
+                &.router-link-active {
+                  color: @color-light-green;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 
 </style>
