@@ -57,11 +57,6 @@
       color="green"
       :actionForClick="alertShow = true"
     />
-    <AlertConfirm
-      v-if="alertShow"
-      @isAgree="removeFlatType"
-      @isDisagree="alertShow = false"
-      />
   </div>
 </template>
 
