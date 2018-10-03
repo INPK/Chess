@@ -71,6 +71,11 @@
             </span>
           </transition>
           Изображение: <input @change="processFile" name="image" type="file" />
+          <button
+            @click="resetImage"
+            type="button"
+          >Х</button>
+          <img :src="imagePreview">
         </div>
       </div>
       <ButtonDefault
@@ -102,6 +107,7 @@ export default {
       numberOfFlats: this.selectedFloor.number_of_flats,
       cloneFloors: [],
       floorImage: this.selectedFloor.image,
+      imagePreview: '',
       freeFloors: [],
       errorsStack: []
     }
@@ -135,6 +141,10 @@ export default {
   methods: {
     closeSidebarToFloor () {
       this.$emit('closeSidebar')
+    },
+    resetImage () {
+      this.flatSchemaImage = ''
+      this.imagePreview = ''
     },
     storeFloor (floorIdPath = '', action = 'writeItem') {
       let floorProperties = new FormData()
@@ -206,6 +216,16 @@ export default {
     },
     processFile (event) {
       this.floorImage = event.target.files[0]
+      this.floorImage = event.target.files[0]
+      let reader = new FileReader()
+      reader.onloadend = () => {
+        this.imagePreview = reader.result
+      }
+      if (this.floorImage) {
+        reader.readAsDataURL(this.floorImage)
+      } else {
+        this.imagePreview = ''
+      }
     },
     convertFloorRangeToSequence (floorsRange) {
       let floorSequence = []

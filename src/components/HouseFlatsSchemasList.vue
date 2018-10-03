@@ -28,6 +28,7 @@
           :area="flatSchema.fields.area"
           :numberOfBalcony="flatSchema.fields.number_of_balcony"
           :numberOfLoggia="flatSchema.fields.number_of_loggia"
+          :numberOfRooms="flatSchema.fields.number_of_rooms"
           :price="flatSchema.fields.price"
           @activateSidebar="activateSidebar"
           @activateAlertConfirm="activateAlertConfirm"
