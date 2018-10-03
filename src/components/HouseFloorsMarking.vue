@@ -99,7 +99,7 @@
             </div>
           </div>
           <div class="marked-window">
-            <div class="window-title">Окна выходят на:</div>
+            <div class="window-title">Окна выходят на: {{ newFlat.windows }}</div>
             <div class="window-list">
               <div>
                 <input v-model="newFlat.windows" type="checkbox" id="street" value="Улица"/>
@@ -492,7 +492,6 @@ export default {
             .grid(@c: 2; @cg: 1rem; @rg: 1rem);
           }
         }
-
       }
     }
   }

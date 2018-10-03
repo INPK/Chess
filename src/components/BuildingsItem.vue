@@ -4,7 +4,7 @@
        @mouseout="toggleEditButton"
   >
       <div class="item-image" @click="redirectToCurrentBuildingMain">
-        <img :src="imageSource" alt="">
+        <img src="https://novostroy-a.akamaihd.net/regions/u/b/g/box_orig/5b03e4137288c.jpg" alt="">
       </div>
       <div class="item-desc" @click="redirectToCurrentBuildingMain">
         <div>
@@ -168,6 +168,13 @@ export default {
         box-shadow: 0 28px 50px rgba(22, 0, 27, 0.14);
       }
       .item {
+        &-image {
+          img {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+          }
+        }
         &-desc {
           display: grid;
           grid-template-columns: 1fr auto;

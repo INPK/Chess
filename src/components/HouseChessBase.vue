@@ -1,60 +1,57 @@
 <template>
-    <div class="uk-flex">
+    <div class="house-chessbase">
       <AlertDefault
         v-if="singleErrorMessage"
         :message="singleErrorMessage"
         @alertDie="singleErrorMessage = ''"
       />
-      <div class="tmp-chess uk-width-1-3">
-        <h3>Проверьте правильность нумерации квартир и приступите к последнему шагу</h3>
-        <h5>При необходимости вернитесь на предыдущий шаг для внесения правок</h5>
-        <div class="uk-width-2-3">
-          <div
-            v-for="(flatType, index) in flatTypes"
-            :key="index"
-          >
-            <span>{{ staticFlatsSchemasTypes[flatType.type].title }}</span>
-            <span>{{ flatType.number_of }}</span>
+      <div class="chessbase-info">
+        <div class="info-title">Проверьте правильность нумерации квартир и приступите к последнему шагу</div>
+        <div class="info-desc">При необходимости вернитесь на предыдущий шаг для внесения правок</div>
+        <div class="info-list">
+          <div class="list-flat" v-for="(flatType, index) in flatTypes"
+          :key="index">
+            <div class="list-flat__type">{{ staticFlatsSchemasTypes[flatType.type].alias }}</div>
+            <div class="list-flat__desc">{{ staticFlatsSchemasTypes[flatType.type].title }}</div>
+            <div class="list-flat__amount">{{ flatType.number_of }}</div>
           </div>
         </div>
       </div>
-      <div>
-        <h3>Шахматка</h3>
-        <div>
-          <div class="uk-flex uk-flex-row">
-            <label for="rooms">Комнатность</label>
+      <div class="chessbase-masonry">
+        <div class="masonry-header">
+          <div class="header-title">Шахматка</div>
+          <div class="header-filter">
             <input v-model="roomsView" type="checkbox" id="rooms" value="rooms"/>
+            <label for="rooms">Комнатность</label>
           </div>
-          <div class="uk-flex uk-flex-column">
-            <div class="tmp-headers uk-flex uk-flex-between">
-              <h5>Этажи</h5>
-              <h5>Подъезды </h5>
-              <h5>Этажи</h5>
+        </div>
+        <div class="masonry-chess">
+          <div class="chess-header">
+            <div>Этажи</div>
+            <div>Подъезды </div>
+            <div>Этажи</div>
+          </div>
+          <div
+            class="chess-floor"
+            v-for="(flat, index) in flats.slice().reverse()"
+            :key=index
+            :floor="flat[0].floor"
+          >
+            <div class="floor-num">
+              {{ flat[0].floor }}
             </div>
-            <div
-              v-for="(flat, index) in flats.slice().reverse()"
-              :key=index
-              :floor="flat[0].floor"
-            >
-              <div>
-                <span>Этаж {{ flat[0].floor }}</span>
-                <div>
-                  <span>
-                    {{ flat[0].floor }}
-                  </span>
-                  <span
-                    v-for="(properties, index) in flat"
-                    class="tmp-flat"
-                    :key="index"
-                  >
-                    <span v-if="roomsView">{{ properties.number }}</span>
-                    <span v-else>{{ properties.number_of_rooms }}</span>
-                  </span>
-                  <span>
-                    {{ flat[0].floor }}
-                  </span>
-                </div>
+            <div class="floor-flats">
+              <div
+                v-for="(properties, index) in flat"
+                class="floor-flat"
+                :key="index"
+              >
+                <div class="floor-flat__numb" v-if="roomsView">{{ properties.number }}</div>
+                <div class="floor-flat__numb" v-else>{{ properties.number_of_rooms }}</div>
               </div>
+            </div>
+            <div class="floor-num">
+              {{ flat[0].floor }}
             </div>
           </div>
         </div>
@@ -159,22 +156,134 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.tmp-chess {
-  background-color: #2ec1b3;
-  & *{
-    color: #fff;
+  @import (less) "../../static/less/button.less";
+  @import (less) "../../static/less/color.less";
+  @import (less) "../../static/less/font.less";
+  @import (less) "../../static/less/grid.less";
+  @import (less) "../../static/less/media.less";
+  @import (less) "../../static/less/padding.less";
+
+  .house-chessbase {
+    display: grid;
+    grid-template-columns: 1fr 2.5fr;
+    .chessbase {
+      &-info {
+        color:@color-white;
+        background-color: @color-light-green;
+        .padding(@v: 3rem);
+        .info {
+          &-title {
+            .font(@s: 2rem; @w: 100);
+            margin-bottom: 2rem;
+          }
+          &-desc {
+            .font(@s: 1.15rem; @w: 100);
+            margin-bottom: 3rem;
+          }
+          &-list {
+            .list {
+              &-flat {
+                display: grid;
+                grid-template-columns: auto 1fr auto;
+                grid-column-gap: 1rem;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+                margin-bottom: 0rem;
+                padding-top: 0.75rem;
+                padding-bottom: 0.75rem;
+                &__type {
+                  border: 1px solid;
+                  border-radius: 50%;
+                  width: 2.5rem;
+                  height: 2.5rem;
+                  display: -webkit-box;
+                  display: -ms-flexbox;
+                  display: flex;
+                  -webkit-box-align: center;
+                  -ms-flex-align: center;
+                  align-items: center;
+                  -webkit-box-pack: center;
+                  -ms-flex-pack: center;
+                  justify-content: center;
+                }
+                &__amount {
+                  font-size: 1.25rem;
+                  font-weight: 100;
+                  letter-spacing: 0px;
+                }
+              }
+            }
+          }
+        }
+      }
+      &-masonry {
+        background-color: @color-white;
+        .padding(@v: 3rem);
+        .masonry {
+          &-header{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #f2f4f6;
+            .header {
+              &-title {
+                .font(@s: 2rem; @w: 100);
+              }
+            }
+          }
+          &-chess {
+            .chess {
+              &-header {
+                display: flex;
+                justify-content: space-between;
+                .font(@s: 1rem; @w: 100);
+                margin-bottom: 1rem;
+              }
+              &-floor {
+                display: grid;
+                align-items: center;
+                grid-template-columns: auto 1fr auto;
+                grid-column-gap: 1rem;
+                grid-row-gap: 1rem;
+                padding-top: 0.2rem;
+                padding-bottom: 0.2rem;
+                border-top: 1px solid transparent;
+                border-bottom: 1px solid transparent;
+                .padding-h(@v: 1rem;);
+                &:hover {
+                  border-top: 1px solid @color-light-grey;
+                  border-bottom: 1px solid @color-light-grey;
+                  .floor-num {
+                    color: @color-light-green;
+                  }
+                }
+                .floor {
+                  &-flats {
+                    display: grid;
+                    grid-template-columns: repeat(25, 1fr);
+                    grid-column-gap: 0.25rem;
+                    grid-row-gap: 0.25rem;
+                  }
+                  &-flat {
+                    color: @color-white;
+                    background-color: @color-light-green;
+                    text-align: center;
+                    border-radius: 3px;
+                    &__numb {
+                      padding: 7px;
+                      font-size: 0.875rem;
+                      display: inline-block;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
-}
-.tmp-flat {
-  background-color: #2ec1b3;
-  padding: 5px;
-  margin: 3px;
-  border-radius: 5px;
-  & *{
-    color: #fff;
-  }
-}
-.focus-on {
-  font-size: 20px;
-}
 </style>

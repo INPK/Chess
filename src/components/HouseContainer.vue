@@ -34,7 +34,7 @@
         <li class="nav-item">
           <router-link class="nav-link" :to="{ name: 'HouseChess' }">
             <span class="nav-link__step">4.</span>
-            <span class="nav-link__title">Пронумеровать</span>
+            <span class="nav-link__title">Шахматка</span>
           </router-link>
         </li>
         <li class="nav-item">
