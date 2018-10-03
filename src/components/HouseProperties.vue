@@ -112,9 +112,18 @@
               </div>
               <div class="form-group">
                 <label class="form-group__label" for="startDevelopment">Начало строительства</label>
+                <DraggableCal
+                  style="width: 500px;"
+                  v-if="startDevelopment.calendarIsActive"
+                  lang="RU"
+                  :days=Number(1095)
+                  @dateSelected="startDevelopment = createStrDateFromObject($event)"
+                />
                 <div class="form-group__input">
                   <input
-                    v-model="startDevelopment"
+                    v-if="!startDevelopment.calendarIsActive"
+                    @click="startDevelopment.calendarIsActive = !startDevelopment.calendarIsActive"
+                    v-model="startDevelopment.value"
                     type="text"
                     id="startDevelopment"
                   />
@@ -123,9 +132,18 @@
               </div>
               <div class="form-group">
                 <label class="form-group__label" for="endDevelopment">Конец строительства</label>
+                <DraggableCal
+                  style="width: 500px;"
+                  v-if="endDevelopment.calendarIsActive"
+                  lang="RU"
+                  :days=Number(1095)
+                  @dateSelected="endDevelopment = createStrDateFromObject($event)"
+                />
                 <div class="form-group__input">
                   <input
-                    v-model="endDevelopment"
+                    v-if="!endDevelopment.calendarIsActive"
+                    @click="endDevelopment.calendarIsActive = !endDevelopment.calendarIsActive"
+                    v-model="endDevelopment.value"
                     type="text"
                     id="endDevelopment"
                   />
@@ -156,13 +174,6 @@
               <div>
                 <input v-model="materials" type="checkbox" id="with_repair" value="С ремонтом"/>
                 <label for="with_repair">С ремонтом</label>
-              </div>
-              <div style="width: 500px;">
-                <DraggableCal
-                  lang="RU"
-                  :days=Number(1095)
-                  @dateSelected="startDevelopment = createStrDateFromObject($event)"
-                />
               </div>
             </div>
           </div>
@@ -221,8 +232,14 @@ export default {
       number: '',
       finishing: '',
       stageDevelopment: '',
-      startDevelopment: '',
-      endDevelopment: '',
+      startDevelopment: {
+        calendarIsActive: false,
+        value: ''
+      },
+      endDevelopment: {
+        calendarIsActive: false,
+        value: ''
+      },
       errorsStack: [],
       editMode: false
     }
@@ -246,12 +263,19 @@ export default {
       for (let i in dateArr) {
         dateArr[i] = dateArr[i].toString().replace(/^([0-9])$/, '0$1')
       }
-      let serverDate = dateArr[2] + '-' + dateArr[1] + '-' + dateArr[0]
-      return serverDate
+      let clientDate = dateArr[0] + '.' + dateArr[1] + '.' + dateArr[2]
+      return clientDate
     },
-    reformatDateFromServer (dataString) {
-      let dateArr = dataString.split('-')
-      let newDate = dateArr[2] + '.' + dateArr[1] + '.' + dateArr[0]
+    reformatDate (dataString, forServer) {
+      let symbolSeparate = '-'
+      let symbolJoin = '.'
+      if (forServer) {
+        let tmp = symbolJoin
+        symbolJoin = symbolSeparate
+        symbolSeparate = tmp
+      }
+      let dateArr = dataString.split(symbolSeparate)
+      let newDate = dateArr[2] + symbolJoin + dateArr[1] + symbolJoin + dateArr[0]
       console.info(newDate)
       return newDate
     },
@@ -275,8 +299,8 @@ export default {
       this.number = house.number
       this.finishing = house.finishing
       this.stageDevelopment = house.stage_development
-      this.startDevelopment = this.reformatDateFromServer(house.start_development)
-      this.endDevelopment = this.reformatDateFromServer(house.end_development)
+      this.startDevelopment.value = this.reformatDate(house.start_development)
+      this.endDevelopment.value = this.reformatDate(house.end_development)
     },
     createHouseProperties () {
       this.storeHouseProperties()
@@ -317,8 +341,8 @@ export default {
         number: this.number,
         finishing: this.finishing,
         stage_development: this.stageDevelopment,
-        start_development: this.startDevelopment,
-        end_development: this.endDevelopment
+        start_development: this.reformatDate(this.startDevelopment.value, true),
+        end_development: this.reformatDate(this.endDevelopment.value, true)
       }
       return this.$store.dispatch(action, {
         fields: houseProperties,

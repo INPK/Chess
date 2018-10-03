@@ -45,12 +45,6 @@
       :numberOfFlats="selectedFloor.numberOfFlats"
       @closeMarking="closeMarking"
     />
-    <AlertConfirm
-      v-if="alertConfirm.isActive"
-      :additionalMessage="alertConfirm.additionalMessage"
-      @isAgree="removeFloor"
-      @isDisagree="closeAlertConfirm"
-    />
     <AlertDefault
       v-if="alertMessage"
       :message="alertMessage"
