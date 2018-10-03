@@ -120,7 +120,7 @@
             <span class="form-group__input_bar"></span>
           </div>
         </div>
-        <div class="form-group properties-group">
+        <!--<div class="form-group properties-group">
           <label class="form-group__label label" for="video">Видео</label>
           <div class="form-group__input">
             <input v-model="video" name="video" />
@@ -153,7 +153,7 @@
             />
             <span class="form-group__input_bar"></span>
           </div>
-        </div>
+        </div>-->
       </div>
       <div>
         <ButtonDefault

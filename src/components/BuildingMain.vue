@@ -11,12 +11,10 @@
           <div><span>Регион: </span>{{ region }}</div>
           <div><span>Город: </span>{{ city }}</div>
           <div><span>Район: </span>{{ district }}</div>
-          <div><span>Координаты: </span>{{ coords }}</div>
         </div>
       </div>
       <div class="building-media">
         <div class="building-media_images">{{ images }}</div>
-        <div class="building-media_video">{{ video }}</div>
       </div>
 
       <AlertDefault
@@ -108,8 +106,6 @@ export default {
     AlertConfirm
   },
   created () {
-    this.$store.dispatch('destroyItemFromStore', 'currentHouseId')
-    this.$store.dispatch('destroyItemFromStore', 'properties')
     let urlBuildingStoreIndex = this.$route.params.buildingStoreIndex
     if (urlBuildingStoreIndex !== undefined) {
       this.$store.dispatch('setItemToStore', {
@@ -158,6 +154,8 @@ export default {
       this.getHouses(this.hashId)
     },
     redirectToHouseProperties () {
+      this.$store.dispatch('destroyItemFromStore', 'currentHouseId')
+      this.$store.dispatch('destroyItemFromStore', 'properties')
       this.$router.push({
         name: 'HouseProperties',
         params: {

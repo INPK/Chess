@@ -75,7 +75,7 @@ export default {
   },
   created () {
     // На главной странице удаляем индекс текущего дома из store.
-    this.$store.dispatch('destroyItemFromStore', 'currentBuildingStoreIndex')
+    // this.$store.dispatch('destroyItemFromStore', 'currentBuildingStoreIndex')
     this.getBuildings()
   },
   methods: {

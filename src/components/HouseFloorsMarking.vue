@@ -227,7 +227,6 @@ export default {
           storageName: 'flatsSchemas'
         })
           .then(flatsSchemas => {
-            console.info('flatsSchems', JSON.parse(flatsSchemas.data))
             this.$store.dispatch('setItemToStore', {
               storageName: 'flatsSchemas',
               fields: flatsSchemas.data
@@ -310,7 +309,6 @@ export default {
       if (lastFlatIndex >= 0) {
         let lastFlatNumber = Number(this.flatTypes[lastFlatIndex].fields.number)
         let lastFlatEntrance = Number(this.flatTypes[lastFlatIndex].fields.entrance)
-        console.info(lastFlatNumber, Number(this.newFlat.number), lastFlatEntrance, Number(this.newFlat.entrance))
         if ((this.newFlat.number - lastFlatNumber) !== 1 && this.newFlat.entrance === lastFlatEntrance) {
           this.alertMessage = 'Вы должны создавать квартиры последовательно!'
           return
