@@ -37,7 +37,7 @@
               name="Добавить объект"
               color="grey"
               class="create-button__add button-expand"
-              :actionForClick = "redirectToCreate"
+              :actionForClick = "redirectToHouseProperties"
             ></ButtonDefault>
             <ButtonDefault
               name="Создадим за вас"

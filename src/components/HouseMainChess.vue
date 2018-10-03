@@ -10,7 +10,10 @@ import HouseChessBase from './HouseChessBase'
 
 export default {
   name: 'HouseMainChess',
-  components: { HouseChessBase, HouseMain }
+  components: {
+    HouseChessBase,
+    HouseMain
+  }
 }
 </script>
 
