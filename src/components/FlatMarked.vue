@@ -1,22 +1,39 @@
 <template>
   <div
+    class="flat-marked" 
     :class="flatTypeId"
     @click="editBlock"
   >
-    <div>
+    <div class="marked-item">
       <div>Квартира № {{ flatTypeNumber }}</div>
-      <AlertDefault
-        v-if="singleErrorMessage"
-        :message="singleErrorMessage"
-        @alertDie="singleErrorMessage = ''"
-      />
-      <transition name="slide-fade">
-        <div v-if="editMode">
-          <div>
-            Квартира № <input v-model="flatType.number" type="number" name="number"/>
+      <div>
+        <ButtonDefault
+          class="button-icon"
+          :actionForClick="alertShow = true"
+        />
+      </div>
+    </div>
+    <AlertDefault
+      v-if="singleErrorMessage"
+      :message="singleErrorMessage"
+      @alertDie="singleErrorMessage = ''"
+    />
+    <transition name="slide-fade">
+      <div class="marked-form" v-if="editMode">
+        <div class="form-group">
+          <label class="form-group__label" for="number">Квартира №</label>
+          <div class="form-group__input">
+            <input
+              v-model="flatType.number"
+              type="number"
+              name="number"
+            />
+            <span class="form-group__input_bar"></span>
           </div>
-          <div>
-            Планировка
+        </div>
+        <div class="form-group">
+          <label class="form-group__label" for="flatSchema">Планировка</label>
+          <div class="form-group__input">
             <select
               v-model="flatType.flatSchemaId"
               type="flatSchema"
@@ -29,34 +46,66 @@
               >
                 {{ flatSchema.fields.type }}
               </option>
-            </select>
-          </div>
-          <div>
-            Подъезд № <input v-model.number="flatType.entrance" type="number" />
-          </div>
-          <span>Окна выходят на: {{ flatType.windows }}</span>
-          <div class="uk-flex uk-flex-row">
-            <label for="street">Улица</label>
-            <input v-model="flatType.windows" type="checkbox" id="street" value="Улица"/>
-            <label for="north">Север</label>
-            <input v-model="flatType.windows" type="checkbox" id="north" value="Север"/>
-            <label for="south">Юг</label>
-            <input v-model="flatType.windows" type="checkbox" id="south" value="Юг"/>
-            <label for="outdoors">Двор</label>
-            <input v-model="flatType.windows" type="checkbox" id="outdoors" value="Двор"/>
-            <label for="east">Восток</label>
-            <input v-model="flatType.windows" type="checkbox" id="east" value="Восток"/>
-            <label for="west">Запад</label>
-            <input v-model="flatType.windows" type="checkbox" id="west" value="Запад"/>
+          </select>
+            <span class="form-group__input_bar"></span>
           </div>
         </div>
-      </transition>
-    </div>
-    <ButtonDefault
-      name="Удалить"
-      color="green"
-      :actionForClick="alertShow = true"
-    />
+        <div class="form-group">
+          <label class="form-group__label" for="numberEntrance">Подъезд №</label>
+          <div class="form-group__input">
+            <input
+              v-model="flatType.entrance"
+              type="number"
+              name="numberEntrance"
+            />
+            <span class="form-group__input_bar"></span>
+          </div>
+        </div>
+        <div class="marked-window">
+          <div class="window-title">Окна выходят на: {{ flatType.windows }}</div>
+          <div class="window-list">
+            <div>
+              <input v-model="flatType.windows"
+                     type="checkbox"
+                     id="street"
+                     value="Улица"
+                     name="street" />
+              <label for="street">Улица</label>
+            </div>
+            <div>
+              <input v-model="flatType.windows"
+                     type="checkbox"
+                     id="north"
+                     value="Север"
+                     name="north" />
+              <label for="north">Север</label>
+            </div>
+            <div>
+              <input v-model="flatType.windows" type="checkbox" id="south" value="Юг"/>
+              <label for="south">Юг</label>
+            </div>
+            <div>
+              <input v-model="flatType.windows" type="checkbox" id="outdoors" value="Двор"/>
+              <label for="outdoors">Двор</label>
+            </div>
+            <div>
+              <input v-model="flatType.windows" type="checkbox" id="east" value="Восток"/>
+              <label for="east">Восток</label>
+            </div>
+            <div>
+              <input v-model="flatType.windows" type="checkbox" id="west" value="Запад"/>
+              <label for="west">Запад</label>
+            </div>
+          </div>
+        </div>
+        <ButtonDefault
+          name="Сохранить квартиру"
+          class="button-expand"
+          color="green"
+          :actionForClick="writeFlatType"
+        />
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -133,6 +182,49 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+  @import (less) "../../static/less/color.less";
+  @import (less) "../../static/less/font.less";
+  @import (less) "../../static/less/form.less";
+  @import (less) "../../static/less/grid.less";
+  @import (less) "../../static/less/media.less";
+  @import (less) "../../static/less/padding.less";
+
+  .flat-marked {
+    .marked {
+      &-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        background-color: lighten(@color-light-green, 50%);
+        border: 1px solid lighten(@color-light-green, 40%);
+        border-radius: 3px;
+        .padding-h(@v: 1.5rem);
+        .padding-v(@v: 1rem);
+        margin-bottom: 0.5rem;
+        &:hover {
+          background-color: lighten(@color-light-green, 40%);
+        }
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+      &-form {
+        border-radius: 3px;
+        border: 1px solid lighten(@color-light-grey, 0%);
+        .padding(@v: 1.5rem);
+      }
+      &-window {
+        margin-bottom: 2rem;
+        .window {
+          &-list {
+            .grid(@c: 2; @cg: 1rem; @rg: 1rem);
+          }
+        }
+        
+      }
+    }
+  }
 
 </style>

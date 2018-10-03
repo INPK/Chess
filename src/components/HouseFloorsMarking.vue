@@ -1,5 +1,11 @@
 <template>
     <div class="floors-marking">
+      <div class="floors-nav">
+        <button
+          @click="closeMarking"
+          type="button"
+        >Close</button>
+      </div>
       <div class="floors-grid">
         <div class="floors-image">
           <img src="/static/img/plan.svg">
@@ -28,12 +34,8 @@
         </div>
       </div>
       <div class="floors-flats">
-        <div class="usr-finished-flats">
+        <div>
           <div>
-            <button
-              @click="closeMarking"
-              type="button"
-            >Close</button>
             <FlatMarked
               v-for="(flatType, index) in computedFlatTypes"
               :key="flatType.fields.hash_id"
@@ -47,8 +49,8 @@
               @setCurrentCoordinates="editBlock"
             />
           </div>
-          <span @click="createNewObject">Новый объект</span>
-          <div v-if="!editMode">
+          <div class="marked-create" @click="createNewObject">Новый объект</div>
+          <div class="marked-form" v-if="!editMode">
             <AlertDefault
               v-if="alertMessage"
               :message="alertMessage"
@@ -57,8 +59,16 @@
             <h2
               v-if="markingIsNotCompleted"
             >Этаж не размечен до конца</h2>
-            <div>
-              Квартира № <input v-model="newFlat.number" type="number" name="number"/>
+            <div class="form-group">
+              <label class="form-group__label" for="number">Квартира №</label>
+              <div class="form-group__input">
+                <input
+                  v-model="newFlat.number"
+                  type="number"
+                  name="number"
+                />
+                <span class="form-group__input_bar"></span>
+              </div>
             </div>
             <div>
               Планировка
@@ -76,26 +86,49 @@
                 </option>
               </select>
             </div>
-            <div>
-              Подъезд № <input v-model.number="newFlat.entrance" type="number" />
+            <div class="form-group">
+              <label class="form-group__label" for="numberEntrance">Подъезд №</label>
+              <div class="form-group__input">
+                <input
+                  v-model="newFlat.entrance"
+                  type="number"
+                  name="numberEntrance"
+                />
+                <span class="form-group__input_bar"></span>
+              </div>
             </div>
-            <span>Окна выходят на: {{ newFlat.windows }}</span>
-            <div class="uk-flex uk-flex-row">
-              <label for="street">Улица</label>
-              <input v-model="newFlat.windows" type="checkbox" id="street" value="Улица"/>
-              <label for="north">Север</label>
-              <input v-model="newFlat.windows" type="checkbox" id="north" value="Север"/>
-              <label for="south">Юг</label>
-              <input v-model="newFlat.windows" type="checkbox" id="south" value="Юг"/>
-              <label for="outdoors">Двор</label>
-              <input v-model="newFlat.windows" type="checkbox" id="outdoors" value="Двор"/>
-              <label for="east">Восток</label>
-              <input v-model="newFlat.windows" type="checkbox" id="east" value="Восток"/>
-              <label for="west">Запад</label>
-              <input v-model="newFlat.windows" type="checkbox" id="west" value="Запад"/>
+            <div class="marked-window">
+              <div class="window-title">Окна выходят на: {{ newFlat.windows }}</div>
+              <div class="window-list">
+                <div>
+                  <input v-model="newFlat.windows" type="checkbox" id="street" value="Улица"/>
+                  <label for="street">Улица</label>
+                </div>
+                <div>
+                  <input v-model="newFlat.windows" type="checkbox" id="north" value="Север"/>
+                  <label for="north">Север</label>
+                </div>
+                <div>
+                  <input v-model="newFlat.windows" type="checkbox" id="south" value="Юг"/>
+                  <label for="south">Юг</label>
+                </div>
+                <div>
+                  <input v-model="newFlat.windows" type="checkbox" id="outdoors" value="Двор"/>
+                  <label for="outdoors">Двор</label>
+                </div>
+                <div>
+                  <input v-model="newFlat.windows" type="checkbox" id="east" value="Восток"/>
+                  <label for="east">Восток</label>
+                </div>
+                <div>
+                  <input v-model="newFlat.windows" type="checkbox" id="west" value="Запад"/>
+                  <label for="west">Запад</label>
+                </div>
+              </div>
             </div>
             <ButtonDefault
               name="Сохранить квартиру"
+              class="button-expand"
               color="green"
               :actionForClick="writeMarkedFlat"
             />
@@ -103,6 +136,7 @@
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -361,7 +395,10 @@ export default {
 
   .floors-marking {
     display: grid;
-    grid-template-columns: 1fr 480px;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: "header header"
+                         "main sidebar";
     background-color: @color-white;
     position: absolute;
     top: 0;
@@ -369,18 +406,63 @@ export default {
     width: 100%;
     min-height: 100vh;
     .floors {
+      &-nav {
+        display: flex;
+        align-items: center;
+        grid-area: header;
+        border-bottom: 1px solid @color-light-grey;
+        .padding-h(@v: 4rem);
+        height: 4rem;
+      }
       &-grid {
+        grid-area: main;
+        .padding(@v: 4rem);
+      }
+      &-flats {
+        width: 460px;
+        grid-area: sidebar;
+        border-left: 1px solid @color-light-grey;
         .padding(@v: 4rem);
       }
       &-image {
         position: relative;
       }
     }
-  }
-  label {
-    display: inline-block;
-    margin-left: 10px;
-    width: 20px;
+    .marked {
+      &-create {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        background-color: lighten(@color-light-red, 40%);
+        border: 1px solid lighten(@color-light-red, 35%);
+        border-radius: 3px;
+        .padding-h(@v: 1.5rem);
+        .padding-v(@v: 1rem);
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+        &:hover {
+          background-color: lighten(@color-light-red, 35%);
+        }
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+      &-form {
+        border-radius: 3px;
+        border: 1px solid lighten(@color-light-grey, 0%);
+        .padding(@v: 1.5rem);
+      }
+      &-window {
+        margin-bottom: 2rem;
+        .window {
+          &-list {
+            .grid(@c: 2; @cg: 1rem; @rg: 1rem);
+          }
+        }
+        
+      }
+    }
   }
   circle {
     fill: #36a295;

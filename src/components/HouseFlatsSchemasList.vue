@@ -152,7 +152,7 @@ export default {
     },
     refreshAfterChange () {
       this.alertConfirm.isActive = false
-      this.getFloors()
+      this.getFlatsSchemas()
       this.closeSidebar()
     },
     closeAlertConfirm () {

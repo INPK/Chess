@@ -112,42 +112,38 @@
               </div>
               <div class="form-group">
                 <label class="form-group__label" for="startDevelopment">Начало строительства</label>
-                <DraggableCal
-                  style="width: 500px;"
-                  v-if="startDevelopment.calendarIsActive"
-                  lang="RU"
-                  :days=Number(1095)
-                  @dateSelected="startDevelopment = createStrDateFromObject($event)"
-                />
                 <div class="form-group__input">
                   <input
-                    v-if="!startDevelopment.calendarIsActive"
                     @click="startDevelopment.calendarIsActive = !startDevelopment.calendarIsActive"
                     v-model="startDevelopment.value"
                     type="text"
                     id="startDevelopment"
                   />
                   <span class="form-group__input_bar"></span>
+                  <DraggableCal
+                    class="characteristics-cal"
+                    v-if="startDevelopment.calendarIsActive"
+                    :days=Number(1095)
+                    @dateSelected="startDevelopment.value = createStrDateFromObject($event)"
+                  />
                 </div>
               </div>
               <div class="form-group">
                 <label class="form-group__label" for="endDevelopment">Конец строительства</label>
-                <DraggableCal
-                  style="width: 500px;"
-                  v-if="endDevelopment.calendarIsActive"
-                  lang="RU"
-                  :days=Number(1095)
-                  @dateSelected="endDevelopment = createStrDateFromObject($event)"
-                />
                 <div class="form-group__input">
                   <input
-                    v-if="!endDevelopment.calendarIsActive"
                     @click="endDevelopment.calendarIsActive = !endDevelopment.calendarIsActive"
                     v-model="endDevelopment.value"
                     type="text"
                     id="endDevelopment"
                   />
                   <span class="form-group__input_bar"></span>
+                  <DraggableCal
+                    class="characteristics-cal"
+                    v-if="endDevelopment.calendarIsActive"
+                    :days=Number(1095)
+                    @dateSelected="endDevelopment.value = createStrDateFromObject($event)"
+                  />
                 </div>
               </div>
             </div>
@@ -425,6 +421,16 @@ export default {
                 }
               }
             }
+          }
+          &-cal {
+            background-color: #fff;
+            box-shadow: 0 28px 50px rgba(22, 0, 27, 0.14);
+            position: absolute;
+            top: 0;
+            padding: 2rem;
+            width: 100%;
+            margin: 0;
+            z-index: 1;
           }
         }
       }
