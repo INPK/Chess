@@ -145,6 +145,13 @@
                     @dateSelected="endDevelopment.value = createStrDateFromObject($event)"
                   />
                 </div>
+                <DraggableCal
+                  style="width: 500px;"
+                  v-if="endDevelopment.calendarIsActive"
+                  lang="RU"
+                  :days=Number(1095)
+                  @dateSelected="dateSelected(endDevelopment, $event)"
+                />
               </div>
             </div>
           </div>
@@ -260,7 +267,14 @@ export default {
         dateArr[i] = dateArr[i].toString().replace(/^([0-9])$/, '0$1')
       }
       let clientDate = dateArr[0] + '.' + dateArr[1] + '.' + dateArr[2]
+      console.info(clientDate)
       return clientDate
+    },
+    dateSelected (dataObject, date) {
+      dataObject.value = this.createStrDateFromObject(date)
+      setTimeout(function () {
+        dataObject.calendarIsActive = false
+      }, 1100)
     },
     reformatDate (dataString, forServer) {
       let symbolSeparate = '-'

@@ -5,7 +5,7 @@
       <h1></h1>
       <ul class="uk-width-1-1 uk-navbar-nav">
         <li><router-link :to="{ name: 'HouseMainProperties' }">Характеристики дома</router-link></li>
-        <li><router-link :to="{ name: 'HouseMainFlatsNumbering' }">Шахматка</router-link></li>
+        <li><router-link :to="{ name: 'HouseMainChess' }">Шахматка</router-link></li>
         <li><router-link :to="{ name: 'HouseMainFlatsSchemas' }">Типовые планровки</router-link></li>
         <li><router-link :to="{ name: 'HouseMainFloors' }">Типовые этажи</router-link></li>
         <li><router-link :to="{ name: 'HouseMainPrices' }">Фасады</router-link></li>

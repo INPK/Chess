@@ -82,7 +82,7 @@
                   :key="flatSchema.fields.hash_id"
                   :value="flatSchema.fields.hash_id"
                 >
-                  {{ flatSchema.fields.type }}
+                  {{ staticFlatsSchemasTypes[flatSchema.fields.type] }}
                 </option>
               </select>
             </div>
@@ -151,6 +151,40 @@ export default {
     return {
       houseId: this.$store.state.currentHouseId,
       flatsSchemasOfCurrentHouse: [],
+      staticFlatsSchemasTypes: {
+        'studio_flat': {
+          title: 'Студия',
+          alias: 'S'
+        },
+        'one_room_flat': {
+          title: 'Однокомнатная',
+          alias: '1к'
+        },
+        'two_room_flat': {
+          title: '2х-комнатная',
+          alias: '2х'
+        },
+        'three_room_flat': {
+          title: '3х-комнатная',
+          alias: '3х'
+        },
+        'four_room_flat': {
+          title: '4х-комнатная',
+          alias: '4х'
+        },
+        'five_room_flat': {
+          title: '5и-комнатная',
+          alias: '5к'
+        },
+        'euro_two_room_flat': {
+          title: 'Евро 2х-комнатная',
+          alias: 'Е2'
+        },
+        'euro_three_room_flat': {
+          title: 'Евро 3х-комнатная',
+          alias: 'Е3'
+        }
+      },
       newFlat: {
         number: '',
         flatSchemaId: [],
@@ -187,15 +221,16 @@ export default {
   },
   methods: {
     getFlatsSchemas () {
-      if (this.$store.state.flatsSchemas === undefined) {
+      if (this.$store.state.flatsSchemas === null) {
         return this.$store.dispatch('retrieveItem', {
           url: '/houses/' + this.houseId + '/flats-schemas',
           storageName: 'flatsSchemas'
         })
           .then(flatsSchemas => {
+            console.info('flatsSchems', JSON.parse(flatsSchemas.data))
             this.$store.dispatch('setItemToStore', {
               storageName: 'flatsSchemas',
-              fields: JSON.stringify(flatsSchemas.data)
+              fields: flatsSchemas.data
             })
               .then(() => {
                 this.flatsSchemasOfCurrentHouse = JSON.parse(flatsSchemas.data)
@@ -273,9 +308,10 @@ export default {
     writeMarkedFlat () {
       let lastFlatIndex = this.flatTypes.length - 1
       if (lastFlatIndex >= 0) {
-        let lastFlatNumber = this.flatTypes[lastFlatIndex].fields.number
-        let lastFlatEntrance = this.flatTypes[lastFlatIndex].fields.entrance
-        if ((Number(this.newFlat.entrance) - Number(lastFlatEntrance)) !== 1 || ((this.newFlat.number - lastFlatNumber) !== 1 && this.newFlat.entrance === lastFlatEntrance)) {
+        let lastFlatNumber = Number(this.flatTypes[lastFlatIndex].fields.number)
+        let lastFlatEntrance = Number(this.flatTypes[lastFlatIndex].fields.entrance)
+        console.info(lastFlatNumber, Number(this.newFlat.number), lastFlatEntrance, Number(this.newFlat.entrance))
+        if ((this.newFlat.number - lastFlatNumber) !== 1 && this.newFlat.entrance === lastFlatEntrance) {
           this.alertMessage = 'Вы должны создавать квартиры последовательно!'
           return
         }

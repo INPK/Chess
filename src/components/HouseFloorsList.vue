@@ -50,6 +50,12 @@
       :message="alertMessage"
       @alertDie="alertMessage = ''"
     />
+    <AlertConfirm
+      v-if="alertConfirm.isActive"
+      :additionalMessage="alertConfirm.additionalMessage"
+      @isAgree="removeFloor"
+      @isDisagree="closeAlertConfirm"
+    />
   </div>
 </template>
 
@@ -163,6 +169,7 @@ export default {
       this.closeAlertConfirm()
     },
     activateAlertConfirm (floorId) {
+      alert(123)
       this.selectedFloor.id = floorId
       this.alertConfirm.isActive = true
     },
