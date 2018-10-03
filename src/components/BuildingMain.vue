@@ -2,20 +2,23 @@
   <div>
     <h1 class="building-title">{{ name }}</h1>
     <div class="building">
-      <div class="building-container" uk-grid>
-        <div class="building-info">
-          <h2>Расположение объекта:</h2>
+      <div class="building-info">
+        <div class="info-box">
+          <div class="info-title">Расположение объекта:</div>
+        </div>
+        <div class="info-grid">
           <div><span>Страна: </span>{{ country }}</div>
           <div><span>Регион: </span>{{ region }}</div>
           <div><span>Город: </span>{{ city }}</div>
           <div><span>Район: </span>{{ district }}</div>
           <div><span>Координаты: </span>{{ coords }}</div>
         </div>
-        <div class="building-media">
-          <div class="building-media_images">{{ images }}</div>
-          <div class="building-media_video">{{ video }}</div>
-        </div>
       </div>
+      <div class="building-media">
+        <div class="building-media_images">{{ images }}</div>
+        <div class="building-media_video">{{ video }}</div>
+      </div>
+
       <AlertDefault
         v-if="alertMessage"
         :message="alertMessage"
@@ -37,7 +40,7 @@
               name="Добавить объект"
               color="grey"
               class="create-button__add button-expand"
-              :actionForClick = "redirectToHouseProperties"
+              :actionForClick="redirectToHouseProperties"
             ></ButtonDefault>
             <ButtonDefault
               name="Создадим за вас"
@@ -189,15 +192,39 @@ export default {
 </script>
 
 <style lang="less" scoped>
+  @import (less) "../../static/less/font.less";
   @import (less) "../../static/less/color.less";
   @import (less) "../../static/less/grid.less";
   @import (less) "../../static/less/media.less";
   @import (less) "../../static/less/padding.less";
 
   .building {
-    background-color: @color-white;
-    .padding();
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-column-gap: 2rem;
+    grid-row-gap: 2rem;
     margin-bottom: 2rem;
+    &-title {
+      .font(@s: 2rem; @w: 400);
+      margin-bottom: 2rem;
+    }
+    &-info {
+      background-color: @color-white;
+      .padding-c(@t: 2rem; @b: 3rem; @l: 3rem; @r: 3rem;);
+      .info {
+        &-box {
+          padding-bottom: 1.5rem;
+          margin-bottom: 1rem;
+          border-bottom: 1px solid @color-light-grey;
+        }
+        &-title {
+          .font(@s: 1.5rem; @w: 100);
+        }
+        &-grid {
+          .grid(@c: 2);
+        }
+      }
+    }
   }
 
   .buildings {

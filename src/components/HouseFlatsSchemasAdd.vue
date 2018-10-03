@@ -17,6 +17,7 @@
         :src="flatSchemaImage"
       />
       <div class="form-group">
+        <label class="form-group__label" for="flatSchema">Тип квартиры:</label>
         <div class="form-group__input">
           <transition name="slide-fade">
             <span
@@ -27,11 +28,11 @@
             </span>
           </transition>
           <!-- Тип квартиры: <input v-model="type" name="type_apartment"/> -->
-          Тип квартиры:
           <select
             v-model="type"
             type="flatSchema"
             name="flatSchema"
+            id="flatSchema"
           >
             <option
               v-for="(flatSchema, index) in staticFlatsSchemasTypes"
@@ -44,6 +45,7 @@
         </div>
       </div>
       <div class="form-group">
+        <label class="form-group__label" for="typical_area">Типовая площадь:</label>
         <div class="form-group__input">
           <transition name="slide-fade">
             <span
@@ -53,10 +55,12 @@
               {{ errorsStack.area }}
             </span>
           </transition>
-          Типовая площадь: <input v-model="area" name="typical_area"/>
+          <input v-model="area" name="typical_area" id="typical_area"/>
+          <span class="form-group__input_bar"></span>
         </div>
       </div>
       <div class="form-group">
+        <label class="form-group__label" for="number_of_balcony">Балконы: </label>
         <div class="form-group__input">
           <transition name="slide-fade">
           <span
@@ -66,10 +70,12 @@
             {{ errorsStack.number_of_balcony }}
           </span>
           </transition>
-          Балконы: <input v-model.number="numberOfBalcony"/>
+          <input v-model.number="numberOfBalcony" id="number_of_balcony"/>
+          <span class="form-group__input_bar"></span>
         </div>
       </div>
       <div class="form-group">
+        <label class="form-group__label" for="number_of_rooms">Количество комнат:</label>
         <div class="form-group__input">
           <transition name="slide-fade">
           <span
@@ -79,10 +85,12 @@
             {{ errorsStack.number_of_rooms }}
           </span>
           </transition>
-          Количество комнат: <input v-model.number="numberOfRooms"/>
+          <input v-model.number="numberOfRooms" id="number_of_rooms"/>
+          <span class="form-group__input_bar"></span>
         </div>
       </div>
       <div class="form-group">
+        <label class="form-group__label" for="quantity_loggia">Лоджии:</label>
         <div class="form-group__input">
           <transition name="slide-fade">
             <span
@@ -92,10 +100,12 @@
               {{ errorsStack.number_of_loggia }}
             </span>
           </transition>
-          Лоджии: <input v-model.number="numberOfLoggia" name="quantity_loggia"/>
+          <input v-model.number="numberOfLoggia" name="quantity_loggia" id="quantity_loggia"/>
+          <span class="form-group__input_bar"></span>
         </div>
       </div>
       <div class="form-group">
+        <label class="form-group__label" for="price">Цена:</label>
         <div class="form-group__input">
           <transition name="slide-fade">
             <span
@@ -105,13 +115,14 @@
               {{ errorsStack.price }}
             </span>
           </transition>
-          Цена:
           <input
             v-model="price"
             name="price"
+            id="price"
             :class="validationClass.password_confirmation"
             @click="clearError"
           />
+          <span class="form-group__input_bar"></span>
         </div>
       </div>
       <div class="form-group">
