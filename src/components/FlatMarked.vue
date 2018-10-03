@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flat-marked" 
+    class="flat-marked"
     :class="flatTypeId"
     @click="editBlock"
   >
@@ -9,7 +9,7 @@
       <div>
         <ButtonDefault
           class="button-icon"
-          :actionForClick="alertShow = true"
+          :actionForClick="alertConfirm"
         />
       </div>
     </div>
@@ -107,11 +107,6 @@
         />
       </div>
     </transition>
-    <ButtonDefault
-      name="Удалить"
-      color="green"
-      :actionForClick="alertConfirm"
-    />
     <AlertConfirm
       v-if="alertShow"
       @isAgree="removeFlatType"
@@ -205,6 +200,7 @@ export default {
   @import (less) "../../static/less/padding.less";
 
   .flat-marked {
+    margin-bottom: 0.5rem;
     .marked {
       &-item {
         display: flex;
@@ -236,7 +232,6 @@ export default {
             .grid(@c: 2; @cg: 1rem; @rg: 1rem);
           }
         }
-        
       }
     }
   }

@@ -15,8 +15,7 @@
         </div>
       </div>
       <div class="building-media">
-        <div class="building-media_images">{{ images }}</div>
-        <div class="building-media_video">{{ video }}</div>
+        <div class="building-media__images"><img src="https://novostroy-a.akamaihd.net/regions/u/b/g/box_orig/591ae91edf75a.jpg"/></div>
       </div>
 
       <AlertDefault
@@ -207,6 +206,15 @@ export default {
     &-title {
       .font(@s: 2rem; @w: 400);
       margin-bottom: 2rem;
+    }
+    &-media {
+      &__images {
+        img {
+          width: 100%;
+          object-fit: cover;
+          display: block;
+        }
+      }
     }
     &-info {
       background-color: @color-white;

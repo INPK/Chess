@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <span>Квартира №{{ number }}</span>
+  <div class="table-item">
+    <div class="table-item__title">Квартира <span>№{{ number }}</span></div>
     <span>{{ staticFlatsSchemasTypes[flatSchema].title }}</span>
     <input
       name="area"
@@ -34,7 +34,7 @@ export default {
   data () {
     return {
       statusList: {
-        0: 'Не создана',
+        0: 'Забронирована',
         1: 'Свободна'
       },
       staticFlatsSchemasTypes: {
@@ -136,6 +136,26 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="less" scoped>
+  @import (less) "../../static/less/padding.less";
+  @import (less) "../../static/less/color.less";
+  .table-item {
+    .padding-v(@v: 0.35rem;);
+    &__title {
+      font-size: 0.875rem;
+      span {
+        font-size: 1rem;
+        color: @color-light-green;
+        font-weight: 500;
+      }
+    }
+    input {
+      width: 100%;
+      border: none;
+      border-bottom: 2px solid darken(@color-light-grey, 10%);
+      &:focus {
+        border-bottom: 2px solid @color-light-green;
+      }
+    }
+  }
 </style>

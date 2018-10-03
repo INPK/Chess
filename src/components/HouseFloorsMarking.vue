@@ -1,138 +1,137 @@
 <template>
-    <div class="floors-marking">
-      <div class="floors-nav">
-        <button
-          @click="closeMarking"
-          type="button"
-        >Close</button>
+  <div class="floors-marking">
+    <div class="floors-nav">
+      <button
+        @click="closeMarking"
+        type="button"
+      >Close</button>
+    </div>
+    <div class="floors-grid">
+      <div class="floors-image">
+        <img src="/static/img/plan.svg">
+        <svg class="floors-schema" @click="updatePoints">
+          <template v-for="(coordinates, id, index) in readyFlatsCoordinates">
+            <polygon
+              :style="{ fill: flatColors[index] }"
+              :points="coordinates"
+              :key="id"
+              :class="id"
+            ></polygon>
+          </template>
+          <polygon :points="totalPoints" @contextmenu="removeMarking"></polygon>
+          <template v-for="(circle, i) in newFlat.points">
+            <circle
+              :cx="circle.x"
+              :cy="circle.y"
+              r="6"
+              :key="circle.x + '' + i"
+              @contextmenu="rightClick"
+              @mouseup="handleMouseUp"
+              @mousedown="handleMouseDown"
+            ></circle>
+          </template>
+        </svg>
       </div>
-      <div class="floors-grid">
-        <div class="floors-image">
-          <img src="/static/img/plan.svg">
-          <svg class="floors-schema" @click="updatePoints">
-            <template v-for="(coordinates, id, index) in readyFlatsCoordinates">
-              <polygon
-                :style="{ fill: flatColors[index] }"
-                :points="coordinates"
-                :key="id"
-                :class="id"
-              ></polygon>
-            </template>
-            <polygon :points="totalPoints" @contextmenu="removeMarking"></polygon>
-            <template v-for="(circle, i) in newFlat.points">
-              <circle
-                :cx="circle.x"
-                :cy="circle.y"
-                r="6"
-                :key="circle.x + '' + i"
-                @contextmenu="rightClick"
-                @mouseup="handleMouseUp"
-                @mousedown="handleMouseDown"
-              ></circle>
-            </template>
-          </svg>
-        </div>
-      </div>
-      <div class="floors-flats">
+    </div>
+    <div class="floors-flats">
+      <div>
         <div>
+          <FlatMarked
+            v-for="(flatType, index) in computedFlatTypes"
+            :key="flatType.fields.hash_id"
+            :flatType="flatType.fields"
+            :flatTypeId="flatType.fields.hash_id"
+            :flatTypeNumber="flatType.fields.number"
+            :flatIndex="index"
+            :flatSchemas="flatsSchemasOfCurrentHouse"
+            :editableFlatIndex="editableFlatIndex"
+            @flatTypeRemovedSuccessful="getFlatTypes"
+            @setCurrentCoordinates="editBlock"
+          />
+        </div>
+        <div class="marked-create" @click="createNewObject">Новый объект</div>
+        <div class="marked-form" v-if="!editMode">
+          <AlertDefault
+            v-if="alertMessage"
+            :message="alertMessage"
+            @alertDie="alertMessage = ''"
+          />
+          <h2
+            v-if="markingIsNotCompleted"
+          >Этаж не размечен до конца</h2>
+          <div class="form-group">
+            <label class="form-group__label" for="number">Квартира №</label>
+            <div class="form-group__input">
+              <input
+                v-model="newFlat.number"
+                type="number"
+                name="number"
+              />
+              <span class="form-group__input_bar"></span>
+            </div>
+          </div>
           <div>
-            <FlatMarked
-              v-for="(flatType, index) in computedFlatTypes"
-              :key="flatType.fields.hash_id"
-              :flatType="flatType.fields"
-              :flatTypeId="flatType.fields.hash_id"
-              :flatTypeNumber="flatType.fields.number"
-              :flatIndex="index"
-              :flatSchemas="flatsSchemasOfCurrentHouse"
-              :editableFlatIndex="editableFlatIndex"
-              @flatTypeRemovedSuccessful="getFlatTypes"
-              @setCurrentCoordinates="editBlock"
-            />
-          </div>
-          <div class="marked-create" @click="createNewObject">Новый объект</div>
-          <div class="marked-form" v-if="!editMode">
-            <AlertDefault
-              v-if="alertMessage"
-              :message="alertMessage"
-              @alertDie="alertMessage = ''"
-            />
-            <h2
-              v-if="markingIsNotCompleted"
-            >Этаж не размечен до конца</h2>
-            <div class="form-group">
-              <label class="form-group__label" for="number">Квартира №</label>
-              <div class="form-group__input">
-                <input
-                  v-model="newFlat.number"
-                  type="number"
-                  name="number"
-                />
-                <span class="form-group__input_bar"></span>
-              </div>
-            </div>
-            <div>
-              Планировка
-              <select
-                v-model="newFlat.flatSchemaId"
-                type="flatSchema"
-                name="flatSchema"
+            Планировка
+            <select
+              v-model="newFlat.flatSchemaId"
+              type="flatSchema"
+              name="flatSchema"
+            >
+              <option
+                v-for="flatSchema in flatsSchemasOfCurrentHouse"
+                :key="flatSchema.fields.hash_id"
+                :value="flatSchema.fields.hash_id"
               >
-                <option
-                  v-for="flatSchema in flatsSchemasOfCurrentHouse"
-                  :key="flatSchema.fields.hash_id"
-                  :value="flatSchema.fields.hash_id"
-                >
-                  {{ staticFlatsSchemasTypes[flatSchema.fields.type] }}
-                </option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-group__label" for="numberEntrance">Подъезд №</label>
-              <div class="form-group__input">
-                <input
-                  v-model="newFlat.entrance"
-                  type="number"
-                  name="numberEntrance"
-                />
-                <span class="form-group__input_bar"></span>
-              </div>
-            </div>
-            <div class="marked-window">
-              <div class="window-title">Окна выходят на: {{ newFlat.windows }}</div>
-              <div class="window-list">
-                <div>
-                  <input v-model="newFlat.windows" type="checkbox" id="street" value="Улица"/>
-                  <label for="street">Улица</label>
-                </div>
-                <div>
-                  <input v-model="newFlat.windows" type="checkbox" id="north" value="Север"/>
-                  <label for="north">Север</label>
-                </div>
-                <div>
-                  <input v-model="newFlat.windows" type="checkbox" id="south" value="Юг"/>
-                  <label for="south">Юг</label>
-                </div>
-                <div>
-                  <input v-model="newFlat.windows" type="checkbox" id="outdoors" value="Двор"/>
-                  <label for="outdoors">Двор</label>
-                </div>
-                <div>
-                  <input v-model="newFlat.windows" type="checkbox" id="east" value="Восток"/>
-                  <label for="east">Восток</label>
-                </div>
-                <div>
-                  <input v-model="newFlat.windows" type="checkbox" id="west" value="Запад"/>
-                  <label for="west">Запад</label>
-                </div>
-              </div>
-            </div>
-            <ButtonDefault
-              name="Сохранить квартиру"
-              class="button-expand"
-              color="green"
-              :actionForClick="writeMarkedFlat"
-            />
+                {{ staticFlatsSchemasTypes[flatSchema.fields.type] }}
+              </option>
+            </select>
           </div>
+          <div class="form-group">
+            <label class="form-group__label" for="numberEntrance">Подъезд №</label>
+            <div class="form-group__input">
+              <input
+                v-model="newFlat.entrance"
+                type="number"
+                name="numberEntrance"
+              />
+              <span class="form-group__input_bar"></span>
+            </div>
+          </div>
+          <div class="marked-window">
+            <div class="window-title">Окна выходят на: {{ newFlat.windows }}</div>
+            <div class="window-list">
+              <div>
+                <input v-model="newFlat.windows" type="checkbox" id="street" value="Улица"/>
+                <label for="street">Улица</label>
+              </div>
+              <div>
+                <input v-model="newFlat.windows" type="checkbox" id="north" value="Север"/>
+                <label for="north">Север</label>
+              </div>
+              <div>
+                <input v-model="newFlat.windows" type="checkbox" id="south" value="Юг"/>
+                <label for="south">Юг</label>
+              </div>
+              <div>
+                <input v-model="newFlat.windows" type="checkbox" id="outdoors" value="Двор"/>
+                <label for="outdoors">Двор</label>
+              </div>
+              <div>
+                <input v-model="newFlat.windows" type="checkbox" id="east" value="Восток"/>
+                <label for="east">Восток</label>
+              </div>
+              <div>
+                <input v-model="newFlat.windows" type="checkbox" id="west" value="Запад"/>
+                <label for="west">Запад</label>
+              </div>
+            </div>
+          </div>
+          <ButtonDefault
+            name="Сохранить квартиру"
+            class="button-expand"
+            color="green"
+            :actionForClick="writeMarkedFlat"
+          />
         </div>
       </div>
     </div>
@@ -496,7 +495,6 @@ export default {
             .grid(@c: 2; @cg: 1rem; @rg: 1rem);
           }
         }
-        
       }
     }
   }

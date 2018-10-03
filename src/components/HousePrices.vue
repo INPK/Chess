@@ -6,28 +6,32 @@
         :message="singleErrorMessage"
         @alertDie="singleErrorMessage = ''"
       />
-      <div>
-        <span>Введите цену и площадь квартир</span>
-        <label for="expandFloorToggle">Развернуть все этажи</label>
-        <input v-model="expandFloors" type="checkbox" id="expandFloorToggle"/>
-        <!--<ButtonDefault
-          name="Импорт данных"
-          color="green"
-          :actionForClick="dataImport"
-        />-->
-      </div>
-      <div class="flats_list">
-        <div
-          v-for="(floor, index) in fullHouse"
-          :key="index"
-        >
-          <HousePricesFloor
-            :floor="floor"
-            :floorIndex="index"
-            :editableFloorIndex="editableFloorIndex"
-            @editFloor="editFloor"
-            @updateFlatsList="getFullHouse"
-          />
+      <div class="house-prices">
+        <div class="prices-header">
+          <div class="header-title">Введите цену и площадь квартир</div>
+          <div class="header-filter">
+            <input v-model="expandFloors" type="checkbox" id="expandFloorToggle"/>
+            <label for="expandFloorToggle">Развернуть все этажи</label>
+          </div>
+          <!--<ButtonDefault
+            name="Импорт данных"
+            color="green"
+            :actionForClick="dataImport"
+          />-->
+        </div>
+        <div class="flats_list">
+          <template
+            v-for="(floor, index) in fullHouse"
+          >
+            <HousePricesFloor
+              :floor="floor"
+              :floorIndex="index"
+              :key="index"
+              :editableFloorIndex="editableFloorIndex"
+              @editFloor="editFloor"
+              @updateFlatsList="getFullHouse"
+            />
+          </template>
         </div>
       </div>
     </HouseContainer>
@@ -123,6 +127,30 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+  @import (less) "../../static/less/color.less";
+  @import (less) "../../static/less/font.less";
+  @import (less) "../../static/less/form.less";
+  @import (less) "../../static/less/grid.less";
+  @import (less) "../../static/less/media.less";
+  @import (less) "../../static/less/padding.less";
+  .house-prices {
+    background-color: @color-white;
+    .padding-c(@t: 2rem; @b: 3rem; @l: 3rem; @r: 3rem;);
+    .prices {
+      &-header{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid @color-light-grey;
+        .header {
+          &-title {
+            .font(@s: 2rem; @w: 100);
+          }
+        }
+      }
+    }
+  }
 
 </style>
