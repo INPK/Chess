@@ -155,20 +155,27 @@
           </div>
         </div>
       </div>
+      <div>
+        <ButtonDefault
+          v-if="!editMode"
+          name="Сохранить"
+          color="green"
+          :actionForClick = "storeBuildingsProperties"
+        />
+        <ButtonDefault
+          v-else
+          name="Обновить"
+          color="green"
+          :actionForClick = "updateBuildingsProperties"
+        />
+      </div>
     </div>
-    <div>
-      <ButtonDefault
-        v-if="!editMode"
-        name="Сохранить"
-        color="green"
-        :actionForClick = "storeBuildingsProperties"
-      />
-      <ButtonDefault
-        v-else
-        name="Обновить"
-        color="green"
-        :actionForClick = "updateBuildingsProperties"
-      />
+    <div class="properties-media">
+      <div class="media-create">
+        <button type="button" button-color="yellow" class="button button-expand">
+          Добавить фото и видео
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -292,22 +299,28 @@ export default {
 </script>
 
 <style lang="less" scoped>
+  @import (less) "../../static/less/button.less";
   @import (less) "../../static/less/color.less";
   @import (less) "../../static/less/font.less";
   @import (less) "../../static/less/grid.less";
   @import (less) "../../static/less/media.less";
   @import (less) "../../static/less/padding.less";
   .buildings-properties {
-    background-color: @color-white;
-    .padding();
+    display: grid;
+    align-items: flex-start;
+    grid-template-columns: 1fr 400px;
+    grid-column-gap: 3rem;
+    grid-row-gap: 2rem;
     @media @xdesktop {
-      .padding(@v: 3rem);
-    }
-    @media @desktop {
-      .padding(@v: 2rem);
+      grid-template-columns: 1fr;
     }
     .properties {
       &-form {
+        background-color: @color-white;
+        .padding(@v: 3rem);
+        @media @desktop {
+          .padding(@v: 2rem);
+        }
         .form {
           &-title {
             .font(@s: 1.75rem;@w: 100;);
@@ -359,6 +372,19 @@ export default {
         input {
           @media @tablet {
             padding: 10px 0;
+          }
+        }
+      }
+      &-media {
+        background-color: @color-white;
+        .padding(@v: 3rem);
+        @media @desktop {
+          .padding(@v: 2rem);
+        }
+        .media {
+          &-create {
+            .padding(@v: 2rem);
+            border: 3px dashed @color-light-grey;
           }
         }
       }

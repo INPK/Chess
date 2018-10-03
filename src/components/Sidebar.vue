@@ -44,29 +44,33 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.container {
-  background: rgba(0,0,0,0.5);
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  opacity: 1;
-  z-index: 800;
-  transition: opacity 0.3s ease-out;
-}
+  @import (less) "../../static/less/color.less";
+  @import (less) "../../static/less/grid.less";
+  @import (less) "../../static/less/media.less";
+  @import (less) "../../static/less/padding.less";
+
+  .container {
+    background: rgba(0,0,0,0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 1;
+    z-index: 800;
+    transition: opacity 0.3s ease-out;
+  }
 
 .sidebar {
-  height: calc(100vh);
-  width: 25%;
+  min-height: 100vh;
+  width: 400px;
   position: fixed;
   top: 0;
-  left: auto;
   right: 0;
   overflow: hidden;
   -webkit-overflow-scrolling: touch;
   background: #fff;
-  padding: 60px 0 0;
+  .padding(@v: 3rem);
   border-left: 1px solid #dddddd;
   z-index: 810;
 }

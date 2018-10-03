@@ -3,7 +3,6 @@
        @mouseover="toggleEditButton"
        @mouseout="toggleEditButton"
   >
-    <div>
       <div class="item-image" @click="redirectToCurrentBuildingMain">
         <img :src="imageSource" alt="">
       </div>
@@ -33,7 +32,7 @@
           </div>
           <div class="list-flat__amount">{{ flatType }}</div>
         </div>
-        <div class="item-buttons" v-if="isVisibleButtons">
+        <div class="item-buttons" v-if1="isVisibleButtons">
           <ButtonDefault
             name="Редактировать"
             color="green"
@@ -41,7 +40,6 @@
             :actionForClick="editBuilding"
           />
           <ButtonDefault
-            v-if="isVisibleButtons"
             name="Удалить"
             color="grey"
             class="button-expand"
@@ -49,7 +47,6 @@
           />
         </div>
       </div>
-    </div>
   </div>
 
 </template>
@@ -220,7 +217,7 @@ export default {
         &-list {
           position: relative;
           border-top: 1px solid #f2f4f6;
-          min-height: 8rem;
+          min-height: 12rem;
           .padding-v(@v: 1rem);
           .list {
             &-flat {
@@ -266,9 +263,14 @@ export default {
           .padding(@v:2rem);
           display: flex;
           flex-direction: column;
-          justify-content: center;
           -webkit-backdrop-filter: blur(5px);
           backdrop-filter: blur(5px);
+          > button {
+            margin-bottom: 1rem;
+            &:last-child {
+              margin-bottom: 0;
+            }
+          }
         }
       }
     }

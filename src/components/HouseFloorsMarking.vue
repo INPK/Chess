@@ -1,31 +1,34 @@
 <template>
-    <div class="marking-container uk-flex">
-      <div class="uk-width-3-4">
-        <svg width="1200" height="1000" class="floor-schema" @click="updatePoints">
-          <template v-for="(coordinates, id, index) in readyFlatsCoordinates">
-            <polygon
-              :style="{ fill: flatColors[index] }"
-              :points="coordinates"
-              :key="id"
-              :class="id"
-            ></polygon>
-          </template>
-          <polygon :points="totalPoints" @contextmenu="removeMarking"></polygon>
-          <template v-for="(circle, i) in newFlat.points">
-            <circle
-              :cx="circle.x"
-              :cy="circle.y"
-              r="6"
-              :key="circle.x + '' + i"
-              @contextmenu="rightClick"
-              @mouseup="handleMouseUp"
-              @mousedown="handleMouseDown"
-            ></circle>
-          </template>
-        </svg>
+    <div class="floors-marking">
+      <div class="floors-grid">
+        <div class="floors-image">
+          <img src="/static/img/plan.svg">
+          <svg class="floors-schema" @click="updatePoints">
+            <template v-for="(coordinates, id, index) in readyFlatsCoordinates">
+              <polygon
+                :style="{ fill: flatColors[index] }"
+                :points="coordinates"
+                :key="id"
+                :class="id"
+              ></polygon>
+            </template>
+            <polygon :points="totalPoints" @contextmenu="removeMarking"></polygon>
+            <template v-for="(circle, i) in newFlat.points">
+              <circle
+                :cx="circle.x"
+                :cy="circle.y"
+                r="6"
+                :key="circle.x + '' + i"
+                @contextmenu="rightClick"
+                @mouseup="handleMouseUp"
+                @mousedown="handleMouseDown"
+              ></circle>
+            </template>
+          </svg>
+        </div>
       </div>
-      <div class="uk-width-1-4">
-        <div class="usr-finished-flats uk-flex uk-flex-column">
+      <div class="floors-flats">
+        <div class="usr-finished-flats">
           <div>
             <button
               @click="closeMarking"
@@ -348,33 +351,52 @@ export default {
 
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+  @import (less) "../../static/less/color.less";
+  @import (less) "../../static/less/font.less";
+  @import (less) "../../static/less/form.less";
+  @import (less) "../../static/less/grid.less";
+  @import (less) "../../static/less/media.less";
+  @import (less) "../../static/less/padding.less";
 
-  .marking-container {
+  .floors-marking {
+    display: grid;
+    grid-template-columns: 1fr 480px;
+    background-color: @color-white;
     position: absolute;
     top: 0;
-    background-color: white;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    .floors {
+      &-grid {
+        .padding(@v: 4rem);
+      }
+      &-image {
+        position: relative;
+      }
+    }
   }
-
   label {
     display: inline-block;
     margin-left: 10px;
     width: 20px;
   }
-
   circle {
     fill: #36a295;
     stroke: #3fbdb0;
     stroke-width: 2px;
   }
-
   polygon {
     fill: #42b983;
     opacity: .5;
     stroke: #545a6f;
   }
-
-  .floor-schema {
-    background-image: url("/static/img/plan.svg");
+  .floors-schema {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
   }
 </style>
