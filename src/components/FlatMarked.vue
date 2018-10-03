@@ -55,7 +55,12 @@
     <ButtonDefault
       name="Удалить"
       color="green"
-      :actionForClick="alertShow = true"
+      :actionForClick="alertConfirm"
+    />
+    <AlertConfirm
+      v-if="alertShow"
+      @isAgree="removeFlatType"
+      @isDisagree="alertShow = false"
     />
   </div>
 </template>
@@ -103,6 +108,9 @@ export default {
     AlertDefault
   },
   methods: {
+    alertConfirm () {
+      this.alertShow = true
+    },
     removeFlatType () {
       this.$store.dispatch('removeItem', {
         url: '/flat-types/' + this.flatTypeId

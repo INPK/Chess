@@ -136,6 +136,7 @@
             </span>
           </transition>
           Изображение: <input @change="processFile" name="image" type="file" />
+          {{ flatSchemaImage }}
         </div>
       </div>
       <ButtonDefault
