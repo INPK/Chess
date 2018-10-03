@@ -136,7 +136,11 @@
             </span>
           </transition>
           Изображение: <input @change="processFile" name="image" type="file" />
-          {{ flatSchemaImage }}
+          <button
+            @click="resetImage"
+            type="button"
+          >Х</button>
+          <img :src="imagePreview">
         </div>
       </div>
       <ButtonDefault
@@ -171,7 +175,8 @@ export default {
       numberOfLoggia: this.selectedFlatSchema.number_of_loggia,
       numberOfRooms: this.selectedFlatSchema.number_of_rooms,
       price: this.selectedFlatSchema.price,
-      flatSchemaImage: '',
+      flatSchemaImage: this.selectedFlatSchema.image,
+      imagePreview: '',
       staticFlatsSchemasTypes: {
         'studio_flat': 'Студия',
         'one_room_flat': 'Однокомнатная',
@@ -209,6 +214,10 @@ export default {
   methods: {
     closeSidebarToFlatsSchemas () {
       this.$emit('closeSidebar')
+    },
+    resetImage () {
+      this.flatSchemaImage = ''
+      this.imagePreview = ''
     },
     storeFlatSchema (FlatSchemaIdPath = '', action = 'writeItem') {
       let flatSchemaProperties = new FormData()
@@ -264,6 +273,18 @@ export default {
     },
     processFile (event) {
       this.flatSchemaImage = event.target.files[0]
+      let reader = new FileReader()
+      reader.onprogress = (progress) => {
+        console.info(progress)
+      }
+      reader.onloadend = () => {
+        this.imagePreview = reader.result
+      }
+      if (this.flatSchemaImage) {
+        reader.readAsDataURL(this.flatSchemaImage)
+      } else {
+        this.imagePreview = ''
+      }
     }
   },
   computed: {

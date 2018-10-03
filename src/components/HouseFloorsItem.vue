@@ -20,7 +20,7 @@
       />
     </div>
     <div class="item-image">
-      <img :src="image">
+      <img :src="'/static/img' + image">
     </div>
     <div class="item-desc">
       <div

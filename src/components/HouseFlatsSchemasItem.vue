@@ -22,7 +22,7 @@
       />
     </div>
     <div class="item-image">
-      <img src="/static/img/blank_layout.svg"><!--:src="image"-->
+      <img :src="'/static/img' + image"><!--:src="image"-->
     </div>
     <div class="item-desc">
       <div class="item-desc__list">
@@ -32,6 +32,10 @@
       <div class="item-desc__list">
         <div>Типовая площадь:</div>
         <div class="item-desc__list_right">{{ area }} м<sup>2</sup></div>
+      </div>
+      <div class="item-desc__list">
+        <div>Комнат:</div>
+        <div class="item-desc__list_right">{{ numberOfRooms }}</div>
       </div>
       <div class="item-desc__list">
         <div>Балконы:</div>
@@ -111,6 +115,7 @@ export default {
     },
     numberOfBalcony: Number,
     numberOfLoggia: Number,
+    numberOfRooms: Number,
     editFlatSchemaFunction: Function,
     storeIndex: Number,
     price: String

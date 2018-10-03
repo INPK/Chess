@@ -16,7 +16,7 @@
     <AlertDefault
       v-if="singleErrorMessage"
       :message="singleErrorMessage"
-      @alertDie="singleErrorMessage = ''"
+      @alertDie="clearSingleError"
     />
     <transition name="slide-fade">
       <div class="marked-form" v-if="editMode">
@@ -24,7 +24,7 @@
           <label class="form-group__label" for="number">Квартира №</label>
           <div class="form-group__input">
             <input
-              v-model="flatType.number"
+              v-model="number"
               type="number"
               name="number"
             />
@@ -35,7 +35,7 @@
           <label class="form-group__label" for="flatSchema">Планировка</label>
           <div class="form-group__input">
             <select
-              v-model="flatType.flatSchemaId"
+              v-model="flatSchemaId"
               type="flatSchema"
               name="flatSchema"
             >
@@ -43,6 +43,7 @@
                 v-for="flatSchema in flatSchemas"
                 :key="flatSchema.fields.hash_id"
                 :value="flatSchema.fields.hash_id"
+                :selected="selectedFlatSchema"
               >
                 {{ flatSchema.fields.type }}
               </option>
@@ -54,7 +55,7 @@
           <label class="form-group__label" for="numberEntrance">Подъезд №</label>
           <div class="form-group__input">
             <input
-              v-model="flatType.entrance"
+              v-model="entrance"
               type="number"
               name="numberEntrance"
             />
@@ -62,10 +63,10 @@
           </div>
         </div>
         <div class="marked-window">
-          <div class="window-title">Окна выходят на: {{ flatType.windows }}</div>
+          <div class="window-title">Окна выходят на: {{ windows }}</div>
           <div class="window-list">
             <div>
-              <input v-model="flatType.windows"
+              <input v-model="windows"
                      type="checkbox"
                      id="street"
                      value="Улица"
@@ -73,7 +74,7 @@
               <label for="street">Улица</label>
             </div>
             <div>
-              <input v-model="flatType.windows"
+              <input v-model="windows"
                      type="checkbox"
                      id="north"
                      value="Север"
@@ -81,19 +82,19 @@
               <label for="north">Север</label>
             </div>
             <div>
-              <input v-model="flatType.windows" type="checkbox" id="south" value="Юг"/>
+              <input v-model="windows" type="checkbox" id="south" value="Юг"/>
               <label for="south">Юг</label>
             </div>
             <div>
-              <input v-model="flatType.windows" type="checkbox" id="outdoors" value="Двор"/>
+              <input v-model="windows" type="checkbox" id="outdoors" value="Двор"/>
               <label for="outdoors">Двор</label>
             </div>
             <div>
-              <input v-model="flatType.windows" type="checkbox" id="east" value="Восток"/>
+              <input v-model="windows" type="checkbox" id="east" value="Восток"/>
               <label for="east">Восток</label>
             </div>
             <div>
-              <input v-model="flatType.windows" type="checkbox" id="west" value="Запад"/>
+              <input v-model="windows" type="checkbox" id="west" value="Запад"/>
               <label for="west">Запад</label>
             </div>
           </div>
@@ -103,14 +104,14 @@
           name="Сохранить квартиру"
           class="button-expand"
           color="green"
-          :actionForClick="writeFlatType"
+          :actionForClick="updateFlatType"
         />
       </div>
     </transition>
     <AlertConfirm
       v-if="alertShow"
       @isAgree="removeFlatType"
-      @isDisagree="alertShow = false"
+      @isDisagree="closeAlertConfirm"
     />
   </div>
 </template>
@@ -126,6 +127,10 @@ export default {
     return {
       alertShow: false,
       singleErrorMessage: '',
+      number: this.flatType.number,
+      flatSchema: this.flatType.flat_schema_hash_id,
+      entrance: this.flatType.entrance,
+      windows: this.flatTypeWindows,
       selectedFlatType: []
     }
   },
@@ -150,6 +155,10 @@ export default {
     flatSchemas: {
       type: Array,
       required: true
+    },
+    flatTypeWindows: {
+      type: Array,
+      required: true
     }
   },
   components: {
@@ -160,6 +169,9 @@ export default {
   methods: {
     alertConfirm () {
       this.alertShow = true
+    },
+    updateFlatType () {
+      console.info('Update is not complete')
     },
     removeFlatType () {
       this.$store.dispatch('removeItem', {
@@ -172,6 +184,12 @@ export default {
           this.singleErrorMessage = 'Не удалось удалить квартиру.'
           console.info('Не удалось удалить квартиру. Вот почему: ', error.response.data)
         })
+    },
+    clearSingleError () {
+      this.singleErrorMessage = ''
+    },
+    closeAlertConfirm () {
+      this.alertShow = false
     },
     editBlock () {
       if (!this.editMode) {
@@ -186,6 +204,14 @@ export default {
   computed: {
     editMode () {
       return this.editableFlatIndex === this.flatIndex
+    },
+    selectedFlatSchema () {
+      let isExist = false
+      this.flatSchemas.map(flatSchema => {
+        return this.flatSchema === flatSchema.fields.type
+      })
+      console.info(isExist)
+      return isExist
     }
   }
 }
