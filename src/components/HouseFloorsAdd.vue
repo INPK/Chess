@@ -5,8 +5,8 @@
     @closeSidebar="closeSidebarToFloor"
   >
     <AlertDefault
-      v-if="singleErrorMessage"
-      :message="singleErrorMessage"
+      v-if="errorsStack.single_error"
+      :message="errorsStack.message"
       @alertDie="clearSingleError"
     />
     <div>
@@ -26,7 +26,14 @@
               {{ errorsStack.floor_number }}
             </span>
           </transition>
-          № этажа: <input v-model="floorNumber" name="type"/>
+          № этажа:
+          <input
+            v-model.number="floorNumber"
+            name="floor_number"
+            id="floor_number"
+            :class="validationClass.floor_number"
+            @click="clearError"
+          />
         </div>
       </div>
       <div>
@@ -57,7 +64,14 @@
               {{ errorsStack.number_of_flats }}
             </span>
           </transition>
-          Количество квартир на этаже: <input v-model="numberOfFlats" name="number_of_flats"/>
+          Количество квартир на этаже:
+          <input
+            v-model="numberOfFlats"
+            name="number_of_flats"
+            id="number_of_flats"
+            :class="validationClass.number_of_flats"
+            @click="clearError"
+          />
         </div>
       </div>
       <div class="form-group">
@@ -75,7 +89,7 @@
             @click="resetImage"
             type="button"
           >Х</button>
-          <img :src="imagePreview">
+          <img width="200px" height="200px" :src="imagePreview">
         </div>
       </div>
       <ButtonDefault
@@ -103,13 +117,13 @@ export default {
   name: 'HouseFloorsAdd',
   data () {
     return {
-      floorNumber: this.selectedFloor.number,
-      numberOfFlats: this.selectedFloor.number_of_flats,
+      floorNumber: this.selectedFloor.number || '',
+      numberOfFlats: this.selectedFloor.number_of_flats || '',
       cloneFloors: [],
-      floorImage: this.selectedFloor.image,
+      floorImage: this.selectedFloor.image || '',
       imagePreview: '',
       freeFloors: [],
-      errorsStack: []
+      errorsStack: {}
     }
   },
   props: {
@@ -137,6 +151,7 @@ export default {
     /* if (this.selectedFloor.clone_floors) {
       this.cloneFloors = this.selectedFloor.clone_floors
     } */
+    this.floorNumber = this.cFreeFloors[0] - 1
   },
   methods: {
     closeSidebarToFloor () {
@@ -196,10 +211,12 @@ export default {
         return first - second
       })
       if (this.cloneFloors[0] > firsValidFloor) {
-        this.errorsStack.message = 'Вы не можете оставить предыдущие этажи пустыми'
+        this.errorsStack['single_error'] = true
+        this.errorsStack['message'] = 'Вы не можете оставить предыдущие этажи пустыми'
         this.cloneFloors = []
         setTimeout(() => {
-          this.errorsStack.message = ''
+          this.errorsStack['single_error'] = false
+          this.errorsStack['message'] = ''
         }, 3000)
       }
     },
@@ -265,6 +282,9 @@ export default {
       } else {
         return null
       }
+    },
+    firstValidFloor () {
+      return 6
     },
     validationClass () {
       let errors = {}

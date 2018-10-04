@@ -27,6 +27,7 @@
               v-model="number"
               type="number"
               name="number"
+              id="number"
             />
             <span class="form-group__input_bar"></span>
           </div>
@@ -35,9 +36,10 @@
           <label class="form-group__label" for="flatSchema">Планировка</label>
           <div class="form-group__input">
             <select
-              v-model="flatSchemaId"
+              v-model="flatSchema"
               type="flatSchema"
               name="flatSchema"
+              id="flatSchema"
             >
               <option
                 v-for="flatSchema in flatSchemas"
@@ -52,12 +54,13 @@
           </div>
         </div>
         <div class="form-group">
-          <label class="form-group__label" for="numberEntrance">Подъезд №</label>
+          <label class="form-group__label" for="entrance">Подъезд №</label>
           <div class="form-group__input">
             <input
               v-model="entrance"
               type="number"
-              name="numberEntrance"
+              name="entrance"
+              id="entrance"
             />
             <span class="form-group__input_bar"></span>
           </div>

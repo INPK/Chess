@@ -63,20 +63,42 @@
           <div class="form-group">
             <label class="form-group__label" for="number">Квартира №</label>
             <div class="form-group__input">
+              <transition name="slide-fade">
+                <span
+                  v-if="errorsStack.number"
+                  class="form-group__alert"
+                >
+                  {{ errorsStack.number }}
+                </span>
+              </transition>
               <input
-                v-model="newFlat.number"
+                v-model.number="newFlat.number"
                 type="number"
                 name="number"
+                id="number"
+                :class="validationClass.number"
+                @click="clearError"
               />
               <span class="form-group__input_bar"></span>
             </div>
           </div>
           <div>
+            <transition name="slide-fade">
+                <span
+                  v-if="errorsStack.flat_schema_hash_id"
+                  class="form-group__alert"
+                >
+                  {{ errorsStack.flat_schema_hash_id }}
+                </span>
+            </transition>
             Планировка
             <select
               v-model="newFlat.flatSchemaId"
               type="flatSchema"
-              name="flatSchema"
+              name="flat_schema_hash_id"
+              id="flat_schema_hash_id"
+              :class="validationClass.flat_schema_hash_id"
+              @click="clearError"
             >
               <option
                 v-for="flatSchema in flatsSchemasOfCurrentHouse"
@@ -88,18 +110,29 @@
             </select>
           </div>
           <div class="form-group">
-            <label class="form-group__label" for="numberEntrance">Подъезд №</label>
+            <label class="form-group__label" for="entrance">Подъезд №</label>
             <div class="form-group__input">
+              <transition name="slide-fade">
+                <span
+                  v-if="errorsStack.entrance"
+                  class="form-group__alert"
+                >
+                  {{ errorsStack.entrance }}
+                </span>
+              </transition>
               <input
-                v-model="newFlat.entrance"
+                v-model.number="newFlat.entrance"
                 type="number"
-                name="numberEntrance"
+                name="entrance"
+                id="entrance"
+                :class="validationClass.entrance"
+                @click="clearError"
               />
               <span class="form-group__input_bar"></span>
             </div>
           </div>
           <div class="marked-window">
-            <div class="window-title">Окна выходят на: {{ newFlat.windows }}</div>
+            <div class="window-title">Окна выходят на:</div>
             <div class="window-list">
               <div>
                 <input v-model="newFlat.windows" type="checkbox" id="street" value="Улица"/>
@@ -268,9 +301,12 @@ export default {
             })
         })
     },
-    editBlock (params) {
+    resetEdit () {
       this.flatTypes = JSON.parse(this.originalFlats)
       this.newFlat.points = []
+    },
+    editBlock (params) {
+      this.resetEdit()
       this.editMode = true
       this.editableFlatIndex = params.flatIndex
       this.flatTypes.map(flatType => {
@@ -309,6 +345,8 @@ export default {
       if (lastFlatIndex >= 0) {
         let lastFlatNumber = Number(this.flatTypes[lastFlatIndex].fields.number)
         let lastFlatEntrance = Number(this.flatTypes[lastFlatIndex].fields.entrance)
+        console.info((this.newFlat.number - lastFlatNumber) !== 1)
+        console.info(this.newFlat.entrance, lastFlatEntrance, this.newFlat.entrance === lastFlatEntrance)
         if ((this.newFlat.number - lastFlatNumber) !== 1 && this.newFlat.entrance === lastFlatEntrance) {
           this.alertMessage = 'Вы должны создавать квартиры последовательно!'
           return
@@ -323,8 +361,9 @@ export default {
           if (error.response.status === 500) {
             this.alertMessage = 'Что-то пошло не так.'
           } else {
+            console.info(error.response)
             this.errorsStack = error.response.data
-            this.alertMessage = error.response.message
+            this.alertMessage = error.response.data.message
           }
         })
     },
@@ -388,8 +427,20 @@ export default {
       this.flatColors.push('#' + Math.floor(Math.random() * 999999))
     },
     createNewObject () {
+      this.resetEdit()
       this.editMode = false
       this.editableFlatIndex = null
+    },
+    clearSingleError () {
+      // Общее напоминание чистится методом удаления свойства single_error
+      this.$delete(this.errorsStack, 'single_error')
+    },
+    clearError (event) {
+      // Получаем id элемента и удаляем его из стека ошибок
+      // Vue автоматически отреагирует на это, скрыв отображение
+      let item = event.target.id
+      this.$delete(this.errorsStack, item)
+      this.clearSingleError()
     }
   },
   computed: {
@@ -413,6 +464,20 @@ export default {
     },
     markingIsNotCompleted () {
       return this.computedFlatTypes.length - this.numberOfFlats !== 0
+    },
+    singleErrorMessage () {
+      if (this.errorsStack.single_error) {
+        return this.errorsStack.message
+      } else {
+        return null
+      }
+    },
+    validationClass () {
+      let errors = {}
+      for (let item in this.errorsStack) {
+        errors[item] = 'error'
+      }
+      return errors
     }
   }
 }

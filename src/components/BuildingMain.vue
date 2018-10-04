@@ -58,6 +58,7 @@
           :numberOfFlat=item.house.number_of_flat
           :streetName=item.house.street_name
           :storeIndex=index
+          :title=item.house.name
           :number=item.house.number
           :flats=item.flats
           :finishing=item.house.finishing

@@ -124,7 +124,7 @@
                     class="characteristics-cal"
                     v-if="startDevelopment.calendarIsActive"
                     :days=Number(1095)
-                    @dateSelected="startDevelopment.value = createStrDateFromObject($event)"
+                    @dateSelected="dateSelected(startDevelopment, $event)"
                   />
                 </div>
               </div>
@@ -142,16 +142,9 @@
                     class="characteristics-cal"
                     v-if="endDevelopment.calendarIsActive"
                     :days=Number(1095)
-                    @dateSelected="endDevelopment.value = createStrDateFromObject($event)"
+                    @dateSelected="dateSelected(endDevelopment, $event)"
                   />
                 </div>
-                <DraggableCal
-                  style="width: 500px;"
-                  v-if="endDevelopment.calendarIsActive"
-                  lang="RU"
-                  :days=Number(1095)
-                  @dateSelected="dateSelected(endDevelopment, $event)"
-                />
               </div>
             </div>
           </div>
@@ -274,7 +267,7 @@ export default {
       dataObject.value = this.createStrDateFromObject(date)
       setTimeout(function () {
         dataObject.calendarIsActive = false
-      }, 1100)
+      }, 600)
     },
     reformatDate (dataString, forServer) {
       let symbolSeparate = '-'

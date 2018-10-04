@@ -17,7 +17,7 @@
         :src="flatSchemaImage"
       />
       <div class="form-group">
-        <label class="form-group__label" for="flatSchema">Тип квартиры:</label>
+        <label class="form-group__label" for="type">Тип квартиры:</label>
         <div class="form-group__input">
           <transition name="slide-fade">
             <span
@@ -30,9 +30,11 @@
           <!-- Тип квартиры: <input v-model="type" name="type_apartment"/> -->
           <select
             v-model="type"
-            type="flatSchema"
-            name="flatSchema"
-            id="flatSchema"
+            type="flat_schema"
+            name="type"
+            id="type"
+            :class="validationClass.type"
+            @click="clearError"
           >
             <option
               v-for="(flatSchema, index) in staticFlatsSchemasTypes"
@@ -45,7 +47,7 @@
         </div>
       </div>
       <div class="form-group">
-        <label class="form-group__label" for="typical_area">Типовая площадь:</label>
+        <label class="form-group__label" for="area">Типовая площадь:</label>
         <div class="form-group__input">
           <transition name="slide-fade">
             <span
@@ -55,7 +57,13 @@
               {{ errorsStack.area }}
             </span>
           </transition>
-          <input v-model="area" name="typical_area" id="typical_area"/>
+          <input
+            v-model="area"
+            name="area"
+            id="area"
+            :class="validationClass.area"
+            @click="clearError"
+          />
           <span class="form-group__input_bar"></span>
         </div>
       </div>
@@ -70,7 +78,13 @@
             {{ errorsStack.number_of_balcony }}
           </span>
           </transition>
-          <input v-model.number="numberOfBalcony" id="number_of_balcony"/>
+          <input
+            v-model.number="numberOfBalcony"
+            id="number_of_balcony"
+            name="number_of_balcony"
+            :class="validationClass.number_of_balcony"
+            @click="clearError"
+          />
           <span class="form-group__input_bar"></span>
         </div>
       </div>
@@ -85,12 +99,18 @@
             {{ errorsStack.number_of_rooms }}
           </span>
           </transition>
-          <input v-model.number="numberOfRooms" id="number_of_rooms"/>
+          <input
+            v-model.number="numberOfRooms"
+            id="number_of_rooms"
+            name="number_of_rooms"
+            :class="validationClass.number_of_rooms"
+            @click="clearError"
+          />
           <span class="form-group__input_bar"></span>
         </div>
       </div>
       <div class="form-group">
-        <label class="form-group__label" for="quantity_loggia">Лоджии:</label>
+        <label class="form-group__label" for="number_of_loggia">Лоджии:</label>
         <div class="form-group__input">
           <transition name="slide-fade">
             <span
@@ -100,7 +120,13 @@
               {{ errorsStack.number_of_loggia }}
             </span>
           </transition>
-          <input v-model.number="numberOfLoggia" name="quantity_loggia" id="quantity_loggia"/>
+          <input
+            v-model.number="numberOfLoggia"
+            name="number_of_loggia"
+            id="number_of_loggia"
+            :class="validationClass.number_of_loggia"
+            @click="clearError"
+          />
           <span class="form-group__input_bar"></span>
         </div>
       </div>
@@ -119,7 +145,7 @@
             v-model="price"
             name="price"
             id="price"
-            :class="validationClass.password_confirmation"
+            :class="validationClass.price"
             @click="clearError"
           />
           <span class="form-group__input_bar"></span>
@@ -140,7 +166,7 @@
             @click="resetImage"
             type="button"
           >Х</button>
-          <img :src="imagePreview">
+          <img width="200px" height="200px" :src="imagePreview">
         </div>
       </div>
       <ButtonDefault
@@ -168,14 +194,14 @@ export default {
   name: 'HouseFlatsSchemasAdd',
   data () {
     return {
-      type: this.selectedFlatSchema.type,
-      flatSchemaId: this.selectedFlatSchema.hash_id,
-      area: this.selectedFlatSchema.area,
-      numberOfBalcony: this.selectedFlatSchema.number_of_balcony,
-      numberOfLoggia: this.selectedFlatSchema.number_of_loggia,
-      numberOfRooms: this.selectedFlatSchema.number_of_rooms,
-      price: this.selectedFlatSchema.price,
-      flatSchemaImage: this.selectedFlatSchema.image,
+      type: this.selectedFlatSchema.type || '',
+      flatSchemaId: this.selectedFlatSchema.hash_id || '',
+      area: this.selectedFlatSchema.area || '',
+      numberOfBalcony: this.selectedFlatSchema.number_of_balcony || '',
+      numberOfLoggia: this.selectedFlatSchema.number_of_loggia || '',
+      numberOfRooms: this.selectedFlatSchema.number_of_rooms || '',
+      price: this.selectedFlatSchema.price || '',
+      flatSchemaImage: this.selectedFlatSchema.image || '',
       imagePreview: '',
       staticFlatsSchemasTypes: {
         'studio_flat': 'Студия',
