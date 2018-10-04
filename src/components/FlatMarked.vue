@@ -47,7 +47,7 @@
                 :value="flatSchema.fields.hash_id"
                 :selected="selectedFlatSchema"
               >
-                {{ flatSchema.fields.type }}
+                {{ staticFlatsSchemas[flatSchema.fields.type].title }}
               </option>
           </select>
             <span class="form-group__input_bar"></span>
@@ -66,7 +66,7 @@
           </div>
         </div>
         <div class="marked-window">
-          <div class="window-title">Окна выходят на: {{ windows }}</div>
+          <div class="window-title">Окна выходят на:</div>
           <div class="window-list">
             <div>
               <input v-model="windows"
@@ -134,7 +134,41 @@ export default {
       flatSchema: this.flatType.flat_schema_hash_id,
       entrance: this.flatType.entrance,
       windows: this.flatTypeWindows,
-      selectedFlatType: []
+      selectedFlatType: [],
+      staticFlatsSchemas: {
+        'studio_flat': {
+          title: 'Студия',
+          alias: 'S'
+        },
+        'one_room_flat': {
+          title: 'Однокомнатная',
+          alias: '1к'
+        },
+        'two_room_flat': {
+          title: '2х-комнатная',
+          alias: '2х'
+        },
+        'three_room_flat': {
+          title: '3х-комнатная',
+          alias: '3х'
+        },
+        'four_room_flat': {
+          title: '4х-комнатная',
+          alias: '4х'
+        },
+        'five_room_flat': {
+          title: '5и-комнатная',
+          alias: '5к'
+        },
+        'euro_two_room_flat': {
+          title: 'Евро 2х-комнатная',
+          alias: 'Е2'
+        },
+        'euro_three_room_flat': {
+          title: 'Евро 3х-комнатная',
+          alias: 'Е3'
+        }
+      }
     }
   },
   props: {

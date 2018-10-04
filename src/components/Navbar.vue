@@ -1,8 +1,8 @@
 <template>
     <header class="navbar">
-      <a class="navbar-logo" href="/">
-        <img src="/static/img/footer_logo.svg" >
-      </a>
+      <router-link class="navbar-logo" :to="{ name: 'Buildings'  }">
+        <img src="/static/img/footer_logo.svg"/>
+      </router-link>
       <div class="navbar-notice">1</div>
       <div class="navbar-profile">
         <div class="profile-name"
