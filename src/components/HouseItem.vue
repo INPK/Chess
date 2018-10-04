@@ -252,7 +252,7 @@ export default {
         &-list {
           position: relative;
           border-top: 1px solid #f2f4f6;
-          min-height: 8rem;
+          min-height: 11rem;
           .padding-v(@v: 1rem);
           .list {
             &-flat {
@@ -298,9 +298,14 @@ export default {
           .padding(@v:2rem);
           display: flex;
           flex-direction: column;
-          justify-content: center;
           -webkit-backdrop-filter: blur(5px);
           backdrop-filter: blur(5px);
+          button {
+            margin-bottom: 1rem;
+            &:last-child {
+                margin-bottom: 0;
+            }
+          }
         }
       }
     }

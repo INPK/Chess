@@ -31,7 +31,7 @@
         № этажа: {{ floorNumber }}
       </div>
       <div class="item-desc__clone">
-        <div>Клонировать для этажей:</div>
+        <div class="clone-title">Клонировать для этажей:</div>
         <div class="clone-items">
           <span class="clone-item" v-for="(cloneFloor, i) in cloneFloors" :key="i">{{ cloneFloor }}</span>
         </div>
@@ -154,17 +154,26 @@ export default {
           }
         }
         &__clone {
+          margin-top: 1rem;
           .clone {
             &-items {
               display: grid;
-              grid-template-columns: repeat(10, 1fr);
-              grid-column-gap: 10px;
-              grid-row-gap: 10px;
+              grid-template-columns: repeat(auto-fill, 34px);
+              grid-column-gap: 0.25rem;
+              grid-row-gap: 0.25rem;
+              margin-top: 1rem;
+            }
+            &-title {
+              font-size: 0.875rem;
+              color: @color-dark-grey;
             }
             &-item {
+              color: @color-white;
               background-color: @color-dark-grey;
               padding: 0.5rem;
               display: block;
+              text-align: center;
+              border-radius: 3px;
             }
           }
         }

@@ -2,7 +2,7 @@
   <div class="floors-marking">
     <div class="floors-nav">
       <ButtonDefault
-        class="button-icon"
+        class="button-close"
         :actionForClick="closeMarking"
       />
     </div>

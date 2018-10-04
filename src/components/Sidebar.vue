@@ -35,9 +35,6 @@ export default {
   methods: {
     closeSidebar () {
       this.$emit('closeSidebar')
-    },
-    test () {
-      alert(234)
     }
   }
 }
@@ -60,18 +57,21 @@ export default {
     z-index: 800;
     transition: opacity 0.3s ease-out;
   }
-
-.sidebar {
-  min-height: 100vh;
-  width: 400px;
-  position: fixed;
-  top: 0;
-  right: 0;
-  overflow: hidden;
-  -webkit-overflow-scrolling: touch;
-  background: #fff;
-  .padding(@v: 3rem);
-  border-left: 1px solid #dddddd;
-  z-index: 810;
-}
+  .sidebar {
+    min-height: 100vh;
+    width: 400px;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    background: #fff;
+    .padding(@v: 3rem);
+    border-left: 1px solid #dddddd;
+    z-index: 810;
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
+  }
+  .sidebar::-webkit-scrollbar { width: 0; }
 </style>

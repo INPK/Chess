@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import * as axios from 'axios'
 
 Vue.use(Vuex)
-Vue.prototype.$rootUrl = 'http://172.100.2.15:8000'
+Vue.prototype.$rootUrl = 'http://172.100.114.2:8000'
 // Vue.prototype.$rootUrl = 'http://127.0.0.1:8000'
 const ROOT_URL = Vue.prototype.$rootUrl
 
