@@ -1,7 +1,7 @@
 <template>
   <Sidebar
     v-if="sidebarShow"
-    title="Создание"
+    title="Типовая планировка"
     @closeSidebar="closeSidebarToFlatsSchemas"
   >
     <AlertDefault
@@ -18,7 +18,7 @@
       />
       <div class="form-group">
         <label class="form-group__label" for="type">Тип квартиры:</label>
-        <div class="form-group__input">
+        <div class="form-group__select">
           <transition name="slide-fade">
             <span
               v-if="errorsStack.type"
@@ -173,12 +173,14 @@
         v-if="!editMode"
         name="Создать типовую планировку"
         color="grey"
+        class="button-expand"
         :actionForClick="writeFlatSchema"
       />
       <ButtonDefault
         v-else
         name="Обновить"
         color="grey"
+        class="button-expand"
         :actionForClick="updateFlatSchema"
       />
     </div>
@@ -333,6 +335,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import (less) "../../static/less/button.less";
 @import (less) "../../static/less/color.less";
 @import (less) "../../static/less/global.less";
 @import (less) "../../static/less/media.less";

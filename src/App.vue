@@ -22,7 +22,7 @@ export default {
 </script>
 
 <style lang="less">
-  @import (reference) "../static/less/global.less";
+  @import (less) "../static/less/global.less";
   @import (less) "../static/less/media.less";
   @import (less) "../static/less/padding.less";
   main {

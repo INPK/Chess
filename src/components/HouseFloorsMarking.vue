@@ -137,27 +137,27 @@
             <div class="window-title">Окна выходят на:</div>
             <div class="window-list">
               <div>
-                <input v-model="newFlat.windows" type="checkbox" id="street" value="Улица"/>
+                <input v-model="newFlat.windows" class="toggle" type="checkbox" id="street" value="Улица"/>
                 <label for="street">Улица</label>
               </div>
               <div>
-                <input v-model="newFlat.windows" type="checkbox" id="north" value="Север"/>
+                <input v-model="newFlat.windows" class="toggle" type="checkbox" id="north" value="Север"/>
                 <label for="north">Север</label>
               </div>
               <div>
-                <input v-model="newFlat.windows" type="checkbox" id="south" value="Юг"/>
+                <input v-model="newFlat.windows" class="toggle" type="checkbox" id="south" value="Юг"/>
                 <label for="south">Юг</label>
               </div>
               <div>
-                <input v-model="newFlat.windows" type="checkbox" id="outdoors" value="Двор"/>
+                <input v-model="newFlat.windows" class="toggle" type="checkbox" id="outdoors" value="Двор"/>
                 <label for="outdoors">Двор</label>
               </div>
               <div>
-                <input v-model="newFlat.windows" type="checkbox" id="east" value="Восток"/>
+                <input v-model="newFlat.windows" class="toggle" type="checkbox" id="east" value="Восток"/>
                 <label for="east">Восток</label>
               </div>
               <div>
-                <input v-model="newFlat.windows" type="checkbox" id="west" value="Запад"/>
+                <input v-model="newFlat.windows" class="toggle" type="checkbox" id="west" value="Запад"/>
                 <label for="west">Запад</label>
               </div>
             </div>

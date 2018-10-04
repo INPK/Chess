@@ -245,23 +245,23 @@
             <div class="finishing-title">Отделка:</div>
             <div class="finishing-grid">
               <div>
-                <input v-model="materials" type="checkbox" id="without_finishing" value="Стройвариант"/>
+                <input v-model="materials" class="toggle" type="checkbox" id="without_finishing" value="Стройвариант"/>
                 <label for="without_finishing">Стройвариант</label>
               </div>
               <div>
-                <input v-model="materials" type="checkbox" id="rough_finishing" value="Черновая"/>
+                <input v-model="materials" class="toggle" type="checkbox" id="rough_finishing" value="Черновая"/>
                 <label for="rough_finishing">Черновая</label>
               </div>
               <div>
-                <input v-model="materials" type="checkbox" id="prefinishing_finishing" value="Предчистовая"/>
+                <input v-model="materials" class="toggle" type="checkbox" id="prefinishing_finishing" value="Предчистовая"/>
                 <label for="prefinishing_finishing">Предчистовая</label>
               </div>
               <div>
-                <input v-model="materials" type="checkbox" id="finishing_finishing" value="Чистовая"/>
+                <input v-model="materials" class="toggle" type="checkbox" id="finishing_finishing" value="Чистовая"/>
                 <label for="finishing_finishing">Чистовая</label>
               </div>
               <div>
-                <input v-model="materials" type="checkbox" id="with_repair" value="С ремонтом"/>
+                <input v-model="materials" class="toggle" type="checkbox" id="with_repair" value="С ремонтом"/>
                 <label for="with_repair">С ремонтом</label>
               </div>
             </div>

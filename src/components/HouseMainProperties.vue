@@ -77,7 +77,22 @@
           </div>
         </div>
       <div class="properties-media">
-        1
+        <div class="info-development">
+          <div>
+            <div>Отделка квартир: {{ finishing }}</div>
+          </div>
+          <div class="materials">
+            <div>Материалы:</div>
+            <div class="materials-list">
+              <div
+              class="materials-item"
+              v-for="(material, index) in materials"
+              :key="index">
+                {{ material }}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </HouseMain>
@@ -199,8 +214,25 @@ export default {
               }
             }
           }
-          &-materials {
+          &-development {
             .grid(@c: 2);
+            .materials {
+              display: flex;
+              &-list {
+                margin-left: 0.5rem;
+                margin-top: -3px;
+              }
+              &-item {
+                border-radius: 2px;
+                color: @color-white;
+                background-color: @color-dark-grey;
+                .padding(@v: 0.25rem);
+                margin-bottom: 3px;
+                margin-right: 3px;
+                display: inline-block;
+                font-size: 0.875rem;
+              }
+            }
           }
         }
       }
