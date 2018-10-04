@@ -14,21 +14,42 @@
               <div class="form-group">
                 <label class="form-group__label" for="number_of_floors">Всего этажей</label>
                 <div class="form-group__input">
+                  <transition name="slide-fade">
+                    <span
+                      v-if="errorsStack.number_of_floors"
+                      class="form-group__alert"
+                    >
+                      {{ errorsStack.number_of_floors }}
+                    </span>
+                  </transition>
                   <input
                     v-model="numberOfFloors"
                     type="text"
                     id="number_of_floors"
+                    :class="validationClass.number_of_floors"
+                    @click="clearError"
                   />
                   <span class="form-group__input_bar"></span>
                 </div>
               </div>
               <div class="form-group">
-                <label class="form-group__label" for="livingFloorsStart">С</label>
+                <label class="form-group__label" for="living_floors">С</label>
                 <div class="form-group__input">
+                  <transition name="slide-fade">
+                    <span
+                      v-if="errorsStack.livingFloorsStart"
+                      class="form-group__alert"
+                    >
+                      {{ errorsStack.living_floors }}
+                    </span>
+                  </transition>
                   <input
                     v-model="livingFloorsStart"
                     type="text"
-                    id="livingFloorsStart"
+                    id="living_floors"
+                    name="living_floors"
+                    :class="validationClass.living_floors"
+                    @click="clearError"
                   />
                   <span class="form-group__input_bar"></span>
                 </div>
@@ -36,32 +57,63 @@
               <div class="form-group">
                 <label class="form-group__label" for="livingFloorsEnd">По</label>
                 <div class="form-group__input">
+                  <transition name="slide-fade">
+                    <span
+                      v-if="errorsStack.living_floors"
+                      class="form-group__alert"
+                    >
+                      {{ errorsStack.living_floors }}
+                    </span>
+                  </transition>
                   <input
                     v-model="livingFloorsEnd"
                     type="text"
                     id="livingFloorsEnd"
+                    name="livingFloorsEnd"
+                    :class="validationClass.number_of_floors"
+                    @click="clearError"
                   />
                   <span class="form-group__input_bar"></span>
                 </div>
               </div>
               <div class="form-group">
-                <label class="form-group__label" for="numberOfEntrance">Подъездов</label>
+                <label class="form-group__label" for="number_of_entrance">Подъездов</label>
                 <div class="form-group__input">
+                  <transition name="slide-fade">
+                    <span
+                      v-if="errorsStack.number_of_entrance"
+                      class="form-group__alert"
+                    >
+                      {{ errorsStack.number_of_entrance }}
+                    </span>
+                  </transition>
                   <input
                     v-model="numberOfEntrance"
                     type="text"
-                    id="numberOfEntrance"
+                    id="number_of_entrance"
+                    :class="validationClass.number_of_entrance"
+                    @click="clearError"
                   />
                   <span class="form-group__input_bar"></span>
                 </div>
               </div>
               <div class="form-group">
-                <label class="form-group__label" for="numberOfFlat">Квартир</label>
+                <label class="form-group__label" for="number_of_flat">Квартир</label>
                 <div class="form-group__input">
+                  <transition name="slide-fade">
+                    <span
+                      v-if="errorsStack.number_of_flat"
+                      class="form-group__alert"
+                    >
+                      {{ errorsStack.number_of_flat }}
+                    </span>
+                  </transition>
                   <input
                     v-model="numberOfFlat"
                     type="text"
-                    id="numberOfFlat"
+                    id="number_of_flat"
+                    :class="validationClass.number_of_flat"
+                    @click="clearError"
                   />
                   <span class="form-group__input_bar"></span>
                 </div>
@@ -69,10 +121,21 @@
               <div class="form-group">
                 <label class="form-group__label" for="streetName">Улица</label>
                 <div class="form-group__input">
+                  <transition name="slide-fade">
+                    <span
+                      v-if="errorsStack.street_name"
+                      class="form-group__alert"
+                    >
+                      {{ errorsStack.street_name }}
+                    </span>
+                  </transition>
                   <input
                     v-model="streetName"
                     type="text"
-                    id="streetName"
+                    id="street_name"
+                    name="street_name"
+                    :class="validationClass.street_name"
+                    @click="clearError"
                   />
                   <span class="form-group__input_bar"></span>
                 </div>
@@ -80,10 +143,20 @@
               <div class="form-group">
                 <label class="form-group__label" for="number">№ дома</label>
                 <div class="form-group__input">
+                  <transition name="slide-fade">
+                    <span
+                      v-if="errorsStack.number"
+                      class="form-group__alert"
+                    >
+                      {{ errorsStack.number }}
+                    </span>
+                  </transition>
                   <input
                     v-model="number"
                     type="text"
                     id="number"
+                    :class="validationClass.number"
+                    @click="clearError"
                   />
                   <span class="form-group__input_bar"></span>
                 </div>
@@ -91,21 +164,41 @@
               <div class="form-group">
                 <label class="form-group__label" for="finishing">Отделка</label>
                 <div class="form-group__input">
+                  <transition name="slide-fade">
+                    <span
+                      v-if="errorsStack.finishing"
+                      class="form-group__alert"
+                    >
+                      {{ errorsStack.finishing }}
+                    </span>
+                  </transition>
                   <input
                     v-model="finishing"
                     type="text"
                     id="finishing"
+                    :class="validationClass.finishing"
+                    @click="clearError"
                   />
                   <span class="form-group__input_bar"></span>
                 </div>
               </div>
               <div class="form-group">
-                <label class="form-group__label" for="stageDevelopment">Этап строительства</label>
+                <label class="form-group__label" for="stage_development">Этап строительства</label>
                 <div class="form-group__input">
+                  <transition name="slide-fade">
+                    <span
+                      v-if="errorsStack.stage_development"
+                      class="form-group__alert"
+                    >
+                      {{ errorsStack.stage_development }}
+                    </span>
+                  </transition>
                   <input
                     v-model="stageDevelopment"
                     type="text"
                     id="stageDevelopment"
+                    :class="validationClass.stage_development"
+                    @click="clearError"
                   />
                   <span class="form-group__input_bar"></span>
                 </div>

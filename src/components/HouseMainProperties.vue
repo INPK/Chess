@@ -20,7 +20,14 @@
           <div>Улица: {{ streetName }}</div>
           <div>----------------------</div>
           <div>Отделка квартир: {{ finishing }}</div>
-          <div>Материалы: {{ materials }}</div>
+          <div>Материалы:
+            <span
+              v-for="(material, index) in materials"
+              :key="index"
+            >
+              {{ material }}
+            </span>
+          </div>
         </div>
       </div>
     </HouseMain>
@@ -76,7 +83,7 @@ export default {
     fillHouseProperties (house) {
       this.houseId = house.hash_id
       this.buildingId = house.building_hash_id
-      this.materials = house.materials
+      this.materials = house.materials.split(',')
       this.numberOfFloors = house.number_of_floors
       this.livingFloors = house.living_floors
       this.numberOfEntrance = house.number_of_entrance
