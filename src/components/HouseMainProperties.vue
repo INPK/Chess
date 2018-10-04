@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <HouseMain>
   <div class="house-mainproperties">
       <div class="properties-info">
@@ -59,6 +60,36 @@
           </div>
           <div>
             <div>Материалы: {{ materials }}</div>
+=======
+    <HouseMain>
+      <AlertDefault
+        v-if="singleErrorMessage"
+        :message="singleErrorMessage"
+        @alertDie="singleErrorMessage = ''"
+      />
+      <h1>Характеристики дома</h1>
+      <div>
+        <div>
+          <div>Всего этажей: {{ numberOfFloors }}</div>
+          <div>Жилых этажей: {{ livingFloors }}</div>
+          <div>Количество подъездов: {{ numberOfEntrance }}</div>
+          <div>Количество квартир: {{ numberOfFlats }}</div>
+          <div>Номер дома: {{ number }}</div>
+          <div>----------------------</div>
+          <div>Стадия строительства: {{ stageDevelopment }}</div>
+          <div>Начало строительства: {{ startDevelopment }}</div>
+          <div>Окончание строительства: {{ endDevelopment }}</div>
+          <div>Улица: {{ streetName }}</div>
+          <div>----------------------</div>
+          <div>Отделка квартир: {{ finishing }}</div>
+          <div>Материалы:
+            <span
+              v-for="(material, index) in materials"
+              :key="index"
+            >
+              {{ material }}
+            </span>
+>>>>>>> ee91fe1ef3ba27c64afeeae8feb9cf69f75952d1
           </div>
         </div>
       </div>
@@ -119,7 +150,7 @@ export default {
     fillHouseProperties (house) {
       this.houseId = house.hash_id
       this.buildingId = house.building_hash_id
-      this.materials = house.materials
+      this.materials = house.materials.split(',')
       this.numberOfFloors = house.number_of_floors
       this.livingFloors = house.living_floors
       this.numberOfEntrance = house.number_of_entrance

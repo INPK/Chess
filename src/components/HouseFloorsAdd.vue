@@ -283,9 +283,6 @@ export default {
         return null
       }
     },
-    firstValidFloor () {
-      return 6
-    },
     validationClass () {
       let errors = {}
       for (let item in this.errorsStack) {
