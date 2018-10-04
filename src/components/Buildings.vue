@@ -76,7 +76,6 @@ export default {
   },
   created () {
     // На главной странице удаляем индекс текущего дома из store.
-    this.$store.dispatch('destroyItemFromStore', 'currentBuildingStoreIndex')
     this.getBuildings()
   },
   methods: {
@@ -99,6 +98,7 @@ export default {
         })
     },
     redirectToCreate () {
+      this.$store.dispatch('destroyItemFromStore', 'currentBuildingStoreIndex')
       this.$router.push({ name: 'BuildingProperties' })
     },
     removeBuilding () {

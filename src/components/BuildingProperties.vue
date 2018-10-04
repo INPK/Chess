@@ -34,6 +34,7 @@
             <input
               v-model="country"
               name="country"
+              id="country"
               :class="validationClass.country"
               @click="clearError"
             />
@@ -54,6 +55,7 @@
             <input
               v-model="region"
               name="region"
+              id="region"
               :class="validationClass.region"
               @click="clearError"
             />
@@ -74,6 +76,7 @@
             <input
               v-model="currency"
               name="currency"
+              id="currency"
               :class="validationClass.currency"
               @click="clearError"
             />
@@ -94,6 +97,7 @@
             <input
               v-model="city"
               name="city"
+              id="city"
               :class="validationClass.city"
               @click="clearError"
             />
@@ -114,13 +118,14 @@
             <input
               v-model="district"
               name="district"
+              id="district"
               :class="validationClass.district"
               @click="clearError"
             />
             <span class="form-group__input_bar"></span>
           </div>
         </div>
-        <div class="form-group properties-group">
+        <!--<div class="form-group properties-group">
           <label class="form-group__label label" for="video">Видео</label>
           <div class="form-group__input">
             <input v-model="video" name="video" />
@@ -153,7 +158,7 @@
             />
             <span class="form-group__input_bar"></span>
           </div>
-        </div>
+        </div>-->
       </div>
       <div>
         <ButtonDefault

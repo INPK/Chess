@@ -11,13 +11,11 @@
           <div><span>Регион: </span>{{ region }}</div>
           <div><span>Город: </span>{{ city }}</div>
           <div><span>Район: </span>{{ district }}</div>
-          <div><span>Координаты: </span>{{ coords }}</div>
         </div>
       </div>
       <div class="building-media">
         <div class="building-media__images"><img src="https://novostroy-a.akamaihd.net/regions/u/b/g/box_orig/591ae91edf75a.jpg"/></div>
       </div>
-
       <AlertDefault
         v-if="alertMessage"
         :message="alertMessage"
@@ -61,6 +59,7 @@
           :numberOfFlat=item.house.number_of_flat
           :streetName=item.house.street_name
           :storeIndex=index
+          :title=item.house.name
           :number=item.house.number
           :flats=item.flats
           :finishing=item.house.finishing
@@ -108,8 +107,6 @@ export default {
     AlertConfirm
   },
   created () {
-    this.$store.dispatch('destroyItemFromStore', 'currentHouseId')
-    this.$store.dispatch('destroyItemFromStore', 'properties')
     let urlBuildingStoreIndex = this.$route.params.buildingStoreIndex
     if (urlBuildingStoreIndex !== undefined) {
       this.$store.dispatch('setItemToStore', {
@@ -158,6 +155,8 @@ export default {
       this.getHouses(this.hashId)
     },
     redirectToHouseProperties () {
+      this.$store.dispatch('destroyItemFromStore', 'currentHouseId')
+      this.$store.dispatch('destroyItemFromStore', 'properties')
       this.$router.push({
         name: 'HouseProperties',
         params: {

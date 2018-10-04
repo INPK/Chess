@@ -169,7 +169,6 @@ export default {
       this.closeAlertConfirm()
     },
     activateAlertConfirm (floorId) {
-      alert(123)
       this.selectedFloor.id = floorId
       this.alertConfirm.isActive = true
     },
