@@ -19,6 +19,7 @@ import HouseMainProperties from '@/components/HouseMainProperties'
 import HouseMainFlatsSchemas from '@/components/HouseMainFlatsSchemas'
 import HouseMainFloors from '@/components/HouseMainFloors'
 import HouseMainChess from '@/components/HouseMainChess'
+import HouseMainFacades from '@/components/HouseMainFacades'
 import store from '../store'
 
 Vue.use(Router)
@@ -111,6 +112,12 @@ export default new Router({
       path: '/house/main/floors',
       name: 'HouseMainFloors',
       component: HouseMainFloors,
+      beforeEnter: ifNotAuthenticated
+    },
+    {
+      path: '/house/main/facades',
+      name: 'HouseMainFacades',
+      component: HouseMainFacades,
       beforeEnter: ifNotAuthenticated
     },
     {

@@ -1,62 +1,62 @@
 <template>
-    <div class="house-chessbase">
-      <AlertDefault
-        v-if="singleErrorMessage"
-        :message="singleErrorMessage"
-        @alertDie="singleErrorMessage = ''"
-      />
-      <div class="chessbase-info">
-        <div class="info-title">Проверьте правильность нумерации квартир и приступите к последнему шагу</div>
-        <div class="info-desc">При необходимости вернитесь на предыдущий шаг для внесения правок</div>
-        <div class="info-list">
-          <div class="list-flat" v-for="(flatType, index) in flatTypes"
-          :key="index">
-            <div class="list-flat__type">{{ staticFlatsSchemasTypes[flatType.type].alias }}</div>
-            <div class="list-flat__desc">{{ staticFlatsSchemasTypes[flatType.type].title }}</div>
-            <div class="list-flat__amount">{{ flatType.number_of }}</div>
-          </div>
+  <div class="house-chessbase">
+    <AlertDefault
+      v-if="singleErrorMessage"
+      :message="singleErrorMessage"
+      @alertDie="singleErrorMessage = ''"
+    />
+    <div class="chessbase-info">
+      <div class="info-title">Проверьте правильность нумерации квартир и приступите к последнему шагу</div>
+      <div class="info-desc">При необходимости вернитесь на предыдущий шаг для внесения правок</div>
+      <div class="info-list">
+        <div class="list-flat" v-for="(flatType, index) in flatTypes"
+        :key="index">
+          <div class="list-flat__type">{{ staticFlatsSchemasTypes[flatType.type].alias }}</div>
+          <div class="list-flat__desc">{{ staticFlatsSchemasTypes[flatType.type].title }}</div>
+          <div class="list-flat__amount">{{ flatType.number_of }}</div>
         </div>
       </div>
-      <div class="chessbase-masonry">
-        <div class="masonry-header">
-          <div class="header-title">Шахматка</div>
-          <div class="header-filter">
-            <input v-model="roomsView" type="checkbox" id="rooms" value="rooms"/>
-            <label for="rooms">Комнатность</label>
-          </div>
+    </div>
+    <div class="chessbase-masonry">
+      <div class="masonry-header">
+        <div class="header-title">Шахматка</div>
+        <div class="header-filter">
+          <input v-model="roomsView" type="checkbox" id="rooms" value="rooms"/>
+          <label for="rooms">Комнатность</label>
         </div>
-        <div class="masonry-chess">
-          <div class="chess-header">
-            <div>Этажи</div>
-            <div>Подъезды </div>
-            <div>Этажи</div>
+      </div>
+      <div class="masonry-chess">
+        <div class="chess-header">
+          <div>Этажи</div>
+          <div>Подъезды </div>
+          <div>Этажи</div>
+        </div>
+        <div
+          class="chess-floor"
+          v-for="(flat, index) in flats.slice().reverse()"
+          :key=index
+          :floor="flat[0].floor"
+        >
+          <div class="floor-num">
+            {{ flat[0].floor }}
           </div>
-          <div
-            class="chess-floor"
-            v-for="(flat, index) in flats.slice().reverse()"
-            :key=index
-            :floor="flat[0].floor"
-          >
-            <div class="floor-num">
-              {{ flat[0].floor }}
+          <div class="floor-flats">
+            <div
+              v-for="(properties, index) in flat"
+              class="floor-flat"
+              :key="index"
+            >
+              <div class="floor-flat__numb" v-if="roomsView">{{ properties.number }}</div>
+              <div class="floor-flat__numb" v-else>{{ properties.number_of_rooms }}</div>
             </div>
-            <div class="floor-flats">
-              <div
-                v-for="(properties, index) in flat"
-                class="floor-flat"
-                :key="index"
-              >
-                <div class="floor-flat__numb" v-if="roomsView">{{ properties.number }}</div>
-                <div class="floor-flat__numb" v-else>{{ properties.number_of_rooms }}</div>
-              </div>
-            </div>
-            <div class="floor-num">
-              {{ flat[0].floor }}
-            </div>
+          </div>
+          <div class="floor-num">
+            {{ flat[0].floor }}
           </div>
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -162,7 +162,6 @@ export default {
   @import (less) "../../static/less/grid.less";
   @import (less) "../../static/less/media.less";
   @import (less) "../../static/less/padding.less";
-
   .house-chessbase {
     display: grid;
     grid-template-columns: 1fr 2.5fr;

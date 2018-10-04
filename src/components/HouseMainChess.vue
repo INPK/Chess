@@ -1,7 +1,7 @@
 <template>
-    <HouseMain>
-      <HouseChessBase/>
-    </HouseMain>
+  <HouseMain>
+    <HouseChessBase/>
+  </HouseMain>
 </template>
 
 <script>

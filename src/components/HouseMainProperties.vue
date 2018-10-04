@@ -1,102 +1,85 @@
 <template>
-<<<<<<< HEAD
   <HouseMain>
-  <div class="house-mainproperties">
-      <div class="properties-info">
-        <AlertDefault
-          v-if="singleErrorMessage"
-          :message="singleErrorMessage"
-          @alertDie="singleErrorMessage = ''"
-        />
-        <div class="info-header">
-          <div class="header-title">Характеристики дома</div>
-          <div class="header-edit"></div>
-        </div>
-        <div class="info-list">
-          <div class="info-list__column">
-            <div class="list-item">
-              <span class="list-item__title">Всего<br>этажей:</span>
-              <span class="list-item__value">{{ numberOfFloors }}</span>
+    <div class="house-mainproperties">
+        <div class="properties-info">
+          <AlertDefault
+            v-if="singleErrorMessage"
+            :message="singleErrorMessage"
+            @alertDie="singleErrorMessage = ''"
+          />
+          <div class="info-header">
+            <div class="header-title">Характеристики дома</div>
+            <div class="header-edit"></div>
+          </div>
+          <div class="info-list">
+            <div class="info-list__column">
+              <div class="list-item">
+                <span class="list-item__title">Всего<br>этажей:</span>
+                <span class="list-item__value">{{ numberOfFloors }}</span>
+              </div>
+              <div class="list-item">
+                <span class="list-item__title">Жилых<br>этажей:</span>
+                <span class="list-item__value">{{ livingFloors }}</span>
+              </div>
+              <div class="list-item">
+                <span class="list-item__title">Количество<br>подъездов:</span>
+                <span class="list-item__value">{{ numberOfEntrance }}</span>
+              </div>
+              <div class="list-item">
+                <span class="list-item__title">Количество<br>квартир:</span>
+                <span class="list-item__value">{{ numberOfFlats }}</span>
+              </div>
+              <div class="list-item">
+                <span class="list-item__title">Номер<br>дома:</span>
+                <span class="list-item__value">{{ number }}</span>
+              </div>
             </div>
-            <div class="list-item">
-              <span class="list-item__title">Жилых<br>этажей:</span>
-              <span class="list-item__value">{{ livingFloors }}</span>
-            </div>
-            <div class="list-item">
-              <span class="list-item__title">Количество<br>подъездов:</span>
-              <span class="list-item__value">{{ numberOfEntrance }}</span>
-            </div>
-            <div class="list-item">
-              <span class="list-item__title">Количество<br>квартир:</span>
-              <span class="list-item__value">{{ numberOfFlats }}</span>
-            </div>
-            <div class="list-item">
-              <span class="list-item__title">Номер<br>дома:</span>
-              <span class="list-item__value">{{ number }}</span>
+            <div class="info-list__column">
+              <div class="list-item">
+                <span class="list-item__title">Стадия<br>строительства:</span>
+                <span class="list-item__value">{{ stageDevelopment }}</span>
+              </div>
+              <div class="list-item">
+                <span class="list-item__title">Начало<br>строительства:</span>
+                <span class="list-item__value">{{ startDevelopment }}</span>
+              </div>
+              <div class="list-item">
+                <span class="list-item__title">Окончание<br>строительства:</span>
+                <span class="list-item__value">{{ endDevelopment }}</span>
+              </div>
+              <div class="list-item">
+                <span class="list-item__title">Улица:</span>
+                <span class="list-item__value">{{ streetName }}</span>
+              </div>
             </div>
           </div>
-          <div class="info-list__column">
-            <div class="list-item">
-              <span class="list-item__title">Стадия<br>строительства:</span>
-              <span class="list-item__value">{{ stageDevelopment }}</span>
+          <div class="info-materials">
+            <div>
+              <div>Отделка квартир:
+                <span
+                  v-for="(item, index) in finishing"
+                  :key="index"
+                >
+                  {{ item }}
+                </span>
+              </div>
             </div>
-            <div class="list-item">
-              <span class="list-item__title">Начало<br>строительства:</span>
-              <span class="list-item__value">{{ startDevelopment }}</span>
+            <div>
+              <div>Материалы:
+                <span
+                  v-for="(material, index) in materials"
+                  :key="index"
+                >
+                  {{ material }}
+                </span>
+              </div>
             </div>
-            <div class="list-item">
-              <span class="list-item__title">Окончание<br>строительства:</span>
-              <span class="list-item__value">{{ endDevelopment }}</span>
-            </div>
-            <div class="list-item">
-              <span class="list-item__title">Улица:</span>
-              <span class="list-item__value">{{ streetName }}</span>
-            </div>
-          </div>
-        </div>
-        <div class="info-materials">
-          <div>
-            <div>Отделка квартир: {{ finishing }}</div>
-          </div>
-          <div>
-            <div>Материалы: {{ materials }}</div>
-=======
-    <HouseMain>
-      <AlertDefault
-        v-if="singleErrorMessage"
-        :message="singleErrorMessage"
-        @alertDie="singleErrorMessage = ''"
-      />
-      <h1>Характеристики дома</h1>
-      <div>
-        <div>
-          <div>Всего этажей: {{ numberOfFloors }}</div>
-          <div>Жилых этажей: {{ livingFloors }}</div>
-          <div>Количество подъездов: {{ numberOfEntrance }}</div>
-          <div>Количество квартир: {{ numberOfFlats }}</div>
-          <div>Номер дома: {{ number }}</div>
-          <div>----------------------</div>
-          <div>Стадия строительства: {{ stageDevelopment }}</div>
-          <div>Начало строительства: {{ startDevelopment }}</div>
-          <div>Окончание строительства: {{ endDevelopment }}</div>
-          <div>Улица: {{ streetName }}</div>
-          <div>----------------------</div>
-          <div>Отделка квартир: {{ finishing }}</div>
-          <div>Материалы:
-            <span
-              v-for="(material, index) in materials"
-              :key="index"
-            >
-              {{ material }}
-            </span>
->>>>>>> ee91fe1ef3ba27c64afeeae8feb9cf69f75952d1
           </div>
         </div>
+      <div class="properties-media">
+        1
       </div>
-    <div class="properties-media">
-      1
     </div>
-  </div>
   </HouseMain>
 </template>
 
@@ -157,7 +140,7 @@ export default {
       this.numberOfFlats = house.number_of_flat
       this.streetName = house.street_name
       this.number = house.number
-      this.finishing = house.finishing
+      this.finishing = house.finishing.split(',')
       this.stageDevelopment = house.stage_development
       this.startDevelopment = house.start_development
       this.endDevelopment = house.end_development

@@ -4,7 +4,6 @@
       <div class="header-top">
         <div class="header-title">
           <router-link class="header-title__link" :to="{ name: 'BuildingMain' }">ЖК "Millennium Falcon"</router-link>
-          <span>(шаг №1 из 6)</span>
         </div>
         <ButtonDefault
           name="Удалить объект"
@@ -14,31 +13,31 @@
       </div>
       <ul class="header-nav">
         <li class="nav-item">
-          <router-link class="nav-link" :to="{ name: 'HouseProperties' }">
+          <router-link step="1" class="nav-link" :to="{ name: 'HouseProperties' }">
             <span class="nav-link__step">1.</span>
             <span class="nav-link__title">Характеристики дома</span>
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" :to="{ name: 'HouseFlatsSchemas' }">
+          <router-link step="2" class="nav-link" :to="{ name: 'HouseFlatsSchemas' }">
             <span class="nav-link__step">2.</span>
             <span class="nav-link__title">Типовые планровки</span>
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" :to="{ name: 'HouseFloors' }">
+          <router-link step="3" class="nav-link" :to="{ name: 'HouseFloors' }">
             <span class="nav-link__step">3.</span>
             <span class="nav-link__title">Типовые этажи</span>
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" :to="{ name: 'HouseChess' }">
+          <router-link step="4" class="nav-link" :to="{ name: 'HouseChess' }">
             <span class="nav-link__step">4.</span>
             <span class="nav-link__title">Шахматка</span>
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" :to="{ name: 'HousePrices' }">
+          <router-link step="5" class="nav-link" :to="{ name: 'HousePrices' }">
             <span class="nav-link__step">5.</span>
             <span class="nav-link__title">Цены</span>
           </router-link>

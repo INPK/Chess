@@ -11,10 +11,10 @@
     />
     <div>
       <img
-        v-if="editMode"
+        v-if="imagePreview"
         width="100"
         height="100"
-        :src="image"
+        :src="imagePreview"
       />
       <div class="form-group">
         <div class="form-group__input">
@@ -147,12 +147,6 @@ export default {
     ButtonDefault,
     Sidebar
   },
-  created () {
-    /* if (this.selectedFloor.clone_floors) {
-      this.cloneFloors = this.selectedFloor.clone_floors
-    } */
-    this.floorNumber = this.cFreeFloors[0] - 1
-  },
   methods: {
     closeSidebarToFloor () {
       this.$emit('closeSidebar')
@@ -210,6 +204,7 @@ export default {
       this.cloneFloors.sort((first, second) => {
         return first - second
       })
+      console.info(this.cloneFloors)
       if (this.cloneFloors[0] > firsValidFloor) {
         this.errorsStack['single_error'] = true
         this.errorsStack['message'] = 'Вы не можете оставить предыдущие этажи пустыми'
@@ -258,9 +253,13 @@ export default {
     sidebarShowComputed () {
       return this.sidebarShow
     },
-    cFreeFloors () {
+    getLivivngFloors () {
       let livingFloorsStr = JSON.parse(this.$store.state.properties).living_floors
       let livingFloorsArr = livingFloorsStr.split(',')
+      return livingFloorsArr
+    },
+    cFreeFloors () {
+      let livingFloorsArr = this.getLivivngFloors
       livingFloorsArr[0] = Number(livingFloorsArr[0]) + 1
       /** Получаем список всех жилых этажей */
       /** Получаем последний записанный клонированный этаж */
@@ -269,7 +268,7 @@ export default {
       if (lastFloor.length) {
         let lastClonedFloorsStr = lastFloor.reverse()[0].clone_floors
         let lastClonedFloor = lastClonedFloorsStr.split(',').reverse()[0]
-        /** Если последний клонированный не пуст, то им заменим первый этаж в общем списке */
+        /** Если последний клонированный не пуст, то следующим за ним заменим первый этаж в общем списке */
         if (lastClonedFloor) {
           livingFloorsArr[0] = Number(lastClonedFloor) + 2
         }

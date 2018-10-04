@@ -1,13 +1,13 @@
 <template>
   <div>
     <div class="house-main">
-      <router-link :to="{ name: 'BuildingMain'  }">Жилой комплекс</router-link>
+      <router-link :to="{ name: 'BuildingMain' }">Жилой комплекс</router-link>
       <div class="main-nav">
         <router-link class="nav-item" :to="{ name: 'HouseMainProperties' }">Характеристики<br>дома</router-link>
         <router-link class="nav-item" :to="{ name: 'HouseMainChess' }">Шахматка</router-link>
         <router-link class="nav-item" :to="{ name: 'HouseMainFlatsSchemas' }">Типовые<br>планровки</router-link>
         <router-link class="nav-item" :to="{ name: 'HouseMainFloors' }">Типовые<br>этажи</router-link>
-        <router-link class="nav-item" :to="{ name: 'HouseMainPrices' }">Фасады</router-link>
+        <router-link class="nav-item" :to="{ name: 'HouseMainFacades' }">Фасады</router-link>
       </div>
     </div>
     <slot></slot>
@@ -16,12 +16,7 @@
 
 <script>
 export default {
-  name: 'HouseMain',
-  data () {
-    return {
-
-    }
-  }
+  name: 'HouseMain'
 }
 </script>
 
