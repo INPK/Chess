@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="house-main">
-      <router-link :to="{ name: 'BuildingMain'  }">Жилой комплекс</router-link>
+      <router-link class="main-title" :to="{ name: 'BuildingMain'  }">Жилой комплекс</router-link>
       <div class="main-nav">
         <router-link class="nav-item" :to="{ name: 'HouseMainProperties' }">Характеристики<br>дома</router-link>
         <router-link class="nav-item" :to="{ name: 'HouseMainChess' }">Шахматка</router-link>
@@ -34,7 +34,13 @@ export default {
   .house-main {
     margin-bottom: 2rem;
     .main {
+      &-title {
+        .font(@s: 2rem;@w: 400);
+        text-decoration: none;
+        color: #343434;
+      }
       &-nav {
+        margin-top: 2rem;
         .grid(@c: 5;@cg: 0);
         .nav {
           &-item {

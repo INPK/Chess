@@ -71,6 +71,7 @@
             <div>
               <input v-model="windows"
                      type="checkbox"
+                     class="toggle"
                      id="street"
                      value="Улица"
                      name="street" />
@@ -79,25 +80,26 @@
             <div>
               <input v-model="windows"
                      type="checkbox"
+                     class="toggle"
                      id="north"
                      value="Север"
                      name="north" />
               <label for="north">Север</label>
             </div>
             <div>
-              <input v-model="windows" type="checkbox" id="south" value="Юг"/>
+              <input v-model="windows" class="toggle" type="checkbox" id="south" value="Юг"/>
               <label for="south">Юг</label>
             </div>
             <div>
-              <input v-model="windows" type="checkbox" id="outdoors" value="Двор"/>
+              <input v-model="windows" class="toggle" type="checkbox" id="outdoors" value="Двор"/>
               <label for="outdoors">Двор</label>
             </div>
             <div>
-              <input v-model="windows" type="checkbox" id="east" value="Восток"/>
+              <input v-model="windows" class="toggle" type="checkbox" id="east" value="Восток"/>
               <label for="east">Восток</label>
             </div>
             <div>
-              <input v-model="windows" type="checkbox" id="west" value="Запад"/>
+              <input v-model="windows" class="toggle" type="checkbox" id="west" value="Запад"/>
               <label for="west">Запад</label>
             </div>
           </div>

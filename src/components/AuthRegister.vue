@@ -184,6 +184,7 @@
 
           <input
             :class="validationClass.is_agree_with_save_personal_data"
+            class="toggle"
             v-model="isAgreeWithSavePersonalData"
             @click="clearError"
             type="checkbox"

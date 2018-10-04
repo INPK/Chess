@@ -4,16 +4,17 @@
       <div
         class="container"
         @click="closeSidebar"
-      ></div>
+      >
+      </div>
       <div class="sidebar">
-        <button
-          class="uk-offcanvas-close"
-          type="button"
-          uk-close
-          @click="closeSidebar"
-        ></button>
         <div class="sidebar-header">
-          <h1>{{ title }}</h1>
+          <div class="header-title">{{ title }}</div>
+          <button
+            class="button button-close"
+            type="button"
+            uk-close
+            @click="closeSidebar"
+          ></button>
         </div>
         <div class="sidebar-body">
           <slot></slot>
@@ -41,6 +42,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+  @import (less) "../../static/less/font.less";
   @import (less) "../../static/less/color.less";
   @import (less) "../../static/less/grid.less";
   @import (less) "../../static/less/media.less";
@@ -59,7 +61,7 @@ export default {
   }
   .sidebar {
     min-height: 100vh;
-    width: 400px;
+    width: 450px;
     height: 100%;
     position: fixed;
     top: 0;
@@ -72,6 +74,17 @@ export default {
     z-index: 810;
     -ms-overflow-style: none;
     overflow: -moz-scrollbars-none;
+    &-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4rem;
+      .header {
+        &-title {
+          .font(@s: 1.75rem;@w: 100);
+        }
+      }
+    }
   }
   .sidebar::-webkit-scrollbar { width: 0; }
 </style>

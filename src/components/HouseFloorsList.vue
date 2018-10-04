@@ -1,7 +1,7 @@
 <template>
   <div class="house-floors">
     <div>
-      <div class="floors-title">Создайте типовые планировки:</div>
+      <div class="floors-title">Создайте типовые этажи:</div>
       <div class="floors">
         <div class="floors-create">
           <div class="floors-create__image">

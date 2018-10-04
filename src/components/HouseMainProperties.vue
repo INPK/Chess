@@ -1,5 +1,4 @@
 <template>
-<<<<<<< HEAD
   <HouseMain>
   <div class="house-mainproperties">
       <div class="properties-info">
@@ -54,42 +53,20 @@
             </div>
           </div>
         </div>
-        <div class="info-materials">
+        <div class="info-development">
           <div>
             <div>Отделка квартир: {{ finishing }}</div>
           </div>
-          <div>
-            <div>Материалы: {{ materials }}</div>
-=======
-    <HouseMain>
-      <AlertDefault
-        v-if="singleErrorMessage"
-        :message="singleErrorMessage"
-        @alertDie="singleErrorMessage = ''"
-      />
-      <h1>Характеристики дома</h1>
-      <div>
-        <div>
-          <div>Всего этажей: {{ numberOfFloors }}</div>
-          <div>Жилых этажей: {{ livingFloors }}</div>
-          <div>Количество подъездов: {{ numberOfEntrance }}</div>
-          <div>Количество квартир: {{ numberOfFlats }}</div>
-          <div>Номер дома: {{ number }}</div>
-          <div>----------------------</div>
-          <div>Стадия строительства: {{ stageDevelopment }}</div>
-          <div>Начало строительства: {{ startDevelopment }}</div>
-          <div>Окончание строительства: {{ endDevelopment }}</div>
-          <div>Улица: {{ streetName }}</div>
-          <div>----------------------</div>
-          <div>Отделка квартир: {{ finishing }}</div>
-          <div>Материалы:
-            <span
+          <div class="materials">
+            <div>Материалы:</div>
+            <div class="materials-list">
+              <div
+              class="materials-item"
               v-for="(material, index) in materials"
-              :key="index"
-            >
-              {{ material }}
-            </span>
->>>>>>> ee91fe1ef3ba27c64afeeae8feb9cf69f75952d1
+              :key="index">
+                {{ material }}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -216,8 +193,25 @@ export default {
               }
             }
           }
-          &-materials {
+          &-development {
             .grid(@c: 2);
+            .materials {
+              display: flex;
+              &-list {
+                margin-left: 0.5rem;
+                margin-top: -3px;
+              }
+              &-item {
+                border-radius: 2px;
+                color: @color-white;
+                background-color: @color-dark-grey;
+                .padding(@v: 0.25rem);
+                margin-bottom: 3px;
+                margin-right: 3px;
+                display: inline-block;
+                font-size: 0.875rem;
+              }
+            }
           }
         }
       }
