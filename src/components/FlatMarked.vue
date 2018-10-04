@@ -13,13 +13,13 @@
         />
       </div>
     </div>
-    <AlertDefault
-      v-if="singleErrorMessage"
-      :message="singleErrorMessage"
-      @alertDie="clearSingleError"
-    />
     <transition name="slide-fade">
       <div class="marked-form" v-if="editMode">
+        <AlertDefault
+          v-if="singleErrorMessage"
+          :message="singleErrorMessage"
+          @alertDie="clearSingleError"
+        />
         <div class="form-group">
           <label class="form-group__label" for="number">Квартира №</label>
           <div class="form-group__input">
@@ -47,7 +47,7 @@
                 :value="flatSchema.fields.hash_id"
                 :selected="selectedFlatSchema"
               >
-                {{ flatSchema.fields.type }}
+                {{ staticFlatsSchemas[flatSchema.fields.type].title }}
               </option>
           </select>
             <span class="form-group__input_bar"></span>
@@ -66,7 +66,7 @@
           </div>
         </div>
         <div class="marked-window">
-          <div class="window-title">Окна выходят на: {{ windows }}</div>
+          <div class="window-title">Окна выходят на:</div>
           <div class="window-list">
             <div>
               <input v-model="windows"
@@ -102,18 +102,17 @@
             </div>
           </div>
         </div>
-
         <ButtonDefault
           name="Сохранить квартиру"
           class="button-expand"
           color="green"
-          :actionForClick="updateFlatType"
+          :actionForClick="updateFlat"
         />
       </div>
     </transition>
     <AlertConfirm
       v-if="alertShow"
-      @isAgree="removeFlatType"
+      @isAgree="removeFlat"
       @isDisagree="closeAlertConfirm"
     />
   </div>
@@ -134,7 +133,41 @@ export default {
       flatSchema: this.flatType.flat_schema_hash_id,
       entrance: this.flatType.entrance,
       windows: this.flatTypeWindows,
-      selectedFlatType: []
+      selectedFlatType: [],
+      staticFlatsSchemas: {
+        'studio_flat': {
+          title: 'Студия',
+          alias: 'S'
+        },
+        'one_room_flat': {
+          title: 'Однокомнатная',
+          alias: '1к'
+        },
+        'two_room_flat': {
+          title: '2х-комнатная',
+          alias: '2х'
+        },
+        'three_room_flat': {
+          title: '3х-комнатная',
+          alias: '3х'
+        },
+        'four_room_flat': {
+          title: '4х-комнатная',
+          alias: '4х'
+        },
+        'five_room_flat': {
+          title: '5и-комнатная',
+          alias: '5к'
+        },
+        'euro_two_room_flat': {
+          title: 'Евро 2х-комнатная',
+          alias: 'Е2'
+        },
+        'euro_three_room_flat': {
+          title: 'Евро 3х-комнатная',
+          alias: 'Е3'
+        }
+      }
     }
   },
   props: {
@@ -162,7 +195,8 @@ export default {
     flatTypeWindows: {
       type: Array,
       required: true
-    }
+    },
+    errorsStack: Array
   },
   components: {
     AlertConfirm,
@@ -173,24 +207,31 @@ export default {
     alertConfirm () {
       this.alertShow = true
     },
-    updateFlatType () {
-      console.info('Update is not complete')
+    updateFlat () {
+      this.$emit('updateFlat', {
+        id: this.flatTypeId,
+        number: this.number,
+        flatSchema: this.flatSchema,
+        entrance: this.entrance,
+        windows: this.windows
+      })
     },
-    removeFlatType () {
+    removeFlat () {
       this.$store.dispatch('removeItem', {
         url: '/flat-types/' + this.flatTypeId
       })
         .then(() => {
           this.$emit('flatTypeRemovedSuccessful')
         })
-        .catch(error => {
+        .catch(() => {
           this.singleErrorMessage = 'Не удалось удалить квартиру.'
-          console.info('Не удалось удалить квартиру. Вот почему: ', error.response.data)
+          console.info('Не удалось удалить квартиру.')
+          this.closeAlertConfirm()
         })
     },
-    clearSingleError () {
+    /* clearSingleError () {
       this.singleErrorMessage = ''
-    },
+    }, */
     closeAlertConfirm () {
       this.alertShow = false
     },
@@ -202,6 +243,23 @@ export default {
           coords: this.flatType.coordinates
         })
       }
+    },
+    clearSingleError () {
+      // Общее напоминание чистится методом удаления свойства single_error
+      this.singleErrorMessage = ''
+    },
+    clearError (event) {
+      // Получаем id элемента и удаляем его из стека ошибок
+      // Vue автоматически отреагирует на это, скрыв отображение
+      let item = event.target.id
+      this.$delete(this.errorsStack, item)
+      this.clearSingleError()
+    }
+  },
+  watch: {
+    errorsStack (errors) {
+      console.info(errors)
+      this.singleErrorMessage = errors.message
     }
   },
   computed: {
@@ -213,7 +271,6 @@ export default {
       this.flatSchemas.map(flatSchema => {
         return this.flatSchema === flatSchema.fields.type
       })
-      console.info(isExist)
       return isExist
     }
   }

@@ -32,7 +32,7 @@
           </div>
           <div class="list-flat__amount">{{ flatType }}</div>
         </div>
-        <div class="item-buttons" v-if1="isVisibleButtons">
+        <div class="item-buttons" v-if="isVisibleButtons">
           <ButtonDefault
             name="Редактировать"
             color="green"

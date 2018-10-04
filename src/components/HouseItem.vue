@@ -9,7 +9,7 @@
       </div>
       <div class="item-desc" @click="redirectToCurrentHouseMain">
         <div>
-          <div class="desc-title">{{ title }}</div>
+          <div class="desc-title">{{ streetName }},{{ number }}</div>
           <div class="desc-type">
             <span class="desc-type__badge">Жилой комплекс</span>
           </div>
@@ -71,6 +71,7 @@ export default {
     numberOfFlat: Number,
     streetName: String,
     number: String,
+    title: String,
     finishing: String,
     flats: Array,
     stageDevelopment: String,

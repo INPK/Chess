@@ -46,8 +46,10 @@
             :flatIndex="index"
             :flatSchemas="flatsSchemasOfCurrentHouse"
             :editableFlatIndex="editableFlatIndex"
+            :errorsStack="errorsStack"
             @flatTypeRemovedSuccessful="getFlatTypes"
             @setCurrentCoordinates="editBlock"
+            @updateFlat="updateMarkedFlat"
           />
         </div>
         <div class="marked-create" @click="createNewObject">Новый объект</div>
@@ -345,8 +347,6 @@ export default {
       if (lastFlatIndex >= 0) {
         let lastFlatNumber = Number(this.flatTypes[lastFlatIndex].fields.number)
         let lastFlatEntrance = Number(this.flatTypes[lastFlatIndex].fields.entrance)
-        console.info((this.newFlat.number - lastFlatNumber) !== 1)
-        console.info(this.newFlat.entrance, lastFlatEntrance, this.newFlat.entrance === lastFlatEntrance)
         if ((this.newFlat.number - lastFlatNumber) !== 1 && this.newFlat.entrance === lastFlatEntrance) {
           this.alertMessage = 'Вы должны создавать квартиры последовательно!'
           return
@@ -370,8 +370,36 @@ export default {
     closeMarking () {
       this.$emit('closeMarking')
     },
-    updateMarkedFlat () {
-      this.storeMarkedFlat('/' + this.selectedFlatSchema.hash_id, 'updateItem')
+    updateMarkedFlat (flatType) {
+      let markedFlatData = {
+        house_id: this.houseId,
+        floor_type_id: this.currentFloorId,
+        flat_schema_id: flatType.flatSchema,
+        entrance: flatType.entrance,
+        number: flatType.number,
+        windows: flatType.windows.join(','),
+        coordinates: this.totalPoints
+      }
+      return this.$store.dispatch('updateItem', {
+        fields: markedFlatData,
+        url: '/flat-types/' + flatType.id,
+        storageName: 'flatMarking'
+      })
+        .then(() => {
+          this.newFlat.points = []
+          this.getFlatTypes()
+        })
+        .catch(error => {
+          if (error.response.status === 500) {
+            this.alertMessage = 'Что-то пошло не так.'
+          } else {
+            console.info(error.response)
+            this.errorsStack = error.response.data
+            this.alertMessage = error.response.data.message
+          }
+        })
+      // this.storeMarkedFlat('/' + this.selectedFlatSchema.hash_id, 'updateItem')
+      // console.info(flatType)
     },
     processFile (event) {
       this.newFlat.flatSchema = event.target.files[0]
