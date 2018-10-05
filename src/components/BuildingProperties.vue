@@ -5,10 +5,21 @@
       <div class="form-group properties-title">
         <label class="form-group__label" for="name">Название ЖК</label>
         <div class="form-group__input">
+          <transition name="slide-fade">
+              <span
+                v-if="errorsStack.name"
+                class="form-group__alert"
+              >
+                {{ errorsStack.name[0] }}
+              </span>
+          </transition>
           <input
+            @click="clearError"
             v-model="name"
             id="name"
+            name="name"
             type="text"
+            :class="validationClass.name"
           />
           <span class="form-group__input_bar"></span>
         </div>

@@ -25,7 +25,7 @@
 export default {
   data: function () {
     return {
-      userName: 'TestUser',
+      userName: this.$store.state.email,
       menuItem: ['Профиль', 'Оплата', 'Справка'],
       isEnableDropdown: false
     }

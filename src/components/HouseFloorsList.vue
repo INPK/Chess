@@ -178,14 +178,13 @@ export default {
         let lastClonedFloorsStr = lastFloor.clone_floors
         let lastBusyFloor = lastFloor.number
         let lastClonedFloor = Number(lastClonedFloorsStr.split(',').reverse()[0]) || null
-        console.info('lastClonedFloor', lastClonedFloor, 'lastLivingFloor', lastLivingFloor, 'lastBusyFloor', lastBusyFloor)
+        // console.info('lastClonedFloor', lastClonedFloor, 'lastLivingFloor', lastLivingFloor, 'lastBusyFloor', lastBusyFloor)
         if (lastClonedFloor !== null && lastClonedFloor < lastLivingFloor) {
           /** Следующий после последнего клонируемого, будет в поле ввода.
            *  тогда первый клонируемый будет (последний клонируемый + 2) */
           firstValidFloor = lastClonedFloor + 1
           cloneFloorsList[0] = lastClonedFloor + 2
         } else if (lastBusyFloor < lastLivingFloor && lastClonedFloor == null) {
-          console.info('this')
           firstValidFloor = lastBusyFloor + 1
           cloneFloorsList[0] = lastBusyFloor + 2
         } else {

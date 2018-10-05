@@ -44,7 +44,6 @@
               type="checkbox"
               :id="floorNumber"
               :value="floorNumber"
-              @change="chooseCloneFloor"
             />
             <label :for="floorNumber">{{ floorNumber }}</label>
           </span>
@@ -166,7 +165,7 @@ export default {
         house_id: this.houseId,
         number: this.floorNumber,
         number_of_flats: this.numberOfFlats,
-        clone_floors: this.convertFloorRangeToSequence(this.cloneFloors),
+        clone_floors: this.cloneFloors.join(),
         image: this.floorImage
       }
       for (let i in data) {
@@ -197,26 +196,6 @@ export default {
           this.errorsStack = error.response.data
           console.info(error.response.data)
         })
-    },
-    chooseCloneFloor (event) {
-      let selectedFloor = Number(event.target.value)
-      let firsValidFloor = this.cloneFloorsList[0]
-      if (this.cloneFloors.length > 2) {
-        this.cloneFloors = []
-        this.cloneFloors.push(selectedFloor)
-      }
-      this.cloneFloors.sort((first, second) => {
-        return first - second
-      })
-      if (this.cloneFloors[0] > firsValidFloor) {
-        this.errorsStack['single_error'] = true
-        this.errorsStack['message'] = 'Вы не можете оставить предыдущие этажи пустыми'
-        this.cloneFloors = []
-        setTimeout(() => {
-          this.errorsStack['single_error'] = false
-          this.errorsStack['message'] = ''
-        }, 3000)
-      }
     },
     clearSingleError () {
       // Общее напоминание чистится методом удаления свойства single_error
@@ -249,6 +228,23 @@ export default {
         floorSequence.push(i)
       }
       return floorSequence
+    }
+  },
+  watch: {
+    cloneFloors (floors) {
+      let lastSelectedFloor = floors[floors.length - 1]
+      let preLastSelectedFloor = floors[floors.length - 2]
+      if ((lastSelectedFloor - preLastSelectedFloor) > 1) {
+        this.cloneFloors.pop()
+        this.errorsStack['single_error'] = true
+        this.errorsStack['message'] = 'Клонируйте этажи последовательно'
+      }
+      let firsValidFloor = this.cloneFloorsList[0]
+      if (floors[0] > firsValidFloor) {
+        this.cloneFloors.pop()
+        this.errorsStack['single_error'] = true
+        this.errorsStack['message'] = 'Вы не можете оставить предыдущие этажи пустыми'
+      }
     }
   },
   computed: {

@@ -1,8 +1,6 @@
 <template>
   <HouseMain>
-    <div>
-      FACADE
-    </div>
+    <div></div>
   </HouseMain>
 </template>
 

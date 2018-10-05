@@ -11,6 +11,8 @@ const store = new Vuex.Store({
   state: {
     apiKey: localStorage.getItem('apiKey') || null,
     companyHashId: localStorage.getItem('companyHashId') || null,
+    userName: localStorage.getItem('userName') || null,
+    email: localStorage.getItem('email') || null,
     buildings: localStorage.getItem('buildings') || null,
     currentHouseId: localStorage.getItem('currentHouseId') || null,
     houseFloors: localStorage.getItem('houseFloors') || null,
@@ -151,7 +153,9 @@ const store = new Vuex.Store({
           .then(response => {
             store.dispatch('storeLoginData', {
               apiKey: response.data.api_key,
-              companyHashId: response.data.company_hash_id
+              companyHashId: response.data.company_hash_id,
+              userName: response.data.last_name + ' ' + response.data.first_name + ' ' + response.data.middle_name,
+              email: response.data.email
             })
             resolve(response)
           })

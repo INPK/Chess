@@ -126,7 +126,6 @@ export default {
         })
     },
     dataImport () {
-      alert('prices/upload')
       let prices = new FormData()
       prices.append('prices', this.pricesFile)
       return this.$store.dispatch('writeItem', {
