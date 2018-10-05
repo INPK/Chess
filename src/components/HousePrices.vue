@@ -10,14 +10,20 @@
         <div class="prices-header">
           <div class="header-title">Введите цену и площадь квартир</div>
           <div class="header-filter">
-            <input v-model="expandFloors" type="checkbox" id="expandFloorToggle"/>
+            <input
+              v-model="expandFloors"
+              type="checkbox"
+              class="toggle"
+              id="expandFloorToggle"
+            />
             <label for="expandFloorToggle">Развернуть все этажи</label>
           </div>
-          <!--<ButtonDefault
+          <input @change="processFile" name="price" type="file"/>
+          <ButtonDefault
             name="Импорт данных"
             color="green"
             :actionForClick="dataImport"
-          />-->
+          />
         </div>
         <div class="flats_list">
           <template
@@ -27,6 +33,7 @@
               :floor="floor"
               :floorIndex="index"
               :key="index"
+              :expandFloors="expandFloors"
               :editableFloorIndex="editableFloorIndex"
               @editFloor="editFloor"
               @updateFlatsList="getFullHouse"
@@ -51,6 +58,7 @@ export default {
       fullHouse: [],
       editableFloorIndex: null,
       singleErrorMessage: '',
+      pricesFile: '',
       staticFlatsSchemasTypes: {
         'studio_flat': {
           title: 'Студия',
@@ -118,10 +126,26 @@ export default {
         })
     },
     dataImport () {
-      alert('Импорт цен')
+      alert('prices/upload')
+      let prices = new FormData()
+      prices.append('prices', this.pricesFile)
+      return this.$store.dispatch('writeItem', {
+        fields: prices,
+        url: '/prices/upload',
+        storageName: 'prices'
+      })
+        .then(response => {
+          console.info('Response', response)
+        })
+        .catch(error => {
+          console.info('Error: ', error.response.data)
+        })
     },
     editFloor (floorIndex) {
       this.editableFloorIndex = floorIndex
+    },
+    processFile (event) {
+      this.pricesFile = event.target.files[0]
     }
   }
 }

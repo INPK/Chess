@@ -20,7 +20,7 @@
       />
     </div>
     <div class="item-image">
-      <img :src="'/static/img' + image">
+      <img :src="image">
     </div>
     <div class="item-desc">
       <div
@@ -32,7 +32,7 @@
       </div>
       <div class="item-desc__clone">
         <div class="clone-title">Клонировать для этажей:</div>
-        <div class="clone-items">
+        <div class="clone-items" v-if="cloneFloors != ''">
           <span class="clone-item" v-for="(cloneFloor, i) in cloneFloors" :key="i">{{ cloneFloor }}</span>
         </div>
       </div>

@@ -44,7 +44,7 @@
           <ButtonDefault
             v-if="isVisibleButtons"
             name="Удалить"
-            color="grey"
+            color="red"
             class="button-expand"
             :actionForClick="removeHouse"
           />

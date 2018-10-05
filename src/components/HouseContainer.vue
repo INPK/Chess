@@ -5,11 +5,6 @@
         <div class="header-title">
           <router-link class="header-title__link" :to="{ name: 'BuildingMain' }">ЖК "Millennium Falcon"</router-link>
         </div>
-        <ButtonDefault
-          name="Удалить объект"
-          color="red"
-          class="button"
-        />
       </div>
       <ul class="header-nav">
         <li class="nav-item">

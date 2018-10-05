@@ -41,7 +41,7 @@
           />
           <ButtonDefault
             name="Удалить"
-            color="grey"
+            color="red"
             class="button-expand"
             :actionForClick="removeBuilding"
           />

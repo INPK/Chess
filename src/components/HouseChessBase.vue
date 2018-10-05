@@ -21,8 +21,14 @@
       <div class="masonry-header">
         <div class="header-title">Шахматка</div>
         <div class="header-filter">
-          <input v-model="roomsView" type="checkbox" id="rooms" value="rooms"/>
-          <label for="rooms">Комнатность</label>
+          <input
+            v-model="roomsView"
+            type="checkbox"
+            class="toggle"
+            id="rooms"
+            value="rooms"
+          />
+          <label for="rooms">Номера квартир</label>
         </div>
       </div>
       <div class="masonry-chess">
@@ -158,6 +164,7 @@ export default {
 <style lang="less" scoped>
   @import (less) "../../static/less/button.less";
   @import (less) "../../static/less/color.less";
+  @import (less) "../../static/less/form.less";
   @import (less) "../../static/less/font.less";
   @import (less) "../../static/less/grid.less";
   @import (less) "../../static/less/media.less";

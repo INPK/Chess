@@ -6,10 +6,10 @@
   >
     <div class="pricesfloor-info">
       <div class="info-title">Этаж {{ floorNumber }}</div>
-      <div class="info-num" v-if="editMode">{{ floorNumber }}</div>
+      <div class="info-num" v-if="editMode || expandFloors">{{ floorNumber }}</div>
     </div>
     <transition>
-      <div class="pricesfloor-table" v-if="editMode">
+      <div class="pricesfloor-table" v-if="editMode || expandFloors">
         <div class="table-header">
           <div>Номер квартиры</div>
           <div>Планировка</div>
@@ -57,6 +57,7 @@ export default {
       type: Array,
       required: true
     },
+    expandFloors: Boolean,
     floorIndex: Number,
     editableFloorIndex: Number
   },
@@ -75,6 +76,8 @@ export default {
     editFloor () {
       if (!this.editMode) {
         this.$emit('editFloor', this.floorIndex)
+      } else {
+        this.$emit('editFloor', '')
       }
     },
     updateFlatsList (editableFlatData) {

@@ -22,7 +22,7 @@
       />
     </div>
     <div class="item-image">
-      <img :src="'/static/img' + image"><!--:src="image"-->
+      <img :src="image">
     </div>
     <div class="item-desc">
       <div class="item-desc__list">

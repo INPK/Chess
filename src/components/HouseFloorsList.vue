@@ -35,6 +35,7 @@
       :selectedFloor="sidebar.selectedFloor"
       :editMode="sidebar.editMode"
       :sidebarShow="sidebar.show"
+      :freeFloors="freeFloors"
       :storeIndex="sidebar.storeIndex.toString()"
       @closeSidebar="closeSidebar"
       @refreshAfterChange="refreshAfterChange"
@@ -48,7 +49,7 @@
     <AlertDefault
       v-if="alertMessage"
       :message="alertMessage"
-      @alertDie="alertMessage = ''"
+      @alertDie="killAlert"
     />
     <AlertConfirm
       v-if="alertConfirm.isActive"
@@ -78,6 +79,7 @@ export default {
         numberOfFlats: null
       },
       floorMarking: false,
+      freeFloors: [],
       alertConfirm: {
         isActive: false,
         additionalMessage: 'Если вы удалите этот объект, то все данные будут отображаться не корректно'
@@ -111,6 +113,9 @@ export default {
     closeSidebar () {
       /** Возвращает все элементы объекта sidebar в data в первоначальное состояние */
       Object.assign(this.$data.sidebar, this.$options.data().sidebar)
+    },
+    killAlert () {
+      this.alertMessage = ''
     },
     closeMarking () {
       this.floorMarking = false
@@ -151,8 +156,44 @@ export default {
         this.sidebar.storeIndex = floorStoreIndex
         this.sidebar.selectedFloor = this.floors[floorStoreIndex]
         this.sidebar.editMode = true
+        this.sidebar.show = true
+      } else {
+        this.freeFloors = this.getFreeFloors()
+        if (this.freeFloors.firstValidFloor) {
+          this.sidebar.show = true
+        }
       }
-      this.sidebar.show = true
+    },
+    getFreeFloors () {
+      let livingFloorsArr = JSON.parse(this.$store.state.properties).living_floors.split(',')
+      let cloneFloorsList = livingFloorsArr.map(floor => { return Number(floor) })
+      let lastLivingFloor = cloneFloorsList[1]
+      let firstValidFloor = null
+      /** Прибавляется 1 к первому жилому этажу, чтобы номер первого этажа не оказался клонируемым */
+      cloneFloorsList[0]++
+      /** Получаем список всех жилых этажей */
+      let typeFloors = JSON.parse(this.$store.state.houseFloors)
+      if (typeFloors.length) {
+        let lastFloor = typeFloors.reverse()[0]
+        let lastClonedFloorsStr = lastFloor.clone_floors
+        let lastBusyFloor = lastFloor.number
+        let lastClonedFloor = Number(lastClonedFloorsStr.split(',').reverse()[0]) || null
+        console.info('lastClonedFloor', lastClonedFloor, 'lastLivingFloor', lastLivingFloor, 'lastBusyFloor', lastBusyFloor)
+        if (lastClonedFloor !== null && lastClonedFloor < lastLivingFloor) {
+          /** Следующий после последнего клонируемого, будет в поле ввода.
+           *  тогда первый клонируемый будет (последний клонируемый + 2) */
+          firstValidFloor = lastClonedFloor + 1
+          cloneFloorsList[0] = lastClonedFloor + 2
+        } else if (lastBusyFloor < lastLivingFloor && lastClonedFloor == null) {
+          console.info('this')
+          firstValidFloor = lastBusyFloor + 1
+          cloneFloorsList[0] = lastBusyFloor + 2
+        } else {
+          this.alertMessage = 'Больше нет свободных этажей'
+          cloneFloorsList = []
+        }
+      }
+      return { firstValidFloor, cloneFloorsList }
     },
     removeFloor () {
       this.$store.dispatch('removeItem', {

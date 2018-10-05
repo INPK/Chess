@@ -31,15 +31,16 @@
           />
         </div>
       </div>
-      <div>
+      <div v-if="!editMode">
         Клонировать для этажей:
         <div class="clone-items">
           <span class="clone-item"
-            v-for="(floorNumber, index) in cFreeFloors"
+            v-for="(floorNumber, index) in convertFloorRangeToSequence(cloneFloorsList)"
             :key="index"
           >
             <input
               v-model="cloneFloors"
+              class="clone-floor"
               type="checkbox"
               :id="floorNumber"
               :value="floorNumber"
@@ -119,12 +120,12 @@ export default {
   name: 'HouseFloorsAdd',
   data () {
     return {
-      floorNumber: this.selectedFloor.number || '',
+      floorNumber: this.selectedFloor.number || this.freeFloors.firstValidFloor,
       numberOfFlats: this.selectedFloor.number_of_flats || '',
-      cloneFloors: [],
+      cloneFloors: this.selectedFloor.clone_floors || [],
+      cloneFloorsList: this.freeFloors.cloneFloorsList || [],
       floorImage: this.selectedFloor.image || '',
       imagePreview: '',
-      freeFloors: [],
       errorsStack: {}
     }
   },
@@ -134,6 +135,7 @@ export default {
       type: String,
       require: true
     },
+    freeFloors: Object,
     selectedFloor: Object,
     editMode: {
       type: Boolean,
@@ -198,7 +200,7 @@ export default {
     },
     chooseCloneFloor (event) {
       let selectedFloor = Number(event.target.value)
-      let firsValidFloor = this.cFreeFloors[0]
+      let firsValidFloor = this.cloneFloorsList[0]
       if (this.cloneFloors.length > 2) {
         this.cloneFloors = []
         this.cloneFloors.push(selectedFloor)
@@ -206,7 +208,6 @@ export default {
       this.cloneFloors.sort((first, second) => {
         return first - second
       })
-      console.info(this.cloneFloors)
       if (this.cloneFloors[0] > firsValidFloor) {
         this.errorsStack['single_error'] = true
         this.errorsStack['message'] = 'Вы не можете оставить предыдущие этажи пустыми'
@@ -253,28 +254,6 @@ export default {
   computed: {
     sidebarShowComputed () {
       return this.sidebarShow
-    },
-    getLivivngFloors () {
-      let livingFloorsStr = JSON.parse(this.$store.state.properties).living_floors
-      let livingFloorsArr = livingFloorsStr.split(',')
-      return livingFloorsArr
-    },
-    cFreeFloors () {
-      let livingFloorsArr = this.getLivivngFloors
-      livingFloorsArr[0] = Number(livingFloorsArr[0]) + 1
-      /** Получаем список всех жилых этажей */
-      /** Получаем последний записанный клонированный этаж */
-      // let lastFloor = []
-      let lastFloor = JSON.parse(this.$store.state.houseFloors)
-      if (lastFloor.length) {
-        let lastClonedFloorsStr = lastFloor.reverse()[0].clone_floors
-        let lastClonedFloor = lastClonedFloorsStr.split(',').reverse()[0]
-        /** Если последний клонированный не пуст, то следующим за ним заменим первый этаж в общем списке */
-        if (lastClonedFloor) {
-          livingFloorsArr[0] = Number(lastClonedFloor) + 2
-        }
-      }
-      return this.convertFloorRangeToSequence(livingFloorsArr)
     },
     singleErrorMessage () {
       if (this.errorsStack.single_error) {
